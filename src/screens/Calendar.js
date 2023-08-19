@@ -1,22 +1,35 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, ScrollView } from 'react-native';
 
-const StudentCalendar = () => {
+const Calendar = () => {
   const [searchText, setSearchText] = useState('');
-  const [holidays, setHolidays] = useState([
-    { date: '2023-08-20', type: 'Holiday', name: 'Labor Day' },
-    { date: '2023-09-04', type: 'Holiday', name: 'Labor Day' },
-    // Add more holidays here
-  ]);
-  const [workingDays, setWorkingDays] = useState([
-    { date: '2023-08-21', type: 'Working Day' },
-    { date: '2023-08-22', type: 'Working Day' },
-    // Add more working days here
+  const [days, setDays] = useState([
+    { date: '08-01-2023', type: 'Holiday', name: 'Labor Day', description: 'A day to celebrate workers', cycle: 1, dayOrder: 'I', isWorkingDay: true },
+    // Add more days here
   ]);
 
-  const filteredHolidays = holidays.filter(holiday =>
-    holiday.name.toLowerCase().includes(searchText.toLowerCase())
+  const filteredDays = days.filter(day =>
+    day.name.toLowerCase().includes(searchText.toLowerCase())
   );
+
+  const renderWorkingDaysWithCounts = () => {
+    const workingDayCounts = {};
+    days.forEach(day => {
+      if (day.isWorkingDay) {
+        const dateParts = day.date.split('-');
+        const month = parseInt(dateParts[0]);
+        if (workingDayCounts[month]) {
+          workingDayCounts[month]++;
+        } else {
+          workingDayCounts[month] = 1;
+        }
+      }
+    });
+
+    return Object.keys(workingDayCounts).map(month => (
+      <Text key={month} style={{ color: "black" }}>{`Month ${month} Working Days: ${workingDayCounts[month]}`}</Text>
+    ));
+  };
 
   return (
     <View style={styles.container}>
@@ -28,17 +41,19 @@ const StudentCalendar = () => {
         value={searchText}
       />
       <ScrollView style={styles.cardContainer}>
+        {filteredDays.map((day, index) => (
+          <View style={styles.card} key={index}>
+            <Text style={day.isWorkingDay ? styles.cardTitleWorking : styles.cardTitleHolidays}>{day.type}</Text>
+            <Text style={{ color: "black", fontWeight: 'bold' }}>{`${day.date} - ${day.name}`}</Text>
+            <Text style={{ color: "black", fontWeight: 'bold' }}>{`Description: ${day.description}`}</Text>
+            <Text style={{ color: "black", fontWeight: 'bold' }}>{`Cycle: ${day.cycle}`}</Text>
+            <Text style={{ color: "black", fontWeight: 'bold' }}>{`Day Order: ${day.dayOrder}`}</Text>
+            <Text style={{ color: "black", fontWeight: 'bold' }}>{`Working Day: ${day.isWorkingDay ? 'Yes' : 'No'}`}</Text>
+          </View>
+        ))}
         <View style={styles.card}>
-          <Text style={styles.cardTitle}>Holidays</Text>
-          {filteredHolidays.map((holiday, index) => (
-            <Text style={{ color: "black", fontWeight: 'bold' }} key={index}>{`${holiday.date} - ${holiday.name}`}</Text>
-          ))}
-        </View>
-        <View style={styles.card}>
-          <Text style={styles.cardTitle}>Working Days</Text>
-          {workingDays.map((day, index) => (
-            <Text style={{ color: "black", fontWeight: 'bold' }} key={index}>{`${day.date} - ${day.type}`}</Text>
-          ))}
+          <Text style={styles.cardTitleWorking}>Working Day Counts:</Text>
+          {renderWorkingDaysWithCounts()}
         </View>
       </ScrollView>
     </View>
@@ -76,11 +91,18 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
   },
-  cardTitle: {
-    fontSize: 18,
+  cardTitleWorking: {
+    fontSize: 15,
     fontWeight: 'bold',
     marginBottom: 5,
+    color: 'red'
   },
+  cardTitleHolidays: {
+    color: 'green',
+    fontWeight: 'bold',
+    marginBottom: 5,
+    fontSize: 15,
+  }
 });
 
-export default StudentCalendar;
+export default Calendar;

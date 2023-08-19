@@ -1,19 +1,25 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { color } from 'react-native-reanimated';
 
 const Stack = createStackNavigator();
 
-const DayScreen = ({ route }) => {
-
+const DayScreen = ({ route, navigation }) => {
   const { day } = route.params;
-  // Customize the content for each day
-  // You can fetch data or render specific components based on the day
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Text style={styles.backButton}>===</Text>
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation]);
 
   return (
     <View style={styles.dayContainer}>
-      <Text style={{ color: 'black' }} >{day} Schedule</Text>
+      <Text style={{ color: 'black' }}>{day} Schedule</Text>
     </View>
   );
 };
@@ -22,7 +28,7 @@ const DayButton = ({ day, onPress }) => (
   <TouchableOpacity
     style={styles.dayButton}
     onPress={onPress}
-    activeOpacity={0.3} // This sets the opacity when pressed
+    activeOpacity={0.3}
   >
     <Text style={styles.dayButtonText}>{day}</Text>
   </TouchableOpacity>
@@ -68,9 +74,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     backgroundColor: '#e0e0e0',
-    // Apply box shadow for a touchable effect (Android)
     elevation: 3,
-    // Apply shadow for a touchable effect (iOS)
     shadowColor: 'black',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
@@ -85,6 +89,11 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    color: 'black',
+  },
+  backButton: {
+    marginLeft: 10,
+    fontSize: 16,
     color: 'black',
   },
 });

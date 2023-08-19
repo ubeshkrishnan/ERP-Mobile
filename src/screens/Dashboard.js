@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-nati
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { useNavigation } from '@react-navigation/native';
 
-const MenuCard = ({ name, icon }) => {
+const MenuCard = ({ name, icon }) => { // Change 'name' prop to 'name'
   const navigation = useNavigation();
 
   return (
@@ -19,11 +19,11 @@ const MenuCard = ({ name, icon }) => {
   );
 };
 
-export default function Dashboard() {
+const Dashboard = () => {
   const menuItems = [
     { name: 'TimeTable', icon: 'infocirlce' },
     { name: 'Attendance', icon: 'infocirlce' },
-    { name: 'Calendar', icon: 'infocirlce' },
+    { name: 'Calendar', icon: 'calendar' },
     { name: 'Courses', icon: 'infocirlce' },
     { name: 'Curriculum', icon: 'infocirlce' },
     { name: 'Eschedule', icon: 'infocirlce' },
@@ -41,7 +41,7 @@ export default function Dashboard() {
       </ScrollView>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -81,3 +81,5 @@ const styles = StyleSheet.create({
     color: '#111', // Set your desired text color
   },
 });
+
+export default Dashboard;
