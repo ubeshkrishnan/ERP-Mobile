@@ -2,8 +2,9 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { createStackNavigator } from '@react-navigation/stack';
-
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import Dashboard from "../screens/Dashboard";
 import TimeTable from "../screens/TimeTable";
 import Attendance from "../screens/Attendance";
@@ -71,17 +72,19 @@ function TopBarNavigator() {
 function BottomTabNavigator() {
   return (
     <BottomTab.Navigator
-
       screenOptions={{
         tabBarActiveTintColor: 'tomato',
         tabBarInactiveTintColor: 'grey',
-        tabBarShowLabel: false,
+        tabBarShowLabel: true,
         tabBarStyle: [
           {
             display: 'flex',
           },
           null,
         ],
+        tabBarLabelStyle: {
+          color: 'grey', // Set the color for tab names
+        },
       }}
     >
       <BottomTab.Screen
@@ -89,18 +92,31 @@ function BottomTabNavigator() {
         component={Dashboard}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="list" size={size} color={color} />
+            <AntDesign name="home" size={size} color={color} />
           ),
+          tabBarLabel: 'Home',
         }}
       />
+
+      <BottomTab.Screen
+        name="Profile"
+        component={Profile}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Icon name="user" size={size} color={color} />
+          ),
+          tabBarLabel: 'Profile', // Set the label for the Profile tab
+        }}
+      />
+
       <BottomTab.Screen
         name="TimeTable"
         component={TimeTable}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="time" size={size} color={color} />
+            <Ionicons name="list" size={size} color={color} />
           ),
-          tabBarLabel: () => null, // Hide the label for TimeTable screen
+          tabBarLabel: 'Timetable', // Set the label for the TimeTable tab
         }}
       />
     </BottomTab.Navigator>
@@ -124,7 +140,7 @@ function MainContainer() {
 
             return <Ionicons name={iconName} size={size} color={color} />;
           },
-         headerStyle: {
+          headerStyle: {
             backgroundColor: route.name === "Dashboard" ? '#009FFF' : '#0c46c3', // Set background color based on route
             borderBottomWidth: 0,
           },

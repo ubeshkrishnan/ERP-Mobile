@@ -2,8 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 
 
-const Profile = () => {
- 
+const UserProfile = () => {
+
+  const [userData, setUserData] = useState({
+    first_name: 'kishore',
+    last_name: 'K',
+    reg_No: 'STD - 210003',
+    gender: 'Male',
+    course: 'B.TEch',
+    programme: 'Computer Science and Engineering',
+    mobile_no: '9897778245',
+    address: 'Coimbatore',
+    email: 'kishore@gmail.com',
+  });
 
   return (
     <View style={styles.container}>
@@ -13,41 +24,35 @@ const Profile = () => {
           style={styles.profilePicture}
         />
         <Text style={styles.name}>{userData.first_name} {userData.last_name}</Text>
-        <Text style={styles.employeeId}>{userData.employee_id}</Text>
+        <Text style={styles.employeeId}>{userData.reg_No}</Text>
       </View>
       <View style={styles.body}>
-      <View style={styles.card}>
+        <View style={styles.card}>
           <Text style={styles.label}>Gender:</Text>
           <Text style={styles.value}>{userData.gender}</Text>
         </View>
         <View style={styles.card}>
-          <Text style={styles.label}>Region:</Text>
-          <Text style={styles.value}>{userData.region_name}</Text>
+          <Text style={styles.label}>Course:</Text>
+          <Text style={styles.value}>{userData.course}</Text>
         </View>
         <View style={styles.card}>
-          <Text style={styles.label}>Blood Group</Text>
-          <Text style={styles.value}>{userData.blood_group}</Text>
+          <Text style={styles.label}>Programme</Text>
+          <Text style={styles.value}>{userData.programme}</Text>
         </View>
         <View style={styles.card}>
-          <Text style={styles.label}>Phone:</Text>
-          <Text style={styles.value}>{userData.phone_no}</Text>
+          <Text style={styles.label}>Mobile No</Text>
+          <Text style={styles.value}>{userData.mobile_no}</Text>
         </View>
         <View style={styles.card}>
-          <Text style={styles.label}>Address:</Text>
-          <Text style={styles.value}>{userData.address}</Text>
-        </View>
-        <View style={styles.card}>
-          <Text style={styles.label}>Designation:</Text>
-          <Text style={styles.value}>
-          {userData.designation}
-          </Text>
+          <Text style={styles.label}>Email</Text>
+          <Text style={styles.value}>{userData.email}</Text>
         </View>
       </View>
     </View>
   );
 };
 
-export default Profile;
+export default UserProfile;
 
 const styles = StyleSheet.create({
   container: {
@@ -64,6 +69,7 @@ const styles = StyleSheet.create({
     height: 100,
     borderRadius: 50,
     marginBottom: 10,
+  
   },
   name: {
     fontSize: 20,
