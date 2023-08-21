@@ -74,9 +74,22 @@ function MainContainer() {
             }
 
             return <Ionicons name={iconName} size={size} color={color} />;
-
           },
+          headerStyle: {
+            backgroundColor: '#0c46c3', // Set the header background color
+            borderBottomWidth: 0, // Remove the bottom border
+          },
+          headerTintColor: 'white', // Set the header text color
+          headerRight: () => (
+            <Ionicons
+              name="notifications-outline"
+              size={24}
+              color="white"
+              style={{ marginRight: 15 }}
+            />
+          ),
         })}
+
         tabBarOptions={{
           activeTintColor: 'tomato',
           inactiveTintColor: 'grey',
@@ -85,7 +98,6 @@ function MainContainer() {
           showLabel: false,
         }}
       >
-
         <Tab.Screen name="TimeTable" component={TimeTable} />
         <Tab.Screen name="Attendance" component={Attendance} />
         <Tab.Screen name="Dashboard" component={Dashboard} />

@@ -5,8 +5,8 @@ import CardComponent from './CardCurriculum';
 
 const Curriculum = () => {
   const cards = [
-    { id: 1, title: 'Card 1', description: 'Detailed info about Card 1' },
-    { id: 2, title: 'Card 2', description: 'Detailed info about Card 2' },
+    { id: 1, title: '22MLM101- Malayalam - I', description: 'SEM - 1' },
+    { id: 2, title: '22ENN101 - English - I', description: 'Faculty - Krishnan ' },
     // Add more card data here
   ];
 

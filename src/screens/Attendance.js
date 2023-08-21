@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Dimensions ,ScrollView} from 'react-native';
+import { View, Text, StyleSheet, Dimensions, ScrollView } from 'react-native';
 // import { ScrollView } from 'react-native-gesture-handler';
 
 const SubjectCard = ({ subjectCode, subjectName, totalClasses, attendedClasses }) => {
@@ -7,32 +7,32 @@ const SubjectCard = ({ subjectCode, subjectName, totalClasses, attendedClasses }
 
   return (
     <>
-    <View style={styles.card}>
-      <View style={styles.details}>
-        <View style={styles.detailsLeft}>
-          <Text style={styles.subjectCode}>{subjectCode}</Text>
-          <Text style={styles.subjectName}>{subjectName}</Text>
-          <Text style={styles.subjectTotalClass}>Total Classes: {totalClasses}</Text>
-          <Text style={styles.subjectAttendClass}>Attended Classes: {attendedClasses}</Text>
-          <Text style={styles.subjectAttendancePercentage}>
-            Attendance Percentage: {attendancePercentage}%
-          </Text>
-        </View>
-        <View style={styles.circleContainer}>
-          <View
-            style={[
-              styles.circle,
-              {
-                borderColor: '#00FF00', // Green border color
-                width: Dimensions.get('window').width * 0.20, // Set the width of the circle
-              },
-            ]}
-          >
-            <Text style={styles.circleText}>{attendancePercentage}%</Text>
+      <View style={styles.card}>
+        <View style={styles.details}>
+          <View style={styles.detailsLeft}>
+            <Text style={styles.subjectCode}>{subjectCode}</Text>
+            <Text style={styles.subjectName}>{subjectName}</Text>
+            <Text style={styles.subjectTotalClass}>Total Classes: {totalClasses}</Text>
+            <Text style={styles.subjectAttendClass}>Attended Classes: {attendedClasses}</Text>
+            <Text style={styles.subjectAttendancePercentage}>
+              Attendance Percentage: {attendancePercentage}%
+            </Text>
+          </View>
+          <View style={styles.circleContainer}>
+            <View
+              style={[
+                styles.circle,
+                {
+                  borderColor: '#00FF00', // Green border color
+                  width: Dimensions.get('window').width * 0.20, // Set the width of the circle
+                },
+              ]}
+            >
+              <Text style={styles.circleText}>{attendancePercentage}%</Text>
+            </View>
           </View>
         </View>
       </View>
-    </View>
     </>
   );
 };
@@ -49,17 +49,19 @@ const Attendance = () => {
   ];
 
   return (
-    <View style={styles.container}>
-      {subjects.map((subject, index) => (
-        <SubjectCard
-          key={index}
-          subjectCode={subject.subjectCode}
-          subjectName={subject.subjectName}
-          totalClasses={subject.totalClasses}
-          attendedClasses={subject.attendedClasses}
-        />
-      ))}
-    </View>
+    <ScrollView>
+      <View style={styles.container}>
+        {subjects.map((subject, index) => (
+          <SubjectCard
+            key={index}
+            subjectCode={subject.subjectCode}
+            subjectName={subject.subjectName}
+            totalClasses={subject.totalClasses}
+            attendedClasses={subject.attendedClasses}
+          />
+        ))}
+      </View>
+    </ScrollView>
   );
 };
 

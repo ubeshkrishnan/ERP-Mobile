@@ -5,7 +5,7 @@ import { Card, Paragraph } from 'react-native-paper';
 const Library = () => {
   const bookdata = [
     { key: 'Accession No', value: '12345' },
-    { key: 'Book Name', value: 'Introduction to React Native' },
+    { key: 'Book Name', value: 'Agarval Thalir' },
     { key: 'Issue Date', value: '2023-08-20' },
     { key: 'Due Date', value: '2023-09-10' },
     { key: 'Return Date', value: '2023-09-05' },
