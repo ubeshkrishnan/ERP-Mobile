@@ -34,6 +34,7 @@ const headerRightComponent = () => (
   />
 );
 
+
 function TopBarNavigator() {
   return (
     <TopTab.Navigator
@@ -70,49 +71,51 @@ function TopBarNavigator() {
 function BottomTabNavigator() {
   return (
     <BottomTab.Navigator
-      initialRouteName="Dashboard"
-      tabBarOptions={{
-        activeTintColor: 'tomato',
-        inactiveTintColor: 'grey',
-        showLabel: false,
+
+      screenOptions={{
+        tabBarActiveTintColor: 'tomato',
+        tabBarInactiveTintColor: 'grey',
+        tabBarShowLabel: false,
+        tabBarStyle: [
+          {
+            display: 'flex',
+          },
+          null,
+        ],
       }}
-      screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color, size }) => {
-          let iconName = '';
-
-          if (route.name === "TimeTable") {
-            iconName = focused ? 'time' : 'time-outline';
-          } else if (route.name === "Dashboard") {
-            iconName = focused ? 'list' : 'list-outline';
-          }
-
-          return <Ionicons name={iconName} size={size} color={color} />;
-        },
-      })}
     >
       <BottomTab.Screen
-        name="MainContainer"
-        component={MainContainer}
-        options={{ tabBarLabel: 'Home' }}
+        name="Dashboard"
+        component={Dashboard}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="list" size={size} color={color} />
+          ),
+        }}
       />
-     <BottomTab.Screen
-        name="Profile"
-        component={Profile}
-        options={{ tabBarLabel: 'Profile' }}
+      <BottomTab.Screen
+        name="TimeTable"
+        component={TimeTable}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="time" size={size} color={color} />
+          ),
+          tabBarLabel: () => null, // Hide the label for TimeTable screen
+        }}
       />
     </BottomTab.Navigator>
   );
 }
 
+
 function MainContainer() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Dashboard"
+        initialRouteName="BottomTab"
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
             let iconName = '';
-
             if (route.name === "TimeTable") {
               iconName = focused ? 'time' : 'time-outline';
             } else if (route.name === "Dashboard") {
@@ -121,12 +124,13 @@ function MainContainer() {
 
             return <Ionicons name={iconName} size={size} color={color} />;
           },
-          headerStyle: {
-            backgroundColor: '#0c46c3',
+         headerStyle: {
+            backgroundColor: route.name === "Dashboard" ? '#009FFF' : '#0c46c3', // Set background color based on route
             borderBottomWidth: 0,
           },
           headerTintColor: 'white',
           headerRight: headerRightComponent,
+          headerBackTitleVisible: false, // Hide the back button title
         })}
         tabBarOptions={{
           activeTintColor: 'tomato',
@@ -135,11 +139,10 @@ function MainContainer() {
         }}
       >
         <Stack.Screen
-          name="TimeTable"
-          component={TimeTable}
+          name="BottomTab"
+          component={BottomTabNavigator}
           options={{
-            headerShown: true,
-            title: 'Time Table'
+            headerShown: false,
           }}
         />
         <Stack.Screen
@@ -164,7 +167,7 @@ function MainContainer() {
         <Stack.Screen name="Library" component={Library} />
         <Stack.Screen name="Results" component={Results} />
         <Stack.Screen name="Profile" component={Profile} />
-        
+
       </Stack.Navigator>
     </NavigationContainer>
   );
