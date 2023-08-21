@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
   circle: {
     height: Dimensions.get('window').width * 0.20,
     width: Dimensions.get('window').width * 0.20,
-    borderRadius: (Dimensions.get('window').width * 0.20) / 2,
+    borderRadius: (Dimensions.get('window').width * 0.30) / 2,
     borderWidth: 2, // Border width
     justifyContent: 'center',
     alignItems: 'center',

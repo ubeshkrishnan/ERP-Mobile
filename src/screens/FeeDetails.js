@@ -36,24 +36,26 @@ const FeeDetailsCard = ({ fee }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-
   },
-
   card: {
     backgroundColor: 'white',
     padding: 15,
     marginBottom: 10,
-    borderRadius: 5,
+    borderRadius: 10, // Added border radius
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     elevation: 3,
-    marginTop:30,
+    margin: 30,
+    paddingTop: 20,
+    paddingBottom: 20,
+    borderRadius: 10,
+
   },
   cardText: {
     fontSize: 16,
     margin: 5,
-    color: 'black'
+    color: 'black',
   },
 });
 

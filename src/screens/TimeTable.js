@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
-
+import { AntDesign } from '@ant-design/icons-react-native';
 const Stack = createStackNavigator();
 
 const DayScreen = ({ route, navigation }) => {
@@ -24,24 +24,6 @@ const DayScreen = ({ route, navigation }) => {
   );
 };
 
-const TimeTable = ({ navigation }) => {
-  const daysOfWeek = ['MON', 'TUE', 'WED', 'THU', 'FRI'];
-
-  return (
-    <View style={styles.container}>
-      <View style={styles.daysOfWeekContainer}>
-        {daysOfWeek.map((day, index) => (
-          <DayButton
-            key={index}
-            day={day}
-            onPress={() => navigation.navigate('Day', { day })}
-          />
-        ))}
-      </View>
-    </View>
-  );
-};
-
 const DayButton = ({ day, onPress }) => (
   <TouchableOpacity
     style={styles.dayButton}
@@ -51,6 +33,31 @@ const DayButton = ({ day, onPress }) => (
     <Text style={styles.dayButtonText}>{day}</Text>
   </TouchableOpacity>
 );
+
+const TimeTable = () => {
+  const daysOfWeek = ['MON', 'TUE', 'WED', 'THU', 'FRI'];
+
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="TimeTableScreen" options={{ headerShown: false }}>
+        {({ navigation }) => (
+          <View style={styles.container}>
+            <View style={styles.daysOfWeekContainer}>
+              {daysOfWeek.map((day, index) => (
+                <DayButton
+                  key={index}
+                  day={day}
+                  onPress={() => navigation.navigate('Day', { day })}
+                />
+              ))}
+            </View>
+          </View>
+        )}
+      </Stack.Screen>
+      <Stack.Screen name="Day" component={DayScreen} />
+    </Stack.Navigator>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {

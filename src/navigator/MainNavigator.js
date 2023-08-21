@@ -1,16 +1,16 @@
-// MainContainer.js
-import * as React from 'react';
+import React, { Suspense } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { createStackNavigator } from '@react-navigation/stack';
 
-
 import Dashboard from "../screens/Dashboard";
 import TimeTable from "../screens/TimeTable";
 import Attendance from "../screens/Attendance";
 import Calendar from "../screens/Calendar";
-import Courses from "../screens/Course/Courses";
+import Complete from '../screens/Course/Complete';
+import Current from '../screens/Course/Current';
+import Future from '../screens/Course/Future';
 import Curriculum from "../screens/Curriculum/Curriculum";
 import Eschedule from "../screens/E-schedule";
 import FeeDetails from "../screens/FeeDetails";
@@ -18,16 +18,20 @@ import Library from "../screens/Library/Library";
 import Results from "../screens/Results/Results";
 import Profile from '../screens/Profile';
 
-import Complete from '../screens/Course/Complete';
-import Current from '../screens/Course/Current';
-import Future from '../screens/Course/Future';
-
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 const Tab = createBottomTabNavigator();
 const TopTab = createMaterialTopTabNavigator();
 const Stack = createStackNavigator();
 
+const headerRightComponent = () => (
+  <Ionicons
+    name="notifications-outline"
+    size={24}
+    color="white"
+    style={{ marginRight: 15 }}
+  />
+);
 
 function TopBarNavigator() {
   return (
@@ -78,50 +82,42 @@ function MainContainer() {
             }
 
             return <Ionicons name={iconName} size={size} color={color} />;
-
           },
           headerStyle: {
-            backgroundColor: '#0c46c3', // Set the header background color
-            borderBottomWidth: 0, // Remove the bottom border
+            backgroundColor: '#0c46c3',
+            borderBottomWidth: 0,
           },
-          headerTintColor: 'white', // Set the header text color
-          headerRight: () => (
-            <Ionicons
-              name="notifications-outline"
-              size={24}
-              color="white"
-              style={{ marginRight: 15 }}
-            />
-          ),
+          headerTintColor: 'white',
+          headerRight: headerRightComponent,
         })}
         tabBarOptions={{
           activeTintColor: 'tomato',
           inactiveTintColor: 'grey',
-          labelStyle: { paddingBottom: 10, fontSize: 10 },
-          style: { padding: 10, height: 70 },
           showLabel: false,
         }}
       >
-
-        <Stack.Screen
+      <Stack.Screen
           name="TimeTable"
           component={TimeTable}
-          options={{ title: 'Time Table' }} // Set a unique title
+          options={{
+            headerShown: true, // Hide the header for this screen
+            title: 'Time Table' // Set the title for this screen
+          }}
         />
         <Stack.Screen
           name="Attendance"
           component={Attendance}
-          options={{ title: 'Attendance' }} // Set a unique title
+          options={{ title: 'Attendance' }}
         />
         <Stack.Screen
           name="Dashboard"
           component={Dashboard}
-          options={{ title: 'Dashboard' }} // Set a unique title
+          options={{ title: 'Dashboard' }}
         />
         <Stack.Screen
           name="Calendar"
           component={Calendar}
-          options={{ title: 'Calendar' }} // Set a unique title
+          options={{ title: 'Calendar' }}
         />
         <Stack.Screen name="Courses" component={TopBarNavigator} options={{ title: 'Course' }} />
         <Stack.Screen name="Curriculum" component={Curriculum} />
