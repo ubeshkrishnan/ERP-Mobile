@@ -1,17 +1,22 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { AntDesign } from '@ant-design/icons-react-native';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+
 const Stack = createStackNavigator();
 
 const DayScreen = ({ route, navigation }) => {
-  const { day } = route.params;
+  const { day, schedules } = route.params;
+
+  const daySchedule = schedules.find(schedule => schedule.day === day)?.schedule || [];
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Text style={styles.backButton}>===</Text>
+          <View style={{ paddingLeft: 10 }}>
+            <AntDesign name="arrowleft" size={32} color="#111" />
+          </View>
         </TouchableOpacity>
       ),
     });
@@ -19,7 +24,14 @@ const DayScreen = ({ route, navigation }) => {
 
   return (
     <View style={styles.dayContainer}>
-      <Text style={{ color: 'black' }}>{day} Schedule</Text>
+      <Text style={{ color: 'grey', marginTop: 20 }}>{day} Schedule</Text>
+      {daySchedule.map((event, index) => (
+        <View key={index} style={styles.eventCard}>
+          <Text style={styles.eventTime}>Time : {event.time}</Text>
+          <Text style={styles.eventSubject}>Sub : {event.subject}</Text>
+          <Text style={styles.eventStaff}>Staff : {event.staff}</Text>
+        </View>
+      ))}
     </View>
   );
 };
@@ -37,6 +49,44 @@ const DayButton = ({ day, onPress }) => (
 const TimeTable = () => {
   const daysOfWeek = ['MON', 'TUE', 'WED', 'THU', 'FRI'];
 
+  const schedules = [
+    {
+      day: 'MON',
+      schedule: [
+        { time: '9:00 AM', subject: 'English', staff: 'Gokul P' },
+        { time: '11:00 AM', subject: 'Science', staff: 'Siva S' },
+      ],
+    },
+    {
+      day: 'TUE',
+      schedule: [
+        { time: '10:30 AM', subject: 'Mathematics', staff: 'Krishnan D' },
+        // ...and so on for other events
+      ],
+    },
+    {
+      day: 'WED',
+      schedule: [
+        { time: '10:30 AM', subject: 'Science - I', staff: 'Gopal M'  },
+        // ...and so on for other events
+      ],
+    },
+    {
+      day: 'THU',
+      schedule: [
+        { time: '10:30 AM', subject: 'OP ', staff: 'Mohan L' },
+        // ...and so on for other events
+      ],
+    },
+    {
+      day: 'FRI',
+      schedule: [
+        { time: '10:30 AM', subject: 'Designing', staff: 'Selva K' },
+        // ...and so on for other events
+      ],
+    },
+  ];
+
   return (
     <Stack.Navigator>
       <Stack.Screen name="TimeTableScreen" options={{ headerShown: false }}>
@@ -47,7 +97,7 @@ const TimeTable = () => {
                 <DayButton
                   key={index}
                   day={day}
-                  onPress={() => navigation.navigate('Day', { day })}
+                  onPress={() => navigation.navigate('Day', { day, schedules })}
                 />
               ))}
             </View>
@@ -88,13 +138,41 @@ const styles = StyleSheet.create({
   dayContainer: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
     color: 'black',
   },
   backButton: {
     marginLeft: 10,
     fontSize: 15,
     color: 'black',
+  },
+  eventCard: {
+    backgroundColor: '#f5f5f5',
+    padding: 10,
+    borderRadius: 10,
+    marginBottom: 10,
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 3,
+    width: '80%',
+    height: 'auto',
+    marginTop: 30,
+  },
+  eventTime: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 5,
+    color: 'grey'
+  },
+  eventSubject: {
+    fontSize: 16,
+    marginBottom: 3,
+    color: 'grey'
+  },
+  eventStaff: {
+    fontSize: 14,
+    color: 'gray',
   },
 });
 

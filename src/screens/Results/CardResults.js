@@ -9,6 +9,9 @@ const CardResult = ({ title, description }) => {
     setIsExpanded(!isExpanded);
   };
 
+  // Extracting Mark Status from the description
+  const markStatus = description.match(/Mark Status: ([^\n]+)/)[1];
+
   return (
     <View style={styles.cardContainer}>
       <TouchableOpacity onPress={toggleExpansion}>
@@ -22,7 +25,13 @@ const CardResult = ({ title, description }) => {
         <Card style={[styles.card, styles.expandedCard]}>
           <Card.Content style={styles.descriptionContainer}>
             {description.split('\n').map((line, index) => (
-              <Paragraph style={styles.description} key={index}>
+              <Paragraph
+                style={[
+                  styles.description,
+                  markStatus === 'Present' ? styles.greenText : markStatus === 'Absent' ? styles.redText : null,
+                ]}
+                key={index}
+              >
                 {line}
               </Paragraph>
             ))}
@@ -44,11 +53,17 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   descriptionContainer: {
-    flexDirection: 'column', // Display in column layout
+    flexDirection: 'column',
   },
   description: {
     marginBottom: 5,
-    color: 'gray', // You can customize the color here
+    color: 'gray',
+  },
+  redText: {
+    color: 'red', // Change the color to red for absent mark status
+  },
+  greenText: {
+    color: 'green', // Change the color to green for present mark status
   },
 });
 

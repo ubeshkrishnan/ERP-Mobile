@@ -1,13 +1,20 @@
-// MainResCardResult.js
 import React from 'react';
 import { View } from 'react-native';
-import CardResult from './CardResults';
+import CardResult from './CardResults'; // Correct import statement
 
 const Result = () => {
   const cards = [
-    { id: 1, title: 'BSCE3L-Operation System', description: 'Max Marks Status Score Mark Remarks' },
-    { id: 2, title: 'Card 2', description: 'Detailed info about Card 2' },
-    // Add more card data here
+    {
+      id: 1,
+      title: 'BSCE3L-Operation System',
+      description: 'Max Marks: 30 \nMark Status: Present \nScored Marks: 28 \nRemarks: - \n',
+    },
+    {
+      id: 2,
+      title: 'BSCM120-Management System',
+      description: 'Max Marks: 30 \nMark Status: Absent \nScored Marks: - \nRemarks: - \n',
+    },
+   
   ];
 
   return (
