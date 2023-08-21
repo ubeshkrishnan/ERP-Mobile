@@ -3,6 +3,8 @@ import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { createStackNavigator } from '@react-navigation/stack';
+
 
 import Dashboard from "../screens/Dashboard";
 import TimeTable from "../screens/TimeTable";
@@ -24,6 +26,8 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 
 const Tab = createBottomTabNavigator();
 const TopTab = createMaterialTopTabNavigator();
+const Stack = createStackNavigator();
+
 
 function TopBarNavigator() {
   return (
@@ -61,7 +65,7 @@ function TopBarNavigator() {
 function MainContainer() {
   return (
     <NavigationContainer>
-      <Tab.Navigator
+      <Stack.Navigator
         initialRouteName="Dashboard"
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
@@ -74,6 +78,7 @@ function MainContainer() {
             }
 
             return <Ionicons name={iconName} size={size} color={color} />;
+
           },
           headerStyle: {
             backgroundColor: '#0c46c3', // Set the header background color
@@ -89,7 +94,6 @@ function MainContainer() {
             />
           ),
         })}
-
         tabBarOptions={{
           activeTintColor: 'tomato',
           inactiveTintColor: 'grey',
@@ -98,18 +102,35 @@ function MainContainer() {
           showLabel: false,
         }}
       >
-        <Tab.Screen name="TimeTable" component={TimeTable} />
-        <Tab.Screen name="Attendance" component={Attendance} />
-        <Tab.Screen name="Dashboard" component={Dashboard} />
-        <Tab.Screen name="Calendar" component={Calendar} />
-        <Tab.Screen name="Courses" component={TopBarNavigator} />
-        <Tab.Screen name="Curriculum" component={Curriculum} />
-        <Tab.Screen name="Eschedule" component={Eschedule} />
-        <Tab.Screen name="FeeDetails" component={FeeDetails} />
-        <Tab.Screen name="Library" component={Library} />
-        <Tab.Screen name="Results" component={Results} />
-        <Tab.Screen name="Profile" component={Profile} />
-      </Tab.Navigator>
+
+        <Stack.Screen
+          name="TimeTable"
+          component={TimeTable}
+          options={{ title: 'Time Table' }} // Set a unique title
+        />
+        <Stack.Screen
+          name="Attendance"
+          component={Attendance}
+          options={{ title: 'Attendance' }} // Set a unique title
+        />
+        <Stack.Screen
+          name="Dashboard"
+          component={Dashboard}
+          options={{ title: 'Dashboard' }} // Set a unique title
+        />
+        <Stack.Screen
+          name="Calendar"
+          component={Calendar}
+          options={{ title: 'Calendar' }} // Set a unique title
+        />
+        <Stack.Screen name="Courses" component={TopBarNavigator} options={{ title: 'Course' }} />
+        <Stack.Screen name="Curriculum" component={Curriculum} />
+        <Stack.Screen name="Eschedule" component={Eschedule} />
+        <Stack.Screen name="FeeDetails" component={FeeDetails} />
+        <Stack.Screen name="Library" component={Library} />
+        <Stack.Screen name="Results" component={Results} />
+        <Stack.Screen name="Profile" component={Profile} />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }
