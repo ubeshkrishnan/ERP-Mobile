@@ -1,10 +1,11 @@
 import { View, Text, StyleSheet } from 'react-native'
 import React from 'react'
+import Colors from '../../Color';
 
 const CourseCard = ({ course }) => {
   return (
     <View style={styles.card}>
-      <Text style={styles.cardText}>Course Name: {course.courseName}</Text>
+      <Text style={styles.courseName}> Course Name: {course.courseName}</Text>
       <Text style={styles.cardText}>Faculty: {course.facultyName}</Text>
       <Text style={styles.cardText}>Semester: {course.semester}</Text>
       <Text style={styles.cardText}>Course Code: {course.courseCode}</Text>
@@ -16,7 +17,7 @@ const Complete = () => {
   const coursesData = [
     {
       courseName: 'Mathematics -  I',
-      facultyName: 'KK ',
+      facultyName: 'KK',
       semester: 'Fall 2023',
       courseCode: 'MATH101'
     },
@@ -68,6 +69,11 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     color: 'black'
   },
+  courseName: {
+    fontSize: 16,
+    marginBottom: 5,
+    color: Colors.LighBlueColor,
+  }
 });
 
 export default Complete;

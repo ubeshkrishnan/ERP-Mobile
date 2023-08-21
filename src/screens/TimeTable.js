@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import Colors from '../Color';
 
 const Stack = createStackNavigator();
 
@@ -24,7 +25,7 @@ const DayScreen = ({ route, navigation }) => {
 
   return (
     <View style={styles.dayContainer}>
-      <Text style={{ color: 'grey', marginTop: 20 }}>{day} Schedule</Text>
+      <Text style={styles.schedule}>{day} Schedule</Text>
       {daySchedule.map((event, index) => (
         <View key={index} style={styles.eventCard}>
           <Text style={styles.eventTime}>Time : {event.time}</Text>
@@ -53,36 +54,35 @@ const TimeTable = () => {
     {
       day: 'MON',
       schedule: [
-        { time: '9:00 AM', subject: 'English', staff: 'Gokul P' },
-        { time: '11:00 AM', subject: 'Science', staff: 'Siva S' },
+        { time: '9:00 AM - 10:00 AM', subject: 'English', staff: 'Gokul P' },
+        { time: '11:00 AM -  12:00 AM', subject: 'Science', staff: 'Siva S' },
       ],
     },
     {
       day: 'TUE',
       schedule: [
-        { time: '10:30 AM', subject: 'Mathematics', staff: 'Krishnan D' },
-        // ...and so on for other events
+        { time: '10:30 AM - 11:30 AM', subject: 'Mathematics', staff: 'Krishnan D' },
       ],
     },
     {
       day: 'WED',
       schedule: [
-        { time: '10:30 AM', subject: 'Science - I', staff: 'Gopal M'  },
-        // ...and so on for other events
+        { time: '10:30 AM -11:30 AM', subject: 'Science - I', staff: 'Gopal M' },
+
       ],
     },
     {
       day: 'THU',
       schedule: [
-        { time: '10:30 AM', subject: 'OP ', staff: 'Mohan L' },
-        // ...and so on for other events
+        { time: '10:30 AM -  11:30 AM', subject: 'OP ', staff: 'Mohan L' },
+
       ],
     },
     {
       day: 'FRI',
       schedule: [
         { time: '10:30 AM', subject: 'Designing', staff: 'Selva K' },
-        // ...and so on for other events
+
       ],
     },
   ];
@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 5,
-    color: 'grey'
+    color: Colors.LighBlueColor
   },
   eventSubject: {
     fontSize: 16,
@@ -174,6 +174,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: 'gray',
   },
+  // 
+  schedule: {
+    color: Colors.LighBlueColor,
+    fontWeight: 'bold',
+    marginTop: 20
+  }
 });
 
 export default TimeTable;

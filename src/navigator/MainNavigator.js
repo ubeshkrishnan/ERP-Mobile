@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -20,6 +20,7 @@ import Profile from '../screens/Profile';
 
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
+const BottomTab = createBottomTabNavigator();
 const Tab = createBottomTabNavigator();
 const TopTab = createMaterialTopTabNavigator();
 const Stack = createStackNavigator();
@@ -66,6 +67,43 @@ function TopBarNavigator() {
   );
 }
 
+function BottomTabNavigator() {
+  return (
+    <BottomTab.Navigator
+      initialRouteName="Dashboard"
+      tabBarOptions={{
+        activeTintColor: 'tomato',
+        inactiveTintColor: 'grey',
+        showLabel: false,
+      }}
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName = '';
+
+          if (route.name === "TimeTable") {
+            iconName = focused ? 'time' : 'time-outline';
+          } else if (route.name === "Dashboard") {
+            iconName = focused ? 'list' : 'list-outline';
+          }
+
+          return <Ionicons name={iconName} size={size} color={color} />;
+        },
+      })}
+    >
+      <BottomTab.Screen
+        name="MainContainer"
+        component={MainContainer}
+        options={{ tabBarLabel: 'Home' }}
+      />
+     <BottomTab.Screen
+        name="Profile"
+        component={Profile}
+        options={{ tabBarLabel: 'Profile' }}
+      />
+    </BottomTab.Navigator>
+  );
+}
+
 function MainContainer() {
   return (
     <NavigationContainer>
@@ -96,12 +134,12 @@ function MainContainer() {
           showLabel: false,
         }}
       >
-      <Stack.Screen
+        <Stack.Screen
           name="TimeTable"
           component={TimeTable}
           options={{
-            headerShown: true, // Hide the header for this screen
-            title: 'Time Table' // Set the title for this screen
+            headerShown: true,
+            title: 'Time Table'
           }}
         />
         <Stack.Screen
@@ -126,6 +164,7 @@ function MainContainer() {
         <Stack.Screen name="Library" component={Library} />
         <Stack.Screen name="Results" component={Results} />
         <Stack.Screen name="Profile" component={Profile} />
+        
       </Stack.Navigator>
     </NavigationContainer>
   );
