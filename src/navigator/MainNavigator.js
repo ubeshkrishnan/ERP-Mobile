@@ -72,24 +72,25 @@ function TopBarNavigator() {
 function BottomTabNavigator() {
   return (
     <BottomTab.Navigator
-      screenOptions={({ navigation }) => ({
-        tabBarActiveTintColor: 'white',
-        tabBarInactiveTintColor: 'grey',
-        tabBarShowLabel: true,
-        tabBarStyle: {
-          display: 'flex',
-          backgroundColor: '#0c46c3',
-        },
-        tabBarLabelStyle: {
-          color: 'grey',
-        },
-        headerStyle: {
-          backgroundColor: '#0c46c3',
-          borderBottomWidth: 0,
-        },
-        headerRight: headerRightComponent,
-        headerTintColor: 'white',
-        headerLeft: () => (
+    screenOptions={({ navigation, route }) => ({
+      tabBarActiveTintColor: 'white',
+      tabBarInactiveTintColor: 'grey',
+      tabBarShowLabel: true,
+      tabBarStyle: {
+        display: 'flex',
+        backgroundColor: '#0c46c3',
+      },
+      tabBarLabelStyle: {
+        color: 'grey',
+      },
+      headerStyle: {
+        backgroundColor: '#0c46c3',
+        borderBottomWidth: 0,
+      },
+      headerRight: headerRightComponent,
+      headerTintColor: 'white',
+      headerLeft: ({ canGoBack }) => (
+        route.name !== 'Dashboard' && (
           <TouchableOpacity
             onPress={() => {
               navigation.goBack(); // Go back to the previous screen
@@ -98,9 +99,11 @@ function BottomTabNavigator() {
           >
             <Ionicons name="arrow-back" size={24} color="white" />
           </TouchableOpacity>
-        ),
-      })}
-    >
+        )
+      ),
+    })}
+  >
+  
       <BottomTab.Screen
         name="Dashboard"
         component={Dashboard}
@@ -184,6 +187,7 @@ function MainContainer() {
           name="Dashboard"
           component={Dashboard}
           options={{ title: 'Dashboard' }}
+          
         />
         <Stack.Screen
           name="Calendar"
