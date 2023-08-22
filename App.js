@@ -4,6 +4,7 @@ import MainNavigator from './src/navigator/MainNavigator';
 // import { DataProvider } from './src/context/DataContext';
 import {LogBox } from 'react-native';
 
+
 export default function App() {
     LogBox.ignoreLogs(['Reanimated 2']);
     return (
