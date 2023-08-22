@@ -1,4 +1,5 @@
 import React from 'react';
+import { TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -22,7 +23,6 @@ import Profile from '../screens/Profile';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 const BottomTab = createBottomTabNavigator();
-const Tab = createBottomTabNavigator();
 const TopTab = createMaterialTopTabNavigator();
 const Stack = createStackNavigator();
 
@@ -72,20 +72,34 @@ function TopBarNavigator() {
 function BottomTabNavigator() {
   return (
     <BottomTab.Navigator
-      screenOptions={{
-        tabBarActiveTintColor: 'tomato',
+      screenOptions={({ navigation }) => ({
+        tabBarActiveTintColor: 'white',
         tabBarInactiveTintColor: 'grey',
         tabBarShowLabel: true,
-        tabBarStyle: [
-          {
-            display: 'flex',
-          },
-          null,
-        ],
-        tabBarLabelStyle: {
-          color: 'grey', // Set the color for tab names
+        tabBarStyle: {
+          display: 'flex',
+          backgroundColor: '#0c46c3',
         },
-      }}
+        tabBarLabelStyle: {
+          color: 'grey',
+        },
+        headerStyle: {
+          backgroundColor: '#0c46c3',
+          borderBottomWidth: 0,
+        },
+        headerRight: headerRightComponent,
+        headerTintColor: 'white',
+        headerLeft: () => (
+          <TouchableOpacity
+            onPress={() => {
+              navigation.goBack(); // Go back to the previous screen
+            }}
+            style={{ marginLeft: 15 }}
+          >
+            <Ionicons name="arrow-back" size={24} color="white" />
+          </TouchableOpacity>
+        ),
+      })}
     >
       <BottomTab.Screen
         name="Dashboard"
@@ -105,7 +119,7 @@ function BottomTabNavigator() {
           tabBarIcon: ({ color, size }) => (
             <Icon name="user" size={size} color={color} />
           ),
-          tabBarLabel: 'Profile', // Set the label for the Profile tab
+          tabBarLabel: 'Profile',
         }}
       />
 
@@ -116,12 +130,13 @@ function BottomTabNavigator() {
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="list" size={size} color={color} />
           ),
-          tabBarLabel: 'Timetable', // Set the label for the TimeTable tab
+          tabBarLabel: 'Timetable',
         }}
       />
     </BottomTab.Navigator>
   );
 }
+
 
 
 function MainContainer() {
@@ -132,21 +147,20 @@ function MainContainer() {
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
             let iconName = '';
-            if (route.name === "TimeTable") {
+            if (route.name === 'TimeTable') {
               iconName = focused ? 'time' : 'time-outline';
-            } else if (route.name === "Dashboard") {
+            } else if (route.name === 'Dashboard') {
               iconName = focused ? 'list' : 'list-outline';
             }
-
             return <Ionicons name={iconName} size={size} color={color} />;
           },
           headerStyle: {
-            backgroundColor: route.name === "Dashboard" ? '#009FFF' : '#0c46c3', // Set background color based on route
+            backgroundColor: route.name === 'Dashboard' ? '#009FFF' : '#0c46c3',
             borderBottomWidth: 0,
           },
           headerTintColor: 'white',
           headerRight: headerRightComponent,
-          headerBackTitleVisible: false, // Hide the back button title
+          headerBackTitleVisible: false,
         })}
         tabBarOptions={{
           activeTintColor: 'tomato',

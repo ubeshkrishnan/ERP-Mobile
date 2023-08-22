@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState} from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -86,27 +86,31 @@ const TimeTable = () => {
       ],
     },
   ];
-
-  return (
-    <Stack.Navigator>
-      <Stack.Screen name="TimeTableScreen" options={{ headerShown: false }}>
-        {({ navigation }) => (
-          <View style={styles.container}>
-            <View style={styles.daysOfWeekContainer}>
-              {daysOfWeek.map((day, index) => (
-                <DayButton
-                  key={index}
-                  day={day}
-                  onPress={() => navigation.navigate('Day', { day, schedules })}
-                />
-              ))}
-            </View>
+ // Initialize the selected day state with 'MON'
+ const [selectedDay, setSelectedDay] = useState('MON');
+ return (
+  <Stack.Navigator>
+    <Stack.Screen name="TimeTableScreen" options={{ headerShown: false }}>
+      {({ navigation }) => (
+        <View style={styles.container}>
+          <View style={styles.daysOfWeekContainer}>
+            {daysOfWeek.map((day, index) => (
+              <DayButton
+                key={index}
+                day={day}
+                onPress={() => {
+                  setSelectedDay(day);
+                  navigation.navigate('Day', { day, schedules });
+                }}
+              />
+            ))}
           </View>
-        )}
-      </Stack.Screen>
-      <Stack.Screen name="Day" component={DayScreen} />
-    </Stack.Navigator>
-  );
+        </View>
+      )}
+    </Stack.Screen>
+    <Stack.Screen name="Day" component={DayScreen} initialParams={{ day: selectedDay, schedules }} />
+  </Stack.Navigator>
+);
 };
 
 const styles = StyleSheet.create({

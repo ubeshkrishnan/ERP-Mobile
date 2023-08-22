@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Image } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { useNavigation } from '@react-navigation/native';
 
@@ -7,6 +7,7 @@ const MenuCard = ({ name, icon }) => {
   const navigation = useNavigation();
 
   return (
+
     <TouchableOpacity
       style={styles.card}
       onPress={() => navigation.navigate(name)}
@@ -34,18 +35,22 @@ const Dashboard = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.backgroundContainer}></View>
-      <View style={styles.profileCard}>
-        <View style={styles.circularProfile}>
-          <AntDesign name="idcard" size={48} color="#009FFF" />
+      <View style={styles.backgroundContainer}>
+        <View style={styles.profileCard}>
+          <View style={styles.circularProfile}>
+            <Image
+              source={require('../assets/profile.png')}
+              style={styles.profilePicture}
+            />
+          </View>
+          <Text style={styles.profileText}>Anish Krish</Text>
+          <Text style={styles.studentId}>STD - 210003</Text>
         </View>
-        <Text style={styles.profileText}>Anish Krish</Text>
-        <Text style={styles.studentId}>STD - 210003</Text>
-      </View>
-      <View style={styles.cardContainer}>
-        {menuItems.map(item => (
-          <MenuCard key={item.name} name={item.name} icon={item.icon} />
-        ))}
+        <View style={styles.cardContainer}>
+          {menuItems.map(item => (
+            <MenuCard key={item.name} name={item.name} icon={item.icon} />
+          ))}
+        </View>
       </View>
     </View>
   );
@@ -56,7 +61,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FAFAFA',
-    height: '100%'
+    marginTop: 0, // Change to 0
   },
   backgroundContainer: {
     position: 'absolute',
@@ -147,6 +152,13 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: 'grey',
     marginTop: 5,
+  },
+  profilePicture: {
+    width: 80,
+    height: 80,
+    borderRadius: 50,
+    marginBottom: 10,
+
   },
 });
 
