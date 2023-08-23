@@ -1,8 +1,9 @@
-import React,{useState} from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Colors from '../Color';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const Stack = createStackNavigator();
 
@@ -25,7 +26,8 @@ const DayScreen = ({ route, navigation }) => {
 
   return (
     <View style={styles.dayContainer}>
-      <Text style={styles.schedule}>{day} Schedule</Text>
+      <Text style={styles.schedule}>{day} - Schedule</Text>
+      {/* <ScrollView> */}
       {daySchedule.map((event, index) => (
         <View key={index} style={styles.eventCard}>
           <Text style={styles.eventTime}>Time : {event.time}</Text>
@@ -33,6 +35,7 @@ const DayScreen = ({ route, navigation }) => {
           <Text style={styles.eventStaff}>Staff : {event.staff}</Text>
         </View>
       ))}
+      {/* </ScrollView> */}
     </View>
   );
 };
@@ -49,6 +52,7 @@ const DayButton = ({ day, onPress }) => (
 
 const TimeTable = () => {
   const daysOfWeek = ['MON', 'TUE', 'WED', 'THU', 'FRI'];
+  const today = new Date().toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase();
 
   const schedules = [
     {
@@ -56,61 +60,72 @@ const TimeTable = () => {
       schedule: [
         { time: '9:00 AM - 10:00 AM', subject: 'English', staff: 'Gokul P' },
         { time: '11:00 AM -  12:00 AM', subject: 'Science', staff: 'Siva S' },
+        { time: '1:00 PM -  2:00 PM', subject: 'Social', staff: 'Kiruba P' },
+        { time: '3:00 PM -  4:00 PM', subject: 'Math', staff: 'Mohan S' },
       ],
     },
     {
       day: 'TUE',
       schedule: [
         { time: '10:30 AM - 11:30 AM', subject: 'Mathematics', staff: 'Krishnan D' },
+        { time: '11:00 AM -  12:00 AM', subject: 'Science', staff: 'Siva S' },
+        { time: '1:00 PM -  2:00 PM', subject: 'Social', staff: 'Kiruba P' },
+        { time: '3:00 PM -  4:00 PM', subject: 'Math', staff: 'Mohan S' },
       ],
     },
     {
       day: 'WED',
       schedule: [
         { time: '10:30 AM -11:30 AM', subject: 'Science - I', staff: 'Gopal M' },
-
+        { time: '11:00 AM -  12:00 AM', subject: 'Science', staff: 'Siva S' },
+        { time: '1:00 PM -  2:00 PM', subject: 'Social', staff: 'Kiruba P' },
+        { time: '3:00 PM -  4:00 PM', subject: 'Math', staff: 'Mohan S' },
       ],
     },
     {
       day: 'THU',
       schedule: [
         { time: '10:30 AM -  11:30 AM', subject: 'OP ', staff: 'Mohan L' },
-
+        { time: '11:00 AM -  12:00 AM', subject: 'Science', staff: 'Siva S' },
+        { time: '1:00 PM -  2:00 PM', subject: 'Social', staff: 'Kiruba P' },
+        { time: '3:00 PM -  4:00 PM', subject: 'Math', staff: 'Mohan S' },
       ],
     },
     {
       day: 'FRI',
       schedule: [
         { time: '10:30 AM', subject: 'Designing', staff: 'Selva K' },
-
+        { time: '11:00 AM -  12:00 AM', subject: 'Science', staff: 'Siva S' },
+        { time: '1:00 PM -  2:00 PM', subject: 'Social', staff: 'Kiruba P' },
+        { time: '3:00 PM -  4:00 PM', subject: 'Math', staff: 'Mohan S' },
       ],
     },
   ];
- // Initialize the selected day state with 'MON'
- const [selectedDay, setSelectedDay] = useState('MON');
- return (
-  <Stack.Navigator>
-    <Stack.Screen name="TimeTableScreen" options={{ headerShown: false }}>
-      {({ navigation }) => (
-        <View style={styles.container}>
-          <View style={styles.daysOfWeekContainer}>
-            {daysOfWeek.map((day, index) => (
-              <DayButton
-                key={index}
-                day={day}
-                onPress={() => {
-                  setSelectedDay(day);
-                  navigation.navigate('Day', { day, schedules });
-                }}
-              />
-            ))}
+  // Initialize the selected day state with 'MON'
+  const [selectedDay, setSelectedDay] = useState(today);
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="TimeTableScreen" options={{ headerShown: false }}>
+        {({ navigation }) => (
+          <View style={styles.container}>
+            <View style={styles.daysOfWeekContainer}>
+              {daysOfWeek.map((day, index) => (
+                <DayButton
+                  key={index}
+                  day={day}
+                  onPress={() => {
+                    setSelectedDay(day);
+                    navigation.navigate('Day', { day, schedules });
+                  }}
+                />
+              ))}
+            </View>
           </View>
-        </View>
-      )}
-    </Stack.Screen>
-    <Stack.Screen name="Day" component={DayScreen} initialParams={{ day: selectedDay, schedules }} />
-  </Stack.Navigator>
-);
+        )}
+      </Stack.Screen>
+      <Stack.Screen name="Day" component={DayScreen} initialParams={{ day: selectedDay, schedules }} />
+    </Stack.Navigator>
+  );
 };
 
 const styles = StyleSheet.create({
@@ -178,7 +193,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: 'gray',
   },
-  // 
   schedule: {
     color: Colors.LighBlueColor,
     fontWeight: 'bold',

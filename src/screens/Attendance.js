@@ -1,6 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet, Dimensions, ScrollView } from 'react-native';
 // import { ScrollView } from 'react-native-gesture-handler';
+import Colors from '../Color';
+
 
 const SubjectCard = ({ subjectCode, subjectName, totalClasses, attendedClasses }) => {
   const attendancePercentage = ((attendedClasses / totalClasses) * 100).toFixed(2);
@@ -14,9 +16,9 @@ const SubjectCard = ({ subjectCode, subjectName, totalClasses, attendedClasses }
             <Text style={styles.subjectName}>{subjectName}</Text>
             <Text style={styles.subjectTotalClass}>Total Classes: {totalClasses}</Text>
             <Text style={styles.subjectAttendClass}>Attended Classes: {attendedClasses}</Text>
-            <Text style={styles.subjectAttendancePercentage}>
+            {/* <Text style={styles.subjectAttendancePercentage}>
               Attendance Percentage: {attendancePercentage}%
-            </Text>
+            </Text> */}
           </View>
           <View style={styles.circleContainer}>
             <View
@@ -120,10 +122,12 @@ const styles = StyleSheet.create({
   subjectAttendClass: {
     fontSize: 16,
     marginVertical: 4,
-    color: 'black',
+    color: Colors.LighBlueColor,
+    fontWeight:'800'
   },
   subjectAttendancePercentage: {
-    color: 'black',
+    color: Colors.LighBlueColor,
+    fontWeight:'800'
   },
 });
 

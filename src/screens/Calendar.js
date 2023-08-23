@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, ScrollView } from 'react-native';
-
+import Colors
+ from '../Color';
 const Calendar = () => {
   const [searchText, setSearchText] = useState('');
   const [days, setDays] = useState([
-    { date: '08-01-2023', type: 'Holiday', name: 'Labor Day', description: 'A day to celebrate workers', cycle: 1, dayOrder: 'I', isWorkingDay: true },
+    { date: '08-01-2023', type: 'Holiday', name: 'Labor Day', description: 'A day to celebrate workers', cycle: 1, dayOrder: 'I', isWorkingDay: false },
+    { date: '08-01-2023', type: 'Holiday', name: 'Labor Day', description: 'A day to celebrate workers', cycle: 1, dayOrder: 'I', isWorkingDay: false },
+    { date: '08-01-2023', type: 'Holiday', name: 'Independece Day',  cycle: 1, dayOrder: 'I', isWorkingDay: true },
+    { date: '08-01-2023', type: 'Holiday', name: 'Labor Day', cycle: 1, dayOrder: 'I', isWorkingDay: true },
     // Add more days here
   ]);
 
@@ -46,9 +50,9 @@ const Calendar = () => {
             <Text style={day.isWorkingDay ? styles.cardTitleWorking : styles.cardTitleHolidays}>{day.type}</Text>
             <Text style={{ color: "black", fontWeight: 'bold' }}>{`${day.date} - ${day.name}`}</Text>
             <Text style={{ color: "black", fontWeight: 'bold' }}>{`Description: ${day.description}`}</Text>
-            <Text style={{ color: "black", fontWeight: 'bold' }}>{`Cycle: ${day.cycle}`}</Text>
-            <Text style={{ color: "black", fontWeight: 'bold' }}>{`Day Order: ${day.dayOrder}`}</Text>
-            <Text style={{ color: "black", fontWeight: 'bold' }}>{`Working Day: ${day.isWorkingDay ? 'Yes' : 'No'}`}</Text>
+            {/* <Text style={{ color: "black", fontWeight: 'bold' }}>{`Cycle: ${day.cycle}`}</Text> */}
+            {/* <Text style={{ color: "black", fontWeight: 'bold' }}>{`Day Order: ${day.dayOrder}`}</Text> */}
+            {/* <Text style={{ color: "black", fontWeight: 'bold', color:'grey' }}>{`Working Day: ${day.isWorkingDay ? 'Yes' : 'No'}`}</Text> */}
           </View>
         ))}
         <View style={styles.card}>
@@ -93,13 +97,13 @@ const styles = StyleSheet.create({
   },
   cardTitleWorking: {
     fontSize: 15,
-    fontWeight: 'bold',
+      fontWeight: '900',
     marginBottom: 5,
     color: 'red'
   },
   cardTitleHolidays: {
     color: 'green',
-    fontWeight: 'bold',
+    fontWeight: '900',
     marginBottom: 5,
     fontSize: 15,
   }

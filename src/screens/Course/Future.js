@@ -1,10 +1,11 @@
 import { View, Text, StyleSheet } from 'react-native';
 import React from 'react';
+import Colors from '../../Color';
 
 const FutureCourseCard = ({ sub }) => {
   return (
     <View style={styles.card}>
-      <Text style={styles.cardText}>Course Name: {sub.courseName}</Text>
+      <Text style={styles.courseName}>Course Name: {sub.courseName}</Text>
       <Text style={styles.cardText}>Faculty: {sub.facultyName}</Text>
       <Text style={styles.cardText}>Semester: {sub.semester}</Text>
       <Text style={styles.cardText}>Course Code: {sub.courseCode}</Text>
@@ -53,6 +54,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 5,
     color: 'black'
+  },
+  courseName: {
+    fontSize: 16,
+    marginBottom: 5,
+    color: Colors.LighBlueColor,
   },
 });
 

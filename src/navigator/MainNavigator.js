@@ -15,26 +15,20 @@ import Complete from '../screens/Course/Complete';
 import Current from '../screens/Course/Current';
 import Future from '../screens/Course/Future';
 import Curriculum from "../screens/Curriculum/Curriculum";
-import Eschedule from "../screens/E-schedule";
+import Eschedule from "../screens/ExamSchedule.js/E-schedule";
 import FeeDetails from "../screens/FeeDetails";
 import Library from "../screens/Library/Library";
 import Results from "../screens/Results/Results";
 import Profile from '../screens/Profile';
 
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import HeaderRightComponent from './HeaderRightComponent';
+
 
 const BottomTab = createBottomTabNavigator();
 const TopTab = createMaterialTopTabNavigator();
 const Stack = createStackNavigator();
 
-const headerRightComponent = () => (
-  <Ionicons
-    name="notifications-outline"
-    size={24}
-    color="white"
-    style={{ marginRight: 15 }}
-  />
-);
 
 
 function TopBarNavigator() {
@@ -88,8 +82,9 @@ function BottomTabNavigator() {
           backgroundColor: '#0c46c3',
           borderBottomWidth: 0,
         },
-        headerRight: headerRightComponent,
+
         headerTintColor: 'white',
+        headerRight: () => <HeaderRightComponent />,
         headerLeft: ({ canGoBack }) => (
           route.name !== 'Dashboard' && (
             <TouchableOpacity
@@ -163,7 +158,7 @@ function MainContainer() {
             borderBottomWidth: 0,
           },
           headerTintColor: 'white',
-          headerRight: headerRightComponent,
+          headerRight: () => <HeaderRightComponent />,
           headerBackTitleVisible: false,
         })}
         tabBarOptions={{
@@ -172,7 +167,7 @@ function MainContainer() {
           showLabel: false,
         }}
       >
-         <Stack.Screen
+        <Stack.Screen
           name="Login"
           component={Login}
           options={{

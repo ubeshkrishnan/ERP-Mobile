@@ -5,7 +5,7 @@ import { View, Text, StyleSheet, Image } from 'react-native';
 const UserProfile = () => {
 
   const [userData, setUserData] = useState({
-    first_name: 'kishore',
+    first_name: 'Anish Krish',
     last_name: 'K',
     reg_No: 'STD - 210003',
     gender: 'Male',

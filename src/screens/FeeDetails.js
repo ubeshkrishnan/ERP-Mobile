@@ -9,12 +9,10 @@ const FeeDetails = () => {
       Paid: '5,000',
       Pending: '5,000',
     },
-    // Add more fee details here
   ];
 
   return (
     <View style={styles.container}>
-
       {data.map((fee, index) => (
         <FeeDetailsCard key={index} fee={fee} />
       ))}
@@ -23,12 +21,28 @@ const FeeDetails = () => {
 };
 
 const FeeDetailsCard = ({ fee }) => {
+  let cardColor;
+  switch (fee.Semester) {
+    case "I":
+      cardColor = "#FAF1E5"; // Yellow
+      break;
+    case "II":
+      cardColor = "#4CAF50"; // Green
+      break;
+    case "III":
+      cardColor = "#2196F3"; // Blue
+      break;
+    default:
+      cardColor = "#9E9E9E"; // Gray
+      break;
+  }
+
   return (
-    <View style={styles.card}>
+    <View style={[styles.card, { backgroundColor: cardColor }]}>
       <Text style={styles.cardText}>Semester: {fee.Semester}</Text>
       <Text style={styles.cardText}>Total Fee: {fee.TotalFee}</Text>
-      <Text style={styles.cardText}>Paid: {fee.Paid}</Text>
-      <Text style={styles.cardText}>Pending: {fee.Pending}</Text>
+      <Text style={styles.cardPaid}>Paid: {fee.Paid}</Text>
+      <Text style={styles.cardPending}>Pending: {fee.Pending}</Text>
     </View>
   );
 };
@@ -36,27 +50,36 @@ const FeeDetailsCard = ({ fee }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'white',
+    padding: 10,
+    marginTop:20,
   },
   card: {
-    backgroundColor: 'white',
-    padding: 15,
     marginBottom: 10,
-    borderRadius: 10, // Added border radius
+    borderRadius: 10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     elevation: 3,
-    margin: 30,
-    paddingTop: 20,
-    paddingBottom: 20,
-    borderRadius: 10,
-
+    padding: 15,
   },
   cardText: {
     fontSize: 16,
-    margin: 5,
+    marginVertical: 5,
     color: 'black',
   },
+  cardPending: {
+    color: 'red',
+    fontWeight: '600',
+    fontSize: 17,
+    marginVertical: 5,
+  },
+  cardPaid: {
+    color: 'green',
+    fontWeight: '600',
+    fontSize: 17,
+    marginVertical: 5,
+  }
 });
 
 export default FeeDetails;

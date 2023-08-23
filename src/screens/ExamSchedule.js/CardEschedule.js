@@ -3,7 +3,7 @@ import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Card, Title, Paragraph } from 'react-native-paper';
 import Colors from '../../Color';
 
-const CardResult = ({ title, description }) => {
+const CardEschedule = ({ title, description }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const toggleExpansion = () => {
@@ -11,7 +11,9 @@ const CardResult = ({ title, description }) => {
   };
 
   // Extracting Mark Status from the description
-  const markStatus = description.match(/Mark Status: ([^\n]+)/)[1];
+  const markStatusMatch = description.match(/Mark Status: ([^\n]+)/);
+  const markStatus = markStatusMatch ? markStatusMatch[1] : 'Unknown'; // Provide a default value if not found
+
 
   return (
     <View style={styles.cardContainer}>
@@ -49,12 +51,14 @@ const styles = StyleSheet.create({
   },
   card: {
     margin: 10,
+    color:'red'
   },
   expandedCard: {
     marginTop: 10,
   },
   descriptionContainer: {
     flexDirection: 'column',
+    color:'red'
   },
   description: {
     marginBottom: 5,
@@ -68,4 +72,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CardResult;
+export default CardEschedule;

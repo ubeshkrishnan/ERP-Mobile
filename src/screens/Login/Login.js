@@ -36,7 +36,7 @@ const Login = () => {
       <View style={styles.loginContainer}>
         {/* Icon above the Login text */}
         <Icon name="user-graduate" size={40} color="white" style={styles.iconAboveLogin} />
-        <Text style={styles.heading}>Login</Text>
+        <Text style={styles.heading}> Login</Text>
         <Text style={styles.please}>Please enter your Login and Password</Text>
         <View style={styles.inputContainer}>
           <Icon name="user" size={20} color="white" style={styles.icon} />
@@ -80,7 +80,7 @@ const Login = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1F4CA3',
+    backgroundColor: '#2C78F5',
   },
   background: {
     position: 'absolute',
