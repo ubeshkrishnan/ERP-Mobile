@@ -124,7 +124,7 @@ function BottomTabNavigator() {
         }}
       />
 
-      {/* <BottomTab.Screen
+      <BottomTab.Screen
         name="TimeTable"
         component={TimeTable}
         options={{
@@ -133,7 +133,7 @@ function BottomTabNavigator() {
           ),
           tabBarLabel: 'Timetable',
         }} DrawerNavigator
-      /> */}
+      />
     </BottomTab.Navigator>
   );
 }
