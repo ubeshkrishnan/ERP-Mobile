@@ -8,7 +8,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Dashboard from "../screens/Dashboard";
 import Login from '../screens/Login/Login';
-import TimeTable from "../screens/TimeTable";
+import TimeTable from "../screens/TimeTable/TimeTable";
 import Attendance from "../screens/Attendance";
 import Calendar from "../screens/Calendar";
 import Complete from '../screens/Course/Complete';
@@ -20,7 +20,8 @@ import FeeDetails from "../screens/FeeDetails";
 import Library from "../screens/Library/Library";
 import Results from "../screens/Results/Results";
 import Profile from '../screens/Profile';
-
+import LessonPlan from '../screens/TimeTable/LesssonPlan'; // Replace with the correct path to your LessonPlan module
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import HeaderRightComponent from './HeaderRightComponent';
 
@@ -60,6 +61,7 @@ function TopBarNavigator() {
           tabBarLabel: 'Future',
         }}
       />
+       <Tab.Screen name="TimeTable" component={TimeTable} />
     </TopTab.Navigator>
   );
 }
@@ -136,7 +138,15 @@ function BottomTabNavigator() {
   );
 }
 
+const Drawer = createDrawerNavigator();
 
+function DrawerNavigator() {
+  return (
+    <Drawer.Navigator>
+      <Drawer.Screen name="Home" component={BottomTabNavigator} />
+    </Drawer.Navigator>
+  );
+}
 
 function MainContainer() {
   return (
@@ -168,6 +178,13 @@ function MainContainer() {
         }}
       >
         <Stack.Screen
+          name="Drawer"
+          component={DrawerNavigator} // Use DrawerNavigator instead of BottomTabNavigator
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
           name="Login"
           component={Login}
           options={{
@@ -197,6 +214,7 @@ function MainContainer() {
           component={Calendar}
           options={{ title: 'Calendar' }}
         />
+        <Stack.Screen name="LessonPlan" component={LessonPlan} />
         <Stack.Screen name="Courses" component={TopBarNavigator} options={{ title: 'Course' }} />
         <Stack.Screen name="Curriculum" component={Curriculum} />
         <Stack.Screen name="Eschedule" component={Eschedule} />

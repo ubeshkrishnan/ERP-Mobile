@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import Colors from '../Color';
+import Colors from '../../Color';
+import { useNavigation } from '@react-navigation/native';
 import { ScrollView } from 'react-native-gesture-handler';
+import LessonPlan from './LesssonPlan';
 
 const Stack = createStackNavigator();
 
-const DayScreen = ({ route, navigation }) => {
+const DayScreen = ({ route }) => {
   const { day, schedules } = route.params;
 
   const daySchedule = schedules.find(schedule => schedule.day === day)?.schedule || [];
@@ -24,18 +26,26 @@ const DayScreen = ({ route, navigation }) => {
     });
   }, [navigation]);
 
+  // Get the navigation object using useNavigation hook
+  const navigation = useNavigation();
+
   return (
     <View style={styles.dayContainer}>
       <Text style={styles.schedule}>{day} - Schedule</Text>
-      {/* <ScrollView> */}
       {daySchedule.map((event, index) => (
-        <View key={index} style={styles.eventCard}>
-          <Text style={styles.eventTime}>Time : {event.time}</Text>
-          <Text style={styles.eventSubject}>Sub : {event.subject}</Text>
-          <Text style={styles.eventStaff}>Staff : {event.staff}</Text>
-        </View>
+        <TouchableOpacity
+          key={index}
+          onPress={() =>
+            navigation.navigate('LessonPlan', { event }) // Navigate to LessonPlan with event data
+          }
+        >
+          <View key={index} style={styles.eventCard}>
+            <Text style={styles.eventTime}>Time: {event.time}</Text>
+            <Text style={styles.eventSubject}>Sub: {event.subject}</Text>
+            <Text style={styles.eventStaff}>Staff: {event.staff}</Text>
+          </View>
+        </TouchableOpacity>
       ))}
-      {/* </ScrollView> */}
     </View>
   );
 };
