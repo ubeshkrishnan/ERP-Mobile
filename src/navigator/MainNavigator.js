@@ -61,7 +61,7 @@ function TopBarNavigator() {
           tabBarLabel: 'Future',
         }}
       />
-       <Tab.Screen name="TimeTable" component={TimeTable} />
+      <Tab.Screen name="TimeTable" component={TimeTable} />
     </TopTab.Navigator>
   );
 }
@@ -124,7 +124,7 @@ function BottomTabNavigator() {
         }}
       />
 
-      <BottomTab.Screen
+      {/* <BottomTab.Screen
         name="TimeTable"
         component={TimeTable}
         options={{
@@ -132,8 +132,8 @@ function BottomTabNavigator() {
             <Ionicons name="list" size={size} color={color} />
           ),
           tabBarLabel: 'Timetable',
-        }}
-      />
+        }} DrawerNavigator
+      /> */}
     </BottomTab.Navigator>
   );
 }
@@ -179,11 +179,12 @@ function MainContainer() {
       >
         <Stack.Screen
           name="Drawer"
-          component={DrawerNavigator} // Use DrawerNavigator instead of BottomTabNavigator
+          component={DrawerNavigator}
           options={{
             headerShown: false,
           }}
         />
+
         <Stack.Screen
           name="Login"
           component={Login}
@@ -214,7 +215,7 @@ function MainContainer() {
           component={Calendar}
           options={{ title: 'Calendar' }}
         />
-        <Stack.Screen name="LessonPlan" component={LessonPlan} />
+        <Stack.Screen name="LessonPlan" component={LessonPlan} options={{ title: 'Lesson-P' }}/>
         <Stack.Screen name="Courses" component={TopBarNavigator} options={{ title: 'Course' }} />
         <Stack.Screen name="Curriculum" component={Curriculum} />
         <Stack.Screen name="Eschedule" component={Eschedule} />

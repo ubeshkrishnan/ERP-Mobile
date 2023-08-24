@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 const Courses = () => {
-  
+
   const navigation = useNavigation();
 
   const navigateToTopBar = () => {

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Colors from '../../Color';
 import { useNavigation } from '@react-navigation/native';
@@ -8,6 +9,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import LessonPlan from './LesssonPlan';
 
 const Stack = createStackNavigator();
+const TopTabs = createMaterialTopTabNavigator();
 
 const DayScreen = ({ route }) => {
   const { day, schedules } = route.params;
@@ -26,7 +28,6 @@ const DayScreen = ({ route }) => {
     });
   }, [navigation]);
 
-  // Get the navigation object using useNavigation hook
   const navigation = useNavigation();
 
   return (
@@ -36,7 +37,7 @@ const DayScreen = ({ route }) => {
         <TouchableOpacity
           key={index}
           onPress={() =>
-            navigation.navigate('LessonPlan', { event }) // Navigate to LessonPlan with event data
+            navigation.navigate('LessonPlan', { event })
           }
         >
           <View key={index} style={styles.eventCard}>
@@ -50,19 +51,8 @@ const DayScreen = ({ route }) => {
   );
 };
 
-const DayButton = ({ day, onPress }) => (
-  <TouchableOpacity
-    style={styles.dayButton}
-    onPress={onPress}
-    activeOpacity={0.3}
-  >
-    <Text style={styles.dayButtonText}>{day}</Text>
-  </TouchableOpacity>
-);
-
 const TimeTable = () => {
   const daysOfWeek = ['MON', 'TUE', 'WED', 'THU', 'FRI'];
-  const today = new Date().toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase();
 
   const schedules = [
     {
@@ -74,6 +64,7 @@ const TimeTable = () => {
         { time: '3:00 PM -  4:00 PM', subject: 'Math', staff: 'Mohan S' },
       ],
     },
+
     {
       day: 'TUE',
       schedule: [
@@ -104,44 +95,47 @@ const TimeTable = () => {
     {
       day: 'FRI',
       schedule: [
-        { time: '10:30 AM', subject: 'Designing', staff: 'Selva K' },
+        { time: '10:30 AM - 12:00 AM', subject: 'Designing', staff: 'Selva K' },
         { time: '11:00 AM -  12:00 AM', subject: 'Science', staff: 'Siva S' },
         { time: '1:00 PM -  2:00 PM', subject: 'Social', staff: 'Kiruba P' },
         { time: '3:00 PM -  4:00 PM', subject: 'Math', staff: 'Mohan S' },
       ],
     },
-  ];
-  // Initialize the selected day state with 'MON'
-  const [selectedDay, setSelectedDay] = useState(today);
+  ]
+
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="TimeTableScreen" options={{ headerShown: false }}>
-        {({ navigation }) => (
-          <View style={styles.container}>
-            <View style={styles.daysOfWeekContainer}>
-              {daysOfWeek.map((day, index) => (
-                <DayButton
-                  key={index}
-                  day={day}
-                  onPress={() => {
-                    setSelectedDay(day);
-                    navigation.navigate('Day', { day, schedules });
-                  }}
-                />
-              ))}
-            </View>
-          </View>
-        )}
-      </Stack.Screen>
-      <Stack.Screen name="Day" component={DayScreen} initialParams={{ day: selectedDay, schedules }} />
-    </Stack.Navigator>
+<TopTabs.Navigator
+  screenOptions={{
+    tabBarActiveTintColor: 'white',
+    tabBarInactiveTintColor: 'gray',
+    tabBarLabelStyle: {
+      fontSize: 16,
+      fontWeight: '900',
+    },
+    tabBarStyle: {
+      backgroundColor: '#0c46c3',
+    },
+  }}
+>
+  {daysOfWeek.map((day, index) => (
+    <TopTabs.Screen
+      key={index}
+      name={day}
+      component={DayScreen}
+      initialParams={{ day, schedules }}
+      options={{ tabBarLabel: day }}
+    />
+  ))}
+</TopTabs.Navigator>
+
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 30,
-    justifyContent: 'center',
+    flex: 1,
+    alignItems: 'center',
+    marginTop: 25,
   },
   daysOfWeekContainer: {
     flexDirection: 'row',
@@ -175,18 +169,16 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   eventCard: {
-    backgroundColor: '#f5f5f5',
-    padding: 10,
+    backgroundColor: '#ffffff',
+    padding: 20,
     borderRadius: 10,
-    marginBottom: 10,
-    shadowColor: 'black',
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
     elevation: 3,
-    width: '80%',
-    height: 'auto',
-    marginTop: 30,
+    width: 330,
+    marginBottom: 15,
   },
   eventTime: {
     fontSize: 18,
@@ -197,17 +189,17 @@ const styles = StyleSheet.create({
   eventSubject: {
     fontSize: 16,
     marginBottom: 3,
-    color: 'grey'
+    color: 'black'
   },
   eventStaff: {
     fontSize: 14,
-    color: 'gray',
+    color: 'black',
   },
   schedule: {
     color: Colors.LighBlueColor,
     fontWeight: 'bold',
-    marginTop: 20
+    margin: 20
   }
-});
+})
 
 export default TimeTable;
