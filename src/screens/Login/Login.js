@@ -1,33 +1,44 @@
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import axios from 'axios';
+import { Url } from '../../../Global_Variable/api_link';
 
 const Login = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('711915631001');
+  const [password, setPassword] = useState('12345');
   const [showPassword, setShowPassword] = useState(false);
   const navigation = useNavigation();
 
-
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (username && password) {
-      // Perform login logic here
-      // Navigate to the Dashboard screen
-      navigation.navigate('BottomTab');
-      console.log('Logging in with:', username, password);
+      try {
+        console.log('Sending login request...');
+        const response = await axios.post(`${Url}/auth`, {
+          user_name: username,
+          password: password,
+        });
+  
+        console.log('Response:', response.data);
+  
+        if (response.data.success) {
+          console.log('Login successful');
+          // Perform navigation logic
+          navigation.navigate('Dashboard'); // Replace 'Dashboard' with the actual screen name
+        } else {
+          console.log('Login failed');
+        }
+      } catch (error) {
+        console.error('Network request error:', error);
+      }
     } else {
       console.log('Please enter username and password');
     }
   };
-
-  const screenDimensions = Dimensions.get('window');
-  const bgWidth = screenDimensions.width;
-  const bgHeight = screenDimensions.height;
-
+  
   const toggleShowPassword = () => {
-    setShowPassword(prevState => !prevState);
+    setShowPassword((prevState) => !prevState);
   };
 
   return (
@@ -43,7 +54,7 @@ const Login = () => {
           <TextInput
             style={styles.input}
             placeholder="Username"
-            onChangeText={text => setUsername(text)}
+            onChangeText={(text) => setUsername(text)}
             value={username}
             placeholderTextColor="white"
           />
@@ -54,7 +65,7 @@ const Login = () => {
             style={styles.input}
             placeholder="Password"
             secureTextEntry={!showPassword}
-            onChangeText={text => setPassword(text)}
+            onChangeText={(text) => setPassword(text)}
             value={password}
             placeholderTextColor="white"
           />
