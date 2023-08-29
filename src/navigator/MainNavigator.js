@@ -20,10 +20,11 @@ import FeeDetails from "../screens/FeeDetails";
 import Library from "../screens/Library/Library";
 import Results from "../screens/Results/Results";
 import Profile from '../screens/Profile';
-import LessonPlan from '../screens/TimeTable/LesssonPlan'; // Replace with the correct path to your LessonPlan module
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import LessonPlan from '../screens/TimeTable/LesssonPlan'; 
+
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import HeaderRightComponent from './HeaderRightComponent';
+import Courses from '../screens/Course/Courses';
 
 
 const BottomTab = createBottomTabNavigator();
@@ -61,7 +62,8 @@ function TopBarNavigator() {
           tabBarLabel: 'Future',
         }}
       />
-      <Tab.Screen name="TimeTable" component={TimeTable} />
+     {/* <TopTab.Screen name="TimeTable" component={Courses} /> */}
+
     </TopTab.Navigator>
   );
 }
@@ -84,24 +86,23 @@ function BottomTabNavigator() {
           backgroundColor: '#0c46c3',
           borderBottomWidth: 0,
         },
-
+        
         headerTintColor: 'white',
         headerRight: () => <HeaderRightComponent />,
         headerLeft: ({ canGoBack }) => (
-          route.name !== 'Dashboard' && (
-            <TouchableOpacity
-              onPress={() => {
-                navigation.goBack(); // Go back to the previous screen
-              }}
-              style={{ marginLeft: 15 }}
-            >
-              <Ionicons name="arrow-back" size={24} color="white" />
-            </TouchableOpacity>
-          )
+route.name !== 'Dashboard' && (
+          <TouchableOpacity
+            onPress={() => {
+              navigation.goBack(); // Go back to the previous screen
+            }}
+            style={{ marginLeft: 15 }}
+          >
+            <Ionicons name="arrow-back" size={24} color="white" />
+          </TouchableOpacity>
+)
         ),
       })}
     >
-
       <BottomTab.Screen
         name="Dashboard"
         component={Dashboard}
@@ -132,27 +133,19 @@ function BottomTabNavigator() {
             <Ionicons name="list" size={size} color={color} />
           ),
           tabBarLabel: 'Timetable',
-        }} DrawerNavigator
+        }}
       />
     </BottomTab.Navigator>
   );
 }
 
-const Drawer = createDrawerNavigator();
 
-function DrawerNavigator() {
-  return (
-    <Drawer.Navigator>
-      <Drawer.Screen name="Home" component={BottomTabNavigator} />
-    </Drawer.Navigator>
-  );
-}
 
 function MainContainer() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Login"
+        initialRouteName="BottomTab"
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
             let iconName = '';
@@ -178,21 +171,6 @@ function MainContainer() {
         }}
       >
         <Stack.Screen
-          name="Drawer"
-          component={DrawerNavigator}
-          options={{
-            headerShown: false,
-          }}
-        />
-
-        <Stack.Screen
-          name="Login"
-          component={Login}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
           name="BottomTab"
           component={BottomTabNavigator}
           options={{
@@ -208,13 +186,12 @@ function MainContainer() {
           name="Dashboard"
           component={Dashboard}
           options={{ title: 'Dashboard' }}
-
         />
         <Stack.Screen
           name="Calendar"
           component={Calendar}
           options={{ title: 'Calendar' }}
-        />
+        /> 
         <Stack.Screen name="LessonPlan" component={LessonPlan} options={{ title: 'Lesson-P' }}/>
         <Stack.Screen name="Courses" component={TopBarNavigator} options={{ title: 'Course' }} />
         <Stack.Screen name="Curriculum" component={Curriculum} />
