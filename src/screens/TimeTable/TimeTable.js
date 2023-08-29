@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity,TouchableHighlight,TouchableWithoutFeedback } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -34,18 +34,19 @@ const DayScreen = ({ route }) => {
     <View style={styles.dayContainer}>
       <Text style={styles.schedule}>{day} - Schedule</Text>
       {daySchedule.map((event, index) => (
-        <TouchableOpacity
+        <TouchableHighlight
           key={index}
           onPress={() =>
             navigation.navigate('LessonPlan', { event })
           }
+          underlayColor="#DDDDDD" // Set the background color when pressed
         >
           <View key={index} style={styles.eventCard}>
             <Text style={styles.eventTime}>Time: {event.time}</Text>
             <Text style={styles.eventSubject}>Sub: {event.subject}</Text>
             <Text style={styles.eventStaff}>Staff: {event.staff}</Text>
           </View>
-        </TouchableOpacity>
+        </TouchableHighlight>
       ))}
     </View>
   );

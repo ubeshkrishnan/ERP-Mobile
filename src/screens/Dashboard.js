@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Image } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { useNavigation } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const MenuCard = ({ name, icon }) => {
   const navigation = useNavigation();
@@ -22,15 +23,15 @@ const MenuCard = ({ name, icon }) => {
 
 const Dashboard = () => {
   const menuItems = [
-    { name: 'TimeTable', icon: 'table' },
-    { name: 'Attendance', icon: 'checkcircleo' },
-    { name: 'Calendar', icon: 'calendar' },
-    { name: 'Courses', icon: 'switcher' },
-    { name: 'Curriculum', icon: 'loading1' },
-    { name: 'Eschedule', icon: 'carryout' },
+    { name: 'TimeTable', icon: 'clipboard', color: 'red' },
+    { name: 'Attendance', icon: 'hand-left', color: 'blue' },
+    { name: 'Calendar', icon: 'calendar', color: 'green' },
+    { name: 'Courses', icon: 'layers', color: 'yellow' },
+    { name: 'Eschedule', icon: 'pencil' },
     { name: 'FeeDetails', icon: 'wallet' },
-    { name: 'Library', icon: 'profile' },
-    { name: 'Results', icon: 'Trophy' },
+    { name: 'Library', icon: 'file-tray' },
+    { name: 'Results', icon: 'trophy' },
+    { name: 'Logout', icon: 'log-out' }, // Add the logout menu item
   ];
 
   return (

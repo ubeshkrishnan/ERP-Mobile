@@ -12,29 +12,9 @@ const Login = () => {
   const navigation = useNavigation();
 
   const handleLogin = async () => {
-    if (username && password) {
-      try {
-        console.log('Sending login request...');
-        const response = await axios.post(`${Url}/auth`, {
-          user_name: username,
-          password: password,
-        });
-  
-        console.log('Response:', response.data);
-  
-        if (response.data.success) {
-          console.log('Login successful');
-          // Perform navigation logic
+   
           navigation.navigate('Dashboard'); // Replace 'Dashboard' with the actual screen name
-        } else {
-          console.log('Login failed');
-        }
-      } catch (error) {
-        console.error('Network request error:', error);
-      }
-    } else {
-      console.log('Please enter username and password');
-    }
+      
   };
   
   const toggleShowPassword = () => {

@@ -14,7 +14,6 @@ import Calendar from "../screens/Calendar";
 import Complete from '../screens/Course/Complete';
 import Current from '../screens/Course/Current';
 import Future from '../screens/Course/Future';
-import Curriculum from "../screens/Curriculum/Curriculum";
 import Eschedule from "../screens/ExamSchedule.js/E-schedule";
 import FeeDetails from "../screens/FeeDetails";
 import Library from "../screens/Library/Library";
@@ -139,8 +138,6 @@ route.name !== 'Dashboard' && (
   );
 }
 
-
-
 function MainContainer() {
   return (
     <NavigationContainer>
@@ -194,7 +191,6 @@ function MainContainer() {
         /> 
         <Stack.Screen name="LessonPlan" component={LessonPlan} options={{ title: 'Lesson-P' }}/>
         <Stack.Screen name="Courses" component={TopBarNavigator} options={{ title: 'Course' }} />
-        <Stack.Screen name="Curriculum" component={Curriculum} />
         <Stack.Screen name="Eschedule" component={Eschedule} />
         <Stack.Screen name="FeeDetails" component={FeeDetails} />
         <Stack.Screen name="Library" component={Library} />
