@@ -14,7 +14,7 @@ const MenuCard = ({ name, icon }) => {
       onPress={() => navigation.navigate(name)}
     >
       <View style={styles.iconContainer}>
-        <AntDesign name={icon} size={32} color="#111" />
+        <Icon name={icon} size={32} color="#111" />
       </View>
       <Text style={styles.cardText}>{name}</Text>
     </TouchableOpacity>

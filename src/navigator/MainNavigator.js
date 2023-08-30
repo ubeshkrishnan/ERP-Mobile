@@ -19,8 +19,8 @@ import FeeDetails from "../screens/FeeDetails";
 import Library from "../screens/Library/Library";
 import Results from "../screens/Results/Results";
 import Profile from '../screens/Profile';
-import LessonPlan from '../screens/TimeTable/LesssonPlan'; 
-
+import LessonPlan from '../screens/TimeTable/LesssonPlan';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import HeaderRightComponent from './HeaderRightComponent';
 import Courses from '../screens/Course/Courses';
@@ -29,7 +29,7 @@ import Courses from '../screens/Course/Courses';
 const BottomTab = createBottomTabNavigator();
 const TopTab = createMaterialTopTabNavigator();
 const Stack = createStackNavigator();
-
+const Drawer = createDrawerNavigator();
 
 
 function TopBarNavigator() {
@@ -61,7 +61,7 @@ function TopBarNavigator() {
           tabBarLabel: 'Future',
         }}
       />
-     {/* <TopTab.Screen name="TimeTable" component={Courses} /> */}
+      {/* <TopTab.Screen name="TimeTable" component={Courses} /> */}
 
     </TopTab.Navigator>
   );
@@ -85,20 +85,20 @@ function BottomTabNavigator() {
           backgroundColor: '#0c46c3',
           borderBottomWidth: 0,
         },
-        
+
         headerTintColor: 'white',
         headerRight: () => <HeaderRightComponent />,
         headerLeft: ({ canGoBack }) => (
-route.name !== 'Dashboard' && (
-          <TouchableOpacity
-            onPress={() => {
-              navigation.goBack(); // Go back to the previous screen
-            }}
-            style={{ marginLeft: 15 }}
-          >
-            <Ionicons name="arrow-back" size={24} color="white" />
-          </TouchableOpacity>
-)
+          route.name !== 'Dashboard' && (
+            <TouchableOpacity
+              onPress={() => {
+                navigation.goBack(); // Go back to the previous screen
+              }}
+              style={{ marginLeft: 15 }}
+            >
+              <Ionicons name="arrow-back" size={24} color="white" />
+            </TouchableOpacity>
+          )
         ),
       })}
     >
@@ -125,13 +125,13 @@ route.name !== 'Dashboard' && (
       />
 
       <BottomTab.Screen
-        name="TimeTable"
-        component={TimeTable}
+        name="Drawer"
+        component={DrawerNavigator}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="list" size={size} color={color} />
+            <Ionicons name="menu" size={size} color={color} />
           ),
-          tabBarLabel: 'Timetable',
+          tabBarLabel: 'Drawer',
         }}
       />
     </BottomTab.Navigator>
@@ -174,6 +174,13 @@ function MainContainer() {
             headerShown: false,
           }}
         />
+        {/* <Stack.Screen
+          name="Drawer"
+          component={DrawerNavigator}
+          options={{
+            headerShown: false,
+          }}
+        /> */}
         <Stack.Screen
           name="Attendance"
           component={Attendance}
@@ -188,18 +195,31 @@ function MainContainer() {
           name="Calendar"
           component={Calendar}
           options={{ title: 'Calendar' }}
-        /> 
-        <Stack.Screen name="LessonPlan" component={LessonPlan} options={{ title: 'Lesson-P' }}/>
+        />
+        <Stack.Screen name="LessonPlan" component={LessonPlan} options={{ title: 'Lesson-P' }} />
         <Stack.Screen name="Courses" component={TopBarNavigator} options={{ title: 'Course' }} />
         <Stack.Screen name="Eschedule" component={Eschedule} />
         <Stack.Screen name="FeeDetails" component={FeeDetails} />
         <Stack.Screen name="Library" component={Library} />
         <Stack.Screen name="Results" component={Results} />
         <Stack.Screen name="Profile" component={Profile} />
-
+        <Stack.Screen name="TimeTable" component={TimeTable} />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
-
+function DrawerNavigator() {
+  return (
+    <Drawer.Navigator
+      drawerPosition="right" // Open from the right side
+    >
+      <Drawer.Screen name="Profile" options={{
+        headerShown: false,
+      }} component={Profile} />
+      <Drawer.Screen name="Courses" component={Courses} />
+      {/* Define other Drawer Screens */}
+    </Drawer.Navigator>
+  );
+}
 export default MainContainer;
+

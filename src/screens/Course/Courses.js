@@ -12,7 +12,7 @@ const Courses = () => {
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Courses Screen</Text>
+      <Text style={{color:'red'}}>Courses Screen</Text>
       <TouchableOpacity onPress={navigateToTopBar}>
         <Text>Go to Top Bar</Text>
       </TouchableOpacity>
