@@ -24,7 +24,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import HeaderRightComponent from './HeaderRightComponent';
 import Courses from '../screens/Course/Courses';
-
+import Cafeteria from '../screens/Cafeteria';
 
 const BottomTab = createBottomTabNavigator();
 const TopTab = createMaterialTopTabNavigator();
@@ -204,6 +204,8 @@ function MainContainer() {
         <Stack.Screen name="Results" component={Results} />
         <Stack.Screen name="Profile" component={Profile} />
         <Stack.Screen name="TimeTable" component={TimeTable} />
+        <Stack.Screen name="Cafeteria" component={Cafeteria} />
+        
       </Stack.Navigator>
     </NavigationContainer>
   );

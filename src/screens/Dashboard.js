@@ -114,8 +114,8 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   iconContainer: {
-    width: 60,
-    height: 60,
+    width: 52,
+    height: 52,
     backgroundColor: '#e5e5e5',
     borderRadius: 30,
     justifyContent: 'center',
@@ -126,6 +126,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     textAlign: 'center',
     color: '#111',
+    fontWeight:'800'
   },
   profileCard: {
     alignItems: 'center',
