@@ -12,11 +12,11 @@ const Login = () => {
   const navigation = useNavigation();
 
   const handleLogin = async () => {
-   
-          navigation.navigate('Dashboard'); // Replace 'Dashboard' with the actual screen name
-      
+
+    navigation.navigate('Dashboard'); // Replace 'Dashboard' with the actual screen name
+
   };
-  
+
   const toggleShowPassword = () => {
     setShowPassword((prevState) => !prevState);
   };

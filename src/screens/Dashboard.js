@@ -4,17 +4,21 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-const MenuCard = ({ name, icon }) => {
+const MenuCard = ({ name, icon, backgroundColor, iconColor }) => {
   const navigation = useNavigation();
 
   return (
-
     <TouchableOpacity
       style={styles.card}
       onPress={() => navigation.navigate(name)}
     >
-      <View style={styles.iconContainer}>
-        <Icon name={icon} size={32} color="#111" />
+      <View
+        style={[
+          styles.iconContainer,
+          { backgroundColor }, // Set the background color here
+        ]}
+      >
+        <Icon name={icon} size={32} color={iconColor} />
       </View>
       <Text style={styles.cardText}>{name}</Text>
     </TouchableOpacity>
@@ -23,15 +27,15 @@ const MenuCard = ({ name, icon }) => {
 
 const Dashboard = () => {
   const menuItems = [
-    { name: 'TimeTable', icon: 'clipboard', color: 'red' },
-    { name: 'Attendance', icon: 'hand-left', color: 'blue' },
-    { name: 'Calendar', icon: 'calendar', color: 'green' },
-    { name: 'Courses', icon: 'layers', color: 'yellow' },
-    { name: 'Eschedule', icon: 'pencil' },
-    { name: 'FeeDetails', icon: 'wallet' },
-    { name: 'Library', icon: 'file-tray' },
-    { name: 'Results', icon: 'trophy' },
-    { name: 'Logout', icon: 'log-out' }, // Add the logout menu item
+    { name: 'TimeTable', icon: 'clipboard', backgroundColor: '#E65100', iconColor: 'white' },
+    { name: 'Attendance', icon: 'hand-left', backgroundColor: '#3949AB', iconColor: 'white' },
+    { name: 'Calendar', icon: 'calendar', backgroundColor: 'green', iconColor: 'white' },
+    { name: 'Courses', icon: 'layers', backgroundColor: '#3949AB', iconColor: 'white' },
+    { name: 'Eschedule', icon: 'pencil', backgroundColor: 'orange', iconColor: 'white' },
+    { name: 'FeeDetails', icon: 'wallet', backgroundColor: 'purple', iconColor: 'white' },
+    { name: 'Library', icon: 'file-tray', backgroundColor: 'brown', iconColor: 'white' },
+    { name: 'Results', icon: 'trophy', backgroundColor: 'green', iconColor: 'white' },
+    { name: 'Cafeteria', icon: 'fast-food', backgroundColor: '#4527A0', iconColor: 'white' },
   ];
 
   return (
@@ -49,7 +53,13 @@ const Dashboard = () => {
         </View>
         <View style={styles.cardContainer}>
           {menuItems.map(item => (
-            <MenuCard key={item.name} name={item.name} icon={item.icon} />
+            <MenuCard
+              key={item.name}
+              name={item.name}
+              icon={item.icon}
+              backgroundColor={item.backgroundColor}
+              iconColor={item.iconColor}
+            />
           ))}
         </View>
       </View>
