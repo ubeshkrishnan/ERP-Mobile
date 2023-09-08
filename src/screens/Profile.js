@@ -1,20 +1,36 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const UserProfile = () => {
-
   const [userData, setUserData] = useState({
-    first_name: 'Anish Krish',
-    last_name: 'K',
-    reg_No: 'STD - 210003',
-    gender: 'Male',
-    course: 'B.TEch',
-    programme: 'Computer Science and Engineering',
-    mobile_no: '9897778245',
-    address: 'Coimbatore',
-    email: 'kishore@gmail.com',
+    first_name: '',
+    last_name: '',
+    reg_No: '',
+    gender: '',
+    course: '',
+    programme: '',
+    mobile_no: '',
+    address: '',
+    email: '',
   });
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const userDataFromStorage = await AsyncStorage.getItem('userData'); // Corrected key
+        if (userDataFromStorage) {
+          const parsedUserData = JSON.parse(userDataFromStorage);
+          setUserData(parsedUserData);
+          console.log('Retrieved user data:', parsedUserData);
+        }
+      } catch (error) {
+        console.error('Error retrieving user data:', error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -23,7 +39,9 @@ const UserProfile = () => {
           source={require('../assets/profile.png')}
           style={styles.profilePicture}
         />
-        <Text style={styles.name}>{userData.first_name} {userData.last_name}</Text>
+        <Text style={styles.name}>
+          {userData.first_name} {userData.last_name}
+        </Text>
         <Text style={styles.employeeId}>{userData.reg_No}</Text>
       </View>
       <View style={styles.body}>
@@ -69,7 +87,6 @@ const styles = StyleSheet.create({
     height: 100,
     borderRadius: 50,
     marginBottom: 10,
-  
   },
   name: {
     fontSize: 20,
@@ -85,17 +102,11 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 10,
     borderRadius: 5,
-    ...Platform.select({
-      ios: {
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-      },
-      android: {
-        elevation: 5,
-      },
-    }),
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
   label: {
     fontWeight: 'bold',
@@ -106,5 +117,3 @@ const styles = StyleSheet.create({
     color: '#555',
   },
 });
-
-

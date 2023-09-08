@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import Colors from '../Color';
+import { Url } from '../../Global_Variable/api_link';
 
 const Dropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState('');
-
-  const options = ['[Odd sem-23-24]', '[Even sem-23-24]'];
+  const [academicTerms, setAcademicTerms] = useState([]); // State to hold academic terms data
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -17,6 +17,25 @@ const Dropdown = () => {
     setIsOpen(false);
   };
 
+  useEffect(() => {
+    fetch(Url + '/academic') // Append '/academic' to the URL here
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Network response was not ok: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setAcademicTerms(data);
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+  }, []);
+  
+  
+
+
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.dropdownButton} onPress={toggleDropdown}>
@@ -26,13 +45,14 @@ const Dropdown = () => {
       </TouchableOpacity>
       {isOpen && (
         <View style={styles.dropdownOptions}>
-          {options.map((option, index) => (
+          {academicTerms.map((term, index) => (
             <TouchableOpacity
               key={index}
               style={styles.optionButton}
-              onPress={() => selectOption(option)}
+              onPress={() => selectOption(term.academic_term)}
             >
-              <Text style={styles.optionButtonText}>{option}</Text>
+              <Text style={styles.optionButtonText}>{term.academic_term}</Text>
+              
             </TouchableOpacity>
           ))}
         </View>
@@ -56,7 +76,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 8,
     position: 'relative', // To position the arrow correctly
-    color: 'white'
+    color: 'white',
   },
   dropdownButtonText: {
     fontSize: 16,

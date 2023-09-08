@@ -35,7 +35,7 @@ const Dashboard = () => {
     { name: 'FeeDetails', icon: 'wallet', backgroundColor: 'purple', iconColor: 'white' },
     { name: 'Library', icon: 'file-tray', backgroundColor: 'brown', iconColor: 'white' },
     { name: 'Results', icon: 'trophy', backgroundColor: 'green', iconColor: 'white' },
-    { name: 'Cafeteria', icon: 'fast-food', backgroundColor: '#4527A0', iconColor: 'white' },
+    { name: 'Profile', backgroundColor: '#4527A0', iconColor: 'white' },
   ];
 
   return (

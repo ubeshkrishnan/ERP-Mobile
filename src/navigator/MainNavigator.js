@@ -87,7 +87,7 @@ function BottomTabNavigator() {
         },
 
         headerTintColor: 'white',
-        headerRight: () => <HeaderRightComponent />,
+        // headerRight: () => <HeaderRightComponent />,
         headerLeft: ({ canGoBack }) => (
           route.name !== 'Dashboard' && (
             <TouchableOpacity
@@ -142,7 +142,7 @@ function MainContainer() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="BottomTab"
+        initialRouteName="Login"
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
             let iconName = '';
@@ -158,7 +158,7 @@ function MainContainer() {
             borderBottomWidth: 0,
           },
           headerTintColor: 'white',
-          headerRight: () => <HeaderRightComponent />,
+          // headerRight: () => <HeaderRightComponent />,
           headerBackTitleVisible: false,
         })}
         tabBarOptions={{
@@ -170,6 +170,13 @@ function MainContainer() {
         <Stack.Screen
           name="BottomTab"
           component={BottomTabNavigator}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Login"
+          component={Login}
           options={{
             headerShown: false,
           }}
@@ -205,7 +212,7 @@ function MainContainer() {
         <Stack.Screen name="Profile" component={Profile} />
         <Stack.Screen name="TimeTable" component={TimeTable} />
         <Stack.Screen name="Cafeteria" component={Cafeteria} />
-        
+
       </Stack.Navigator>
     </NavigationContainer>
   );

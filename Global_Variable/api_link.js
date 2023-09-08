@@ -1,1 +1,4 @@
-export const Url = 'http://192.168.130.20/ERP_Mobile_App/db_connect.php';
+export const Url = 'https://demoengg.enovasolutions.com/index.php/Mobile_app';
+
+
+export const Url_L ='http://192.168.130.195/newportal.kvimis.co.in/index.php/Mobile_app';

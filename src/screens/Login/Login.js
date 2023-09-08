@@ -6,16 +6,37 @@ import axios from 'axios';
 import { Url } from '../../../Global_Variable/api_link';
 
 const Login = () => {
-  const [username, setUsername] = useState('711915631001');
-  const [password, setPassword] = useState('12345');
+  const [username, setUsername] = useState('rsumathi_el@kongunaducollege.ac.in');
+  const [password, setPassword] = useState('kasc@123');
   const [showPassword, setShowPassword] = useState(false);
   const navigation = useNavigation();
 
   const handleLogin = async () => {
+    try {
+      const response = await axios.post(
+        Url + '/index',
+        { username, password },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
 
-    navigation.navigate('Dashboard'); // Replace 'Dashboard' with the actual screen name
-
+      if (response.status === 200) {
+        navigation.navigate('Dashboard')
+        console.log('Login successful');
+        // Store the user data or token and navigate to the dashboard
+      } else {
+        console.log('Login failed');
+        // Handle login failure, show an error message, etc.
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+    }
   };
+
+
 
   const toggleShowPassword = () => {
     setShowPassword((prevState) => !prevState);
