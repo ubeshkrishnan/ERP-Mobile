@@ -154,7 +154,7 @@ function MainContainer() {
             return <Ionicons name={iconName} size={size} color={color} />;
           },
           headerStyle: {
-            backgroundColor: route.name === 'Dashboard' ? '#009FFF' : '#0c46c3',
+            backgroundColor: route.name === 'Dashboard' ? '#0c46c3' : '#0c46c3',
             borderBottomWidth: 0,
           },
           headerTintColor: 'white',
@@ -201,7 +201,11 @@ function MainContainer() {
         <Stack.Screen
           name="Calendar"
           component={Calendar}
-          options={{ title: 'Calendar' }}
+          options={{
+            title: 'Calendar',
+          }}
+
+
         />
         <Stack.Screen name="LessonPlan" component={LessonPlan} options={{ title: 'Lesson-P' }} />
         <Stack.Screen name="Courses" component={TopBarNavigator} options={{ title: 'Course' }} />

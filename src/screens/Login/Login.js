@@ -3,6 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions } from 
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage'; // Import AsyncStorage
 import { Url } from '../../../Global_Variable/api_link';
 
 const Login = () => {
@@ -24,9 +25,38 @@ const Login = () => {
       );
 
       if (response.status === 200) {
-        navigation.navigate('Dashboard')
+        // Parse user data from the response
+        const userData = response.data;
+
+        // Store user data in AsyncStorage
+        const AsyncStorageKeys = [
+          'user_id',
+          'user_group_id',
+          'user_role_id',
+          'first_name',
+          'last_name',
+          'user_name',
+          'email',
+          'mobile',
+          'dob',
+          'address1',
+          'state',
+          'blood_group',
+        ];
+
+        AsyncStorageKeys.forEach(async (key) => {
+          if (userData[key] !== null && userData[key] !== undefined) {
+            try {
+              await AsyncStorage.setItem(key, userData[key].toString());
+              console.log(`Stored ${key}: ${userData[key]}`);
+            } catch (error) {
+              console.error(`Error storing ${key}:`, error);
+            }
+          }
+        });
+
+        navigation.navigate('Dashboard');
         console.log('Login successful');
-        // Store the user data or token and navigate to the dashboard
       } else {
         console.log('Login failed');
         // Handle login failure, show an error message, etc.
@@ -35,7 +65,6 @@ const Login = () => {
       console.error('Login error:', error);
     }
   };
-
 
 
   const toggleShowPassword = () => {

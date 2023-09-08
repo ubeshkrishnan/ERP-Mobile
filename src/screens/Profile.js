@@ -18,7 +18,7 @@ const UserProfile = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const userDataFromStorage = await AsyncStorage.getItem('userData'); // Corrected key
+        const userDataFromStorage = await AsyncStorage.getItem('user_id'); // Use the correct key
         if (userDataFromStorage) {
           const parsedUserData = JSON.parse(userDataFromStorage);
           setUserData(parsedUserData);
@@ -28,9 +28,10 @@ const UserProfile = () => {
         console.error('Error retrieving user data:', error);
       }
     };
-
+  
     fetchUserData();
   }, []);
+  
 
   return (
     <View style={styles.container}>
