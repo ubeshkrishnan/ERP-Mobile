@@ -1,37 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, StyleSheet, ScrollView } from 'react-native';
-import Colors
- from '../Color';
+import Colors from '../Color';
+import { Url } from '../../Global_Variable/api_link';
+
 const Calendar = () => {
   const [searchText, setSearchText] = useState('');
-  const [days, setDays] = useState([
-    { date: '08-01-2023', type: 'Holiday', name: 'Labor Day', description: 'A day to celebrate workers', cycle: 1, dayOrder: 'I', isWorkingDay: false },
-    { date: '08-01-2023', type: 'Holiday', name: 'Labor Day', description: 'A day to celebrate workers', cycle: 1, dayOrder: 'I', isWorkingDay: false },
-    { date: '08-01-2023', type: 'Holiday', name: 'Independece Day',  cycle: 1, dayOrder: 'I', isWorkingDay: true },
-    { date: '08-01-2023', type: 'Holiday', name: 'Labor Day', cycle: 1, dayOrder: 'I', isWorkingDay: true },
-    // Add more days here
-  ]);
+  const [days, setDays] = useState([]);
 
-  const filteredDays = days.filter(day =>
-    day.name.toLowerCase().includes(searchText.toLowerCase())
-  );
+  useEffect(() => {
+    // Define the URL you want to fetch data from
+    const apiUrl = Url + '/calendar'; // Replace with your actual API URL
 
-  const renderWorkingDaysWithCounts = () => {
-    const workingDayCounts = {};
-    days.forEach(day => {
-      if (day.isWorkingDay) {
-        const dateParts = day.date.split('-');
-        const month = parseInt(dateParts[0]);
-        if (workingDayCounts[month]) {
-          workingDayCounts[month]++;
-        } else {
-          workingDayCounts[month] = 1;
+    // Use the fetch API to make the GET request
+    fetch(apiUrl)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
         }
-      }
-    });
+        return response.json(); // Assuming the response is in JSON format
+      })
+      .then((data) => {
+        // Update the 'days' state with the fetched data
+        setDays(data);
+      })
+      .catch((error) => {
+        console.error('Fetch error:', error);
+      });
+  }, []);
 
-    return Object.keys(workingDayCounts).map(month => (
-      <Text key={month} style={{ color: "black" }}>{`Month ${month} Working Days: ${workingDayCounts[month]}`}</Text>
+  const renderDays = () => {
+    return days.map((day, index) => (
+      <View style={[styles.card, day.labels.includes('HOLIDAY') ? styles.cardHoliday : styles.cardWorking]} key={index}>
+        <Text style={day.labels.includes('HOLIDAY') ? styles.cardTitleHoliday : styles.cardTitleWorking}>{day.labels}</Text>
+        <Text style={{ color: 'red', fontWeight: 'bold' }}>{day.date}</Text>
+        {/* Add more dynamic rendering here */}
+      </View>
     ));
   };
 
@@ -41,24 +44,11 @@ const Calendar = () => {
         style={styles.searchBar}
         placeholder="Search holidays..."
         placeholderTextColor="gray"
-        onChangeText={text => setSearchText(text)}
+        onChangeText={(text) => setSearchText(text)}
         value={searchText}
       />
       <ScrollView style={styles.cardContainer}>
-        {filteredDays.map((day, index) => (
-          <View style={styles.card} key={index}>
-            <Text style={day.isWorkingDay ? styles.cardTitleWorking : styles.cardTitleHolidays}>{day.type}</Text>
-            <Text style={{ color: "black", fontWeight: 'bold' }}>{`${day.date} - ${day.name}`}</Text>
-            <Text style={{ color: "black", fontWeight: 'bold' }}>{`Description: ${day.description}`}</Text>
-            {/* <Text style={{ color: "black", fontWeight: 'bold' }}>{`Cycle: ${day.cycle}`}</Text> */}
-            {/* <Text style={{ color: "black", fontWeight: 'bold' }}>{`Day Order: ${day.dayOrder}`}</Text> */}
-            {/* <Text style={{ color: "black", fontWeight: 'bold', color:'grey' }}>{`Working Day: ${day.isWorkingDay ? 'Yes' : 'No'}`}</Text> */}
-          </View>
-        ))}
-        <View style={styles.card}>
-          <Text style={styles.cardTitleWorking}>Working Day Counts:</Text>
-          {renderWorkingDaysWithCounts()}
-        </View>
+        {renderDays()}
       </ScrollView>
     </View>
   );
@@ -97,16 +87,19 @@ const styles = StyleSheet.create({
   },
   cardTitleWorking: {
     fontSize: 15,
-      fontWeight: '900',
+    fontWeight: '900',
     marginBottom: 5,
-    color: 'red'
+    color: 'red',
   },
-  cardTitleHolidays: {
+  cardTitleHoliday: {
     color: 'green',
     fontWeight: '900',
     marginBottom: 5,
     fontSize: 15,
-  }
+  },
+  cardHoliday: {
+    color: 'black',
+  },
 });
 
 export default Calendar;

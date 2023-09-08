@@ -6,32 +6,56 @@ const UserProfile = () => {
   const [userData, setUserData] = useState({
     first_name: '',
     last_name: '',
-    reg_No: '',
-    gender: '',
-    course: '',
-    programme: '',
-    mobile_no: '',
-    address: '',
     email: '',
+    mobile: '',
+    dob: '',
+    address1: '',
+    state: '',
+    blood_group: '',
+    image:'',
   });
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const userDataFromStorage = await AsyncStorage.getItem('user_id'); // Use the correct key
-        if (userDataFromStorage) {
-          const parsedUserData = JSON.parse(userDataFromStorage);
-          setUserData(parsedUserData);
-          console.log('Retrieved user data:', parsedUserData);
-        }
+        // Define an array of keys you want to retrieve from AsyncStorage
+        const AsyncStorageKeys = [
+          'first_name',
+          'last_name',
+          'email',
+          'mobile',
+          'dob',
+          'address1',
+          'state',
+          'blood_group',
+          'image',
+        ];
+
+        // Use Promise.all to retrieve multiple values from AsyncStorage
+        const retrievedData = await Promise.all(
+          AsyncStorageKeys.map(async (key) => {
+            const value = await AsyncStorage.getItem(key);
+            return [key, value];
+          })
+        );
+
+        // Construct the user data object from retrieved values
+        const userDataObject = {};
+        retrievedData.forEach(([key, value]) => {
+          if (value !== null) {
+            userDataObject[key] = value;
+          }
+        });
+
+        setUserData(userDataObject);
+        console.log('Retrieved user data:', userDataObject);
       } catch (error) {
         console.error('Error retrieving user data:', error);
       }
     };
-  
+
     fetchUserData();
   }, []);
-  
 
   return (
     <View style={styles.container}>
@@ -43,28 +67,31 @@ const UserProfile = () => {
         <Text style={styles.name}>
           {userData.first_name} {userData.last_name}
         </Text>
-        <Text style={styles.employeeId}>{userData.reg_No}</Text>
       </View>
       <View style={styles.body}>
         <View style={styles.card}>
-          <Text style={styles.label}>Gender:</Text>
-          <Text style={styles.value}>{userData.gender}</Text>
-        </View>
-        <View style={styles.card}>
-          <Text style={styles.label}>Course:</Text>
-          <Text style={styles.value}>{userData.course}</Text>
-        </View>
-        <View style={styles.card}>
-          <Text style={styles.label}>Programme</Text>
-          <Text style={styles.value}>{userData.programme}</Text>
-        </View>
-        <View style={styles.card}>
-          <Text style={styles.label}>Mobile No</Text>
-          <Text style={styles.value}>{userData.mobile_no}</Text>
-        </View>
-        <View style={styles.card}>
-          <Text style={styles.label}>Email</Text>
+          <Text style={styles.label}>Email:</Text>
           <Text style={styles.value}>{userData.email}</Text>
+        </View>
+        <View style={styles.card}>
+          <Text style={styles.label}>Mobile:</Text>
+          <Text style={styles.value}>{userData.mobile}</Text>
+        </View>
+        <View style={styles.card}>
+          <Text style={styles.label}>Date of Birth:</Text>
+          <Text style={styles.value}>{userData.dob}</Text>
+        </View>
+        <View style={styles.card}>
+          <Text style={styles.label}>Address:</Text>
+          <Text style={styles.value}>{userData.address1}</Text>
+        </View>
+        <View style={styles.card}>
+          <Text style={styles.label}>State:</Text>
+          <Text style={styles.value}>{userData.state}</Text>
+        </View>
+        <View style={styles.card}>
+          <Text style={styles.label}>Blood Group:</Text>
+          <Text style={styles.value}>{userData.blood_group}</Text>
         </View>
       </View>
     </View>
@@ -92,10 +119,6 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#888',
-  },
-  employeeId: {
-    fontSize: 16,
     color: '#888',
   },
   card: {

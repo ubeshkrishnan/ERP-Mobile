@@ -7,8 +7,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage'; // Import 
 import { Url } from '../../../Global_Variable/api_link';
 
 const Login = () => {
-  const [username, setUsername] = useState('rsumathi_el@kongunaducollege.ac.in');
-  const [password, setPassword] = useState('kasc@123');
+  const [username, setUsername] = useState('Ajith');
+  const [password, setPassword] = useState('demo@123');
   const [showPassword, setShowPassword] = useState(false);
   const navigation = useNavigation();
 
@@ -42,6 +42,7 @@ const Login = () => {
           'address1',
           'state',
           'blood_group',
+          'image',
         ];
 
         AsyncStorageKeys.forEach(async (key) => {

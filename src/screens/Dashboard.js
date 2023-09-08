@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Image } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const MenuCard = ({ name, icon, backgroundColor, iconColor }) => {
   const navigation = useNavigation();
@@ -26,6 +27,46 @@ const MenuCard = ({ name, icon, backgroundColor, iconColor }) => {
 };
 
 const Dashboard = () => {
+  const [userData, setUserData] = useState({
+    email: '',
+    last_name: '',
+  });
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        // Define an array of keys you want to retrieve from AsyncStorage
+        const AsyncStorageKeys = [
+          'first_name',
+          'last_name',
+        ];
+
+        // Use Promise.all to retrieve multiple values from AsyncStorage
+        const retrievedData = await Promise.all(
+          AsyncStorageKeys.map(async (key) => {
+            const value = await AsyncStorage.getItem(key);
+            return [key, value];
+          })
+        );
+
+        // Construct the user data object from retrieved values
+        const userDataObject = {};
+        retrievedData.forEach(([key, value]) => {
+          if (value !== null) {
+            userDataObject[key] = value;
+          }
+        });
+
+        setUserData(userDataObject);
+        console.log('Retrieved user data:', userDataObject);
+      } catch (error) {
+        console.error('Error retrieving user data:', error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
   const menuItems = [
     { name: 'TimeTable', icon: 'clipboard', backgroundColor: '#E65100', iconColor: 'white' },
     { name: 'Attendance', icon: 'hand-left', backgroundColor: '#3949AB', iconColor: 'white' },
@@ -48,7 +89,7 @@ const Dashboard = () => {
               style={styles.profilePicture}
             />
           </View>
-          <Text style={styles.profileText}>Anish Krish</Text>
+          <Text style={styles.profileText}>{userData.first_name} {userData.last_name}</Text>
           <Text style={styles.studentId}>STD - 210003</Text>
         </View>
         <View style={styles.cardContainer}>
@@ -66,7 +107,6 @@ const Dashboard = () => {
     </View>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {
