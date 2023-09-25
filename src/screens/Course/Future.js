@@ -26,9 +26,11 @@ const Future = () => {
 
   return (
     <View>
-      {data.map((sub, index) => (
-        <FutureCourseCard key={index} sub={sub} />
-      ))}
+      <View style={styles.cardContainer}>
+        {data.map((sub, index) => (
+          <FutureCourseCard key={index} sub={sub} />
+        ))}
+      </View>
     </View>
   );
 };
@@ -39,6 +41,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     marginTop: 20,
+  },
+  cardContainer: {
+    marginVertical: 10,
+    paddingHorizontal: 10,
   },
   card: {
     backgroundColor: 'white',

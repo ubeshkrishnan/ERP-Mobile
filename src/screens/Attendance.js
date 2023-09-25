@@ -1,54 +1,89 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Dimensions, ScrollView } from 'react-native';
-// import { ScrollView } from 'react-native-gesture-handler';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Colors from '../Color';
+import { Url } from '../../Global_Variable/api_link';
 
-
-const SubjectCard = ({ subjectCode, subjectName, totalClasses, attendedClasses }) => {
-  const attendancePercentage = ((attendedClasses / totalClasses) * 100).toFixed(2);
+const SubjectCard = ({ subjectCode, subjectName, profName, totalClasses, attendedClasses, attendancePercentage }) => {
+  const formattedAttendancePercentage = `${(attendancePercentage * 1).toFixed(1)}%`;
 
   return (
-    <>
-      <View style={styles.card}>
-        <View style={styles.details}>
-          <View style={styles.detailsLeft}>
-            <Text style={styles.subjectCode}>{subjectCode}</Text>
-            <Text style={styles.subjectName}>{subjectName}</Text>
-            <Text style={styles.subjectTotalClass}>Total Classes: {totalClasses}</Text>
-            <Text style={styles.subjectAttendClass}>Attended Classes: {attendedClasses}</Text>
-            {/* <Text style={styles.subjectAttendancePercentage}>
-              Attendance Percentage: {attendancePercentage}%
-            </Text> */}
-          </View>
-          <View style={styles.circleContainer}>
-            <View
-              style={[
-                styles.circle,
-                {
-                  borderColor: '#00FF00', // Green border color
-                  width: Dimensions.get('window').width * 0.20, // Set the width of the circle
-                },
-              ]}
-            >
-              <Text style={styles.circleText}>{attendancePercentage}%</Text>
-            </View>
+    <View style={styles.card}>
+      <View style={styles.details}>
+        <View style={styles.detailsLeft}>
+          <Text style={styles.subjectCode}>{subjectCode}</Text>
+          <Text style={styles.subjectName}>{subjectName}</Text>
+          <Text style={styles.profName}>Professor:{profName}</Text>
+          <Text style={styles.subjectTotalClass}>Total Classes: {totalClasses}</Text>
+          <Text style={styles.subjectAttendClass}>Attended Classes: {attendedClasses}</Text>
+
+        </View>
+        <View style={styles.circleContainer}>
+          <View
+            style={[
+              styles.circle,
+              {
+                borderColor: '#00FF00', // Green border color
+                width: Dimensions.get('window').width * 0.20, // Set the width of the circle
+              },
+            ]}
+          >
+            <Text style={styles.circleText}>{formattedAttendancePercentage}</Text>
           </View>
         </View>
       </View>
-    </>
+    </View>
   );
 };
 
 const Attendance = () => {
-  // Example subject data (replace with your actual data)
-  const subjects = [
-    { subjectCode: 'MATH101', subjectName: 'Mathematics', totalClasses: 30, attendedClasses: 25 },
-    { subjectCode: 'SCI201', subjectName: 'Science', totalClasses: 28, attendedClasses: 10 },
-    { subjectCode: 'SCI201', subjectName: 'Science', totalClasses: 28, attendedClasses: 10 },
-    { subjectCode: 'SCI201', subjectName: 'Science', totalClasses: 28, attendedClasses: 10 },
+  const [subjects, setSubjects] = useState([]);
+  const [UserId, setUserId] = useState(null);
+  const [degreeBranchId, setDegreeBranchId] = useState(null);
+  const [studentId, setStudentId] = useState(null);
+  const [currentSemester, setCurrentSemester] = useState(null);
 
-    // Add more subject data here
-  ];
+  useEffect(() => {
+    // Fetch the stored values from AsyncStorage
+    const fetchDataFromStorage = async () => {
+      try {
+        const storedUserId = await AsyncStorage.getItem('user_id');
+        const storedDegreeBranchId = await AsyncStorage.getItem('degree_branch_id');
+        const storedStudentId = await AsyncStorage.getItem('student_id');
+        const storedCurrentSemester = await AsyncStorage.getItem('current_semester');
+
+        if (
+          storedUserId &&
+          storedDegreeBranchId &&
+          storedStudentId &&
+          storedCurrentSemester
+        ) {
+          setUserId(storedUserId);
+          setDegreeBranchId(storedDegreeBranchId);
+          setStudentId(storedStudentId);
+          setCurrentSemester(storedCurrentSemester);
+
+          // Now you can fetch the data from the API using the retrieved values
+          fetchAttendanceData(storedUserId, storedStudentId, storedCurrentSemester, storedDegreeBranchId);
+        }
+      } catch (error) {
+        console.error('Error fetching data from AsyncStorage:', error);
+      }
+    };
+
+    fetchDataFromStorage();
+  }, []);
+
+  const fetchAttendanceData = (userId, studentId, semester, degreeBranchId) => {
+    // Fetch data from your API endpoint using the retrieved values
+    fetch(Url + `/attendance?user_id=${userId}&student_id=${studentId}&semester=${semester}&degree_branch_id=${degreeBranchId}`)
+      .then((response) => response.json())
+      .then((data) => {
+        // console.log('Fetched data:', data); // Log the data here
+        setSubjects(data);
+      })
+      .catch((error) => console.error('Error fetching data:', error));
+  };
 
   return (
     <ScrollView>
@@ -56,10 +91,12 @@ const Attendance = () => {
         {subjects.map((subject, index) => (
           <SubjectCard
             key={index}
-            subjectCode={subject.subjectCode}
-            subjectName={subject.subjectName}
+            subjectCode={subject.code}
+            subjectName={subject.course_name}
+            profName={subject.prof_name}
             totalClasses={subject.totalClasses}
             attendedClasses={subject.attendedClasses}
+            attendancePercentage={subject.present_percentage}
           />
         ))}
       </View>
@@ -123,12 +160,15 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginVertical: 4,
     color: Colors.LighBlueColor,
-    fontWeight:'800'
+    fontWeight: '800'
   },
   subjectAttendancePercentage: {
     color: Colors.LighBlueColor,
-    fontWeight:'800'
+    fontWeight: '800'
   },
+  profName: {
+    color: 'black'
+  }
 });
 
 export default Attendance;

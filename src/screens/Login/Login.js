@@ -7,7 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'; // Import 
 import { Url } from '../../../Global_Variable/api_link';
 
 const Login = () => {
-  const [username, setUsername] = useState('Ajith');
+  const [username, setUsername] = useState('211CS001');
   const [password, setPassword] = useState('demo@123');
   const [showPassword, setShowPassword] = useState(false);
   const navigation = useNavigation();
@@ -30,6 +30,12 @@ const Login = () => {
 
         // Store user data in AsyncStorage
         const AsyncStorageKeys = [
+          "section",
+          "current_semester",
+          'image',
+          'student_id',
+          'batch_id',
+          'degree_branch_id',
           'user_id',
           'user_group_id',
           'user_role_id',
@@ -42,7 +48,6 @@ const Login = () => {
           'address1',
           'state',
           'blood_group',
-          'image',
         ];
 
         AsyncStorageKeys.forEach(async (key) => {

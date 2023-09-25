@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity,TouchableHighlight,TouchableWithoutFeedback } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, TouchableHighlight, TouchableWithoutFeedback } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -7,6 +7,8 @@ import Colors from '../../Color';
 import { useNavigation } from '@react-navigation/native';
 import { ScrollView } from 'react-native-gesture-handler';
 import LessonPlan from './LesssonPlan';
+import { Url } from '../../../Global_Variable/api_link';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Stack = createStackNavigator();
 const TopTabs = createMaterialTopTabNavigator();
@@ -14,7 +16,13 @@ const TopTabs = createMaterialTopTabNavigator();
 const DayScreen = ({ route }) => {
   const { day, schedules } = route.params;
 
+  // Debugging: Log the schedules data
+  console.log('Schedules:', route);
   const daySchedule = schedules.find(schedule => schedule.day === day)?.schedule || [];
+
+  console.log('daySchedule:', daySchedule);
+
+  // Inside the DayScreen component
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -30,19 +38,26 @@ const DayScreen = ({ route }) => {
 
   const navigation = useNavigation();
 
+  // Check if schedules are available before rendering
+  if (!schedules || schedules.length === 0) {
+    return (
+      <View style={styles.dayContainer}>
+        <Text style={styles.schedule}>Loading...</Text>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.dayContainer}>
       <Text style={styles.schedule}>{day} - Schedule</Text>
       {daySchedule.map((event, index) => (
         <TouchableHighlight
           key={index}
-          onPress={() =>
-            navigation.navigate('LessonPlan', { event })
-          }
-          underlayColor="#DDDDDD" // Set the background color when pressed
+          onPress={() => navigation.navigate('LessonPlan', { event })}
+          underlayColor="#DDDDDD"
         >
           <View key={index} style={styles.eventCard}>
-            <Text style={styles.eventTime}>Time: {event.time}</Text>
+            <Text style={styles.eventTime}>Time: {event.hour_number}</Text>
             <Text style={styles.eventSubject}>Sub: {event.subject}</Text>
             <Text style={styles.eventStaff}>Staff: {event.staff}</Text>
           </View>
@@ -54,81 +69,122 @@ const DayScreen = ({ route }) => {
 
 const TimeTable = () => {
   const daysOfWeek = ['MON', 'TUE', 'WED', 'THU', 'FRI'];
+  const [batchId, setBatchId] = useState(null);
+  const [degreeBranchId, setDegreeBranchId] = useState(null);
+  const [section, setSection] = useState(null);
+  const [currentSemester, setCurrentSemester] = useState(null);
+  const startDate = '2022-12-26';
+  // const [endDate, setEndDate] = useState(null);
+  const endDate = '2022-12-31';
+  const [schedules, setSchedules] = useState([]); // Initialize schedules as an empty array
 
-  const schedules = [
-    {
-      day: 'MON',
-      schedule: [
-        { time: '9:00 AM - 10:00 AM', subject: 'English', staff: 'Gokul P' },
-        { time: '11:00 AM -  12:00 AM', subject: 'Science', staff: 'Siva S' },
-        { time: '1:00 PM -  2:00 PM', subject: 'Social', staff: 'Kiruba P' },
-        { time: '3:00 PM -  4:00 PM', subject: 'Math', staff: 'Mohan S' },
-      ],
-    },
+  useEffect(() => {
+    // Fetch the stored values from AsyncStorage
+    const fetchDataFromStorage = async () => {
+      try {
+        const storedBatchId = await AsyncStorage.getItem('batch_id');
+        const storedDegreeBranchId = await AsyncStorage.getItem('degree_branch_id');
+        const storedSection = await AsyncStorage.getItem('section');
+        const storedCurrentSemester = await AsyncStorage.getItem('current_semester');
+        // const storedStartDate = await AsyncStorage.getItem('start_date');
+        // const storedEndDate = await AsyncStorage.getItem('end_date');
 
-    {
-      day: 'TUE',
-      schedule: [
-        { time: '10:30 AM - 11:30 AM', subject: 'Mathematics', staff: 'Krishnan D' },
-        { time: '11:00 AM -  12:00 AM', subject: 'Science', staff: 'Siva S' },
-        { time: '1:00 PM -  2:00 PM', subject: 'Social', staff: 'Kiruba P' },
-        { time: '3:00 PM -  4:00 PM', subject: 'Math', staff: 'Mohan S' },
-      ],
-    },
-    {
-      day: 'WED',
-      schedule: [
-        { time: '10:30 AM -11:30 AM', subject: 'Science - I', staff: 'Gopal M' },
-        { time: '11:00 AM -  12:00 AM', subject: 'Science', staff: 'Siva S' },
-        { time: '1:00 PM -  2:00 PM', subject: 'Social', staff: 'Kiruba P' },
-        { time: '3:00 PM -  4:00 PM', subject: 'Math', staff: 'Mohan S' },
-      ],
-    },
-    {
-      day: 'THU',
-      schedule: [
-        { time: '10:30 AM -  11:30 AM', subject: 'OP ', staff: 'Mohan L' },
-        { time: '11:00 AM -  12:00 AM', subject: 'Science', staff: 'Siva S' },
-        { time: '1:00 PM -  2:00 PM', subject: 'Social', staff: 'Kiruba P' },
-        { time: '3:00 PM -  4:00 PM', subject: 'Math', staff: 'Mohan S' },
-      ],
-    },
-    {
-      day: 'FRI',
-      schedule: [
-        { time: '10:30 AM - 12:00 AM', subject: 'Designing', staff: 'Selva K' },
-        { time: '11:00 AM -  12:00 AM', subject: 'Science', staff: 'Siva S' },
-        { time: '1:00 PM -  2:00 PM', subject: 'Social', staff: 'Kiruba P' },
-        { time: '3:00 PM -  4:00 PM', subject: 'Math', staff: 'Mohan S' },
-      ],
-    },
-  ]
+        if (
+          storedBatchId &&
+          storedDegreeBranchId &&
+          storedSection &&
+          storedCurrentSemester
+          // storedStartDate &&
+          // storedEndDate
+        ) {
+          setBatchId(storedBatchId);
+          setDegreeBranchId(storedDegreeBranchId);
+          setSection(storedSection);
+          setCurrentSemester(storedCurrentSemester);
+          // setStartDate(storedStartDate);
+          // setEndDate(storedEndDate);
 
+          // Now you can fetch the schedules based on the retrieved data
+          fetchDataForSchedules();
+          console.log("loca", storedBatchId);
+          console.log("loca", storedSection);
+          console.log("loca", storedDegreeBranchId);
+          //   console.log("loca", storedStartDate);
+          // console.log("loca", storedEndDate);
+        }
+      } catch (error) {
+        console.error('Error fetching data from AsyncStorage:', error);
+      }
+    };
+
+    fetchDataFromStorage();
+  }, []);
+
+  // Function to fetch schedules based on the retrieved data
+  const fetchDataForSchedules = () => {
+    // Construct your API request with the state variables
+    fetch(
+      Url +
+      `/timetable?batch_id=${batchId}&degree_branch_id=${degreeBranchId}&section=${section}&current_semester=${currentSemester}&start_date=2022-12-26&end_date=2022-12-31`
+    )
+      .then((response) => {
+        console.log("shitt", response);
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+
+      .then((data) => {
+        console.log('Data from API:', data);
+        // Process the data from the backend and set it in the state
+        setSchedules(() => {
+          return [...data]
+
+        }); // Assuming the data is an array of schedules
+        // console.log('Updated :', schedules);
+      })
+      .catch((error) => {
+        console.error('Error fetching data from backend:', error);
+      });
+
+    console.log("batch", batchId);
+    console.log("degreeBranch", degreeBranchId);
+    console.log("section", section);
+    console.log("currentSemester", currentSemester);
+    console.log("startDate", startDate);
+    console.log("endDate", endDate);
+  };
+  // useEffect(() => {
+
+  //   console.log("useEE", schedules);
+
+  // }, [])
+  console.log("check",schedules)
   return (
-<TopTabs.Navigator
-  screenOptions={{
-    tabBarActiveTintColor: 'white',
-    tabBarInactiveTintColor: 'gray',
-    tabBarLabelStyle: {
-      fontSize: 16,
-      fontWeight: '900',
-    },
-    tabBarStyle: {
-      backgroundColor: '#0c46c3',
-    },
-  }}
->
-  {daysOfWeek.map((day, index) => (
-    <TopTabs.Screen
-      key={index}
-      name={day}
-      component={DayScreen}
-      initialParams={{ day, schedules }}
-      options={{ tabBarLabel: day }}
-    />
-  ))}
-</TopTabs.Navigator>
-
+    <TopTabs.Navigator
+      screenOptions={{
+        tabBarActiveTintColor: 'white',
+        tabBarInactiveTintColor: 'gray',
+        tabBarLabelStyle: {
+          fontSize: 16,
+          fontWeight: '900',
+        },
+        tabBarStyle: {
+          backgroundColor: '#0c46c3',
+        },
+      }}
+    >
+      {daysOfWeek.map((day, index) => (
+        <TopTabs.Screen
+          key={index}
+          name={day}
+          component={DayScreen}
+          initialParams={{ day, schedules:[...schedules] }} // Pass the schedules as a parameter
+          options={{ tabBarLabel: day }}
+        />
+      ))}
+    </TopTabs.Navigator>
   );
 };
 

@@ -4,6 +4,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { image_Url } from "../../Global_Variable/api_link"
 
 const MenuCard = ({ name, icon, backgroundColor, iconColor }) => {
   const navigation = useNavigation();
@@ -39,7 +40,9 @@ const Dashboard = () => {
         const AsyncStorageKeys = [
           'first_name',
           'last_name',
+          'image'
         ];
+        console.log('Image URLLL:', userData.image);
 
         // Use Promise.all to retrieve multiple values from AsyncStorage
         const retrievedData = await Promise.all(
@@ -85,7 +88,7 @@ const Dashboard = () => {
         <View style={styles.profileCard}>
           <View style={styles.circularProfile}>
             <Image
-              source={require('../assets/profile.png')}
+              source={{ uri: `${image_Url}${userData.image}` }} // Use string interpolation to concatenate the URIs
               style={styles.profilePicture}
             />
           </View>
@@ -106,8 +109,7 @@ const Dashboard = () => {
       </View>
     </View>
   );
-};
-
+}
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -166,7 +168,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     textAlign: 'center',
     color: '#111',
-    fontWeight:'800'
+    fontWeight: '800'
   },
   profileCard: {
     alignItems: 'center',

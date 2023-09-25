@@ -1,35 +1,44 @@
-import { View, Text, StyleSheet } from 'react-native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import Colors from '../../Color';
+import { Url } from '../../../Global_Variable/api_link';
 
-const CurrentCourseCard = ({ sub }) => {
+const CurrentCourseCard = ({ course }) => {
   return (
     <View style={styles.card}>
-      <Text style={styles.courseName}>Course Name: {sub.courseName}</Text>
-      <Text style={styles.cardText}>Faculty: {sub.facultyName}</Text>
-      <Text style={styles.cardText}>Semester: {sub.semester}</Text>
-      <Text style={styles.cardText}>Course Code: {sub.courseCode}</Text>
+      <Text style={styles.courseName}>Course Name: {course.course_name}</Text>
+      <Text style={styles.cardText}>Faculty: {course.prof_name}</Text>
+      <Text style={styles.cardText}>Semester: {course.section}</Text>
+      <Text style={styles.cardText}>Course Code: {course.code}</Text>
     </View>
   );
 };
 
 const Current = () => {
-  const data = [
-    {
-      courseName: 'Mathematics - II',
-      facultyName: 'Mr. UMA',
-      semester: '2023',
-      courseCode: 'MATH202',
-    },
-    // Add more courses here
-  ];
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    // Fetch data from your API or other source here
+    fetch(Url + `/current_course?user_id=16257&semester_no=3&degree_branch_id=37`)
+      .then((response) => response.json())
+      .then((data) => {
+        // console.log("Data", data); // Log the parsed data
+        // Assuming 'data' is an array of course objects
+        setData(data); // Set the array of course objects
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+  }, []);
 
   return (
-    <View>
-      {data.map((sub, index) => (
-        <CurrentCourseCard key={index} sub={sub} />
-      ))}
-    </View>
+    <ScrollView>
+      <View style={styles.cardContainer}>
+        {data.map((course, index) => (
+          <CurrentCourseCard key={index} course={course} />
+        ))}
+      </View>
+    </ScrollView>
   );
 };
 
@@ -39,6 +48,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     marginTop: 20,
+  },
+  cardContainer: {
+    marginVertical: 10,
+    paddingHorizontal: 10,
   },
   card: {
     backgroundColor: 'white',
@@ -58,7 +71,7 @@ const styles = StyleSheet.create({
   cardText: {
     fontSize: 16,
     marginBottom: 5,
-    color:'black'
+    color: 'black',
   },
 });
 
