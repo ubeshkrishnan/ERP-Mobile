@@ -210,11 +210,11 @@ function MainContainer() {
         <Stack.Screen name="LessonPlan" component={LessonPlan} options={{ title: 'Lesson-P' }} />
         <Stack.Screen name="Courses" component={TopBarNavigator} options={{ title: 'Course' }} />
         <Stack.Screen name="Eschedule" component={Eschedule} />
-        <Stack.Screen name="FeeDetails" component={FeeDetails} />
+        <Stack.Screen name="FeeDetails" component={FeeDetails}    options={{ title: 'Fee Details' }} />
         <Stack.Screen name="Library" component={Library} />
         <Stack.Screen name="Results" component={Results} />
         <Stack.Screen name="Profile" component={Profile} />
-        <Stack.Screen name="TimeTable" component={TimeTable} />
+        <Stack.Screen name="TimeTable" component={TimeTable} options={{ title: 'Time Table' }} />
         <Stack.Screen name="Cafeteria" component={Cafeteria} />
 
       </Stack.Navigator>

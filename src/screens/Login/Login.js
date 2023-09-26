@@ -37,6 +37,7 @@ const Login = () => {
           'batch_id',
           'degree_branch_id',
           'user_id',
+          'register_number',
           'user_group_id',
           'user_role_id',
           'first_name',
@@ -54,7 +55,7 @@ const Login = () => {
           if (userData[key] !== null && userData[key] !== undefined) {
             try {
               await AsyncStorage.setItem(key, userData[key].toString());
-              console.log(`Stored ${key}: ${userData[key]}`);
+              // console.log(`Stored ${key}: ${userData[key]}`);
             } catch (error) {
               console.error(`Error storing ${key}:`, error);
             }

@@ -48,7 +48,7 @@ const UserProfile = () => {
         });
 
         setUserData(userDataObject);
-        console.log('Retrieved user data:', userDataObject);
+        // console.log('Retrieved user data:', userDataObject);
       } catch (error) {
         console.error('Error retrieving user data:', error);
       }

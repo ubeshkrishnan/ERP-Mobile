@@ -14,16 +14,11 @@ const Stack = createStackNavigator();
 const TopTabs = createMaterialTopTabNavigator();
 
 const DayScreen = ({ route }) => {
-  const { day, schedules } = route.params;
-
-  // Debugging: Log the schedules data
-  console.log('Schedules:', route);
-  const daySchedule = schedules.find(schedule => schedule.day === day)?.schedule || [];
-
+  const { day } = route.params; // Removed schedules from destructuring
+  const [loading, setLoading] = useState(true);
+  const [daySchedule, setDaySchedule] = useState([]); // State for day's schedule
   console.log('daySchedule:', daySchedule);
-
   // Inside the DayScreen component
-
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
@@ -38,11 +33,27 @@ const DayScreen = ({ route }) => {
 
   const navigation = useNavigation();
 
-  // Check if schedules are available before rendering
-  if (!schedules || schedules.length === 0) {
+  useEffect(() => {
+    // Check if schedules are available before rendering
+    if (!route.params.schedules || route.params.schedules.length === 0) {
+      setLoading(true); // Set loading to true if schedules are empty
+    } else {
+      // Find the schedule for the current day
+      const currentDaySchedule = route.params.schedules.find(schedule => schedule.day === day);
+      if (currentDaySchedule) {
+        setDaySchedule(currentDaySchedule.schedule || []); // Set day's schedule
+        setLoading(false); // Set loading to false when data is available
+      } else {
+        setLoading(true); // Set loading to true if schedule not found for the day
+      }
+    }
+  }, [route.params.schedules, day]);
+
+  if (loading) {
     return (
       <View style={styles.dayContainer}>
         <Text style={styles.schedule}>Loading...</Text>
+
       </View>
     );
   }
@@ -58,8 +69,8 @@ const DayScreen = ({ route }) => {
         >
           <View key={index} style={styles.eventCard}>
             <Text style={styles.eventTime}>Time: {event.hour_number}</Text>
-            <Text style={styles.eventSubject}>Sub: {event.subject}</Text>
-            <Text style={styles.eventStaff}>Staff: {event.staff}</Text>
+            <Text style={styles.eventSubject}>Sub: {event.course_name}</Text>
+            <Text style={styles.eventStaff}>Staff: {event.professorName}</Text>
           </View>
         </TouchableHighlight>
       ))}
@@ -74,9 +85,9 @@ const TimeTable = () => {
   const [section, setSection] = useState(null);
   const [currentSemester, setCurrentSemester] = useState(null);
   const startDate = '2022-12-26';
-  // const [endDate, setEndDate] = useState(null);
   const endDate = '2022-12-31';
   const [schedules, setSchedules] = useState([]); // Initialize schedules as an empty array
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Fetch the stored values from AsyncStorage
@@ -86,16 +97,12 @@ const TimeTable = () => {
         const storedDegreeBranchId = await AsyncStorage.getItem('degree_branch_id');
         const storedSection = await AsyncStorage.getItem('section');
         const storedCurrentSemester = await AsyncStorage.getItem('current_semester');
-        // const storedStartDate = await AsyncStorage.getItem('start_date');
-        // const storedEndDate = await AsyncStorage.getItem('end_date');
 
         if (
           storedBatchId &&
           storedDegreeBranchId &&
           storedSection &&
           storedCurrentSemester
-          // storedStartDate &&
-          // storedEndDate
         ) {
           setBatchId(storedBatchId);
           setDegreeBranchId(storedDegreeBranchId);
@@ -122,45 +129,28 @@ const TimeTable = () => {
 
   // Function to fetch schedules based on the retrieved data
   const fetchDataForSchedules = () => {
-    // Construct your API request with the state variables
     fetch(
       Url +
       `/timetable?batch_id=${batchId}&degree_branch_id=${degreeBranchId}&section=${section}&current_semester=${currentSemester}&start_date=2022-12-26&end_date=2022-12-31`
     )
       .then((response) => {
-        console.log("shitt", response);
+
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
         return response.json();
       })
-
       .then((data) => {
-        console.log('Data from API:', data);
         // Process the data from the backend and set it in the state
-        setSchedules(() => {
-          return [...data]
-
-        }); // Assuming the data is an array of schedules
-        // console.log('Updated :', schedules);
+        setSchedules(data); // Set schedules directly without spreading
+        // console.log("Datasss", data)
+        setLoading(false); // Set loading to false when data is available
       })
       .catch((error) => {
         console.error('Error fetching data from backend:', error);
       });
-
-    console.log("batch", batchId);
-    console.log("degreeBranch", degreeBranchId);
-    console.log("section", section);
-    console.log("currentSemester", currentSemester);
-    console.log("startDate", startDate);
-    console.log("endDate", endDate);
   };
-  // useEffect(() => {
 
-  //   console.log("useEE", schedules);
-
-  // }, [])
-  console.log("check",schedules)
   return (
     <TopTabs.Navigator
       screenOptions={{
@@ -180,7 +170,7 @@ const TimeTable = () => {
           key={index}
           name={day}
           component={DayScreen}
-          initialParams={{ day, schedules:[...schedules] }} // Pass the schedules as a parameter
+          initialParams={{ day, schedules: ["...schedules"] }} // Pass the schedules as a parameter
           options={{ tabBarLabel: day }}
         />
       ))}

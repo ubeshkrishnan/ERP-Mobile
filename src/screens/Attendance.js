@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Dimensions, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, ScrollView, ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Colors from '../Color';
 import { Url } from '../../Global_Variable/api_link';
 
 const SubjectCard = ({ subjectCode, subjectName, profName, totalClasses, attendedClasses, attendancePercentage }) => {
   const formattedAttendancePercentage = `${(attendancePercentage * 1).toFixed(1)}%`;
+
 
   return (
     <View style={styles.card}>
@@ -42,7 +43,7 @@ const Attendance = () => {
   const [degreeBranchId, setDegreeBranchId] = useState(null);
   const [studentId, setStudentId] = useState(null);
   const [currentSemester, setCurrentSemester] = useState(null);
-
+  const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     // Fetch the stored values from AsyncStorage
     const fetchDataFromStorage = async () => {
@@ -79,27 +80,34 @@ const Attendance = () => {
     fetch(Url + `/attendance?user_id=${userId}&student_id=${studentId}&semester=${semester}&degree_branch_id=${degreeBranchId}`)
       .then((response) => response.json())
       .then((data) => {
+        setIsLoading(true);
+
         // console.log('Fetched data:', data); // Log the data here
         setSubjects(data);
+        setIsLoading(false);
       })
       .catch((error) => console.error('Error fetching data:', error));
   };
 
   return (
     <ScrollView>
-      <View style={styles.container}>
-        {subjects.map((subject, index) => (
-          <SubjectCard
-            key={index}
-            subjectCode={subject.code}
-            subjectName={subject.course_name}
-            profName={subject.prof_name}
-            totalClasses={subject.totalClasses}
-            attendedClasses={subject.attendedClasses}
-            attendancePercentage={subject.present_percentage}
-          />
-        ))}
-      </View>
+      {isLoading ? (
+        <ActivityIndicator size="large" color={Colors.LighBlueColor} />
+      ) : (
+        <View style={styles.container}>
+          {subjects.map((subject, index) => (
+            <SubjectCard
+              key={index}
+              subjectCode={subject.code}
+              subjectName={subject.course_name}
+              profName={subject.prof_name}
+              totalClasses={subject.totalClasses}
+              attendedClasses={subject.attendedClasses}
+              attendancePercentage={subject.present_percentage}
+            />
+          ))}
+        </View>
+      )}
     </ScrollView>
   );
 };

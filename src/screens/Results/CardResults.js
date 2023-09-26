@@ -1,17 +1,38 @@
-import React, { useState } from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, TouchableOpacity, StyleSheet, Text, ScrollView } from 'react-native';
 import { Card, Title, Paragraph } from 'react-native-paper';
 import Colors from '../../Color';
+import { Url } from '../../../Global_Variable/api_link';
 
-const CardResult = ({ title, description }) => {
+const CardResult = ({ title, description, register_number }) => {
+
   const [isExpanded, setIsExpanded] = useState(false);
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    if (register_number) {
+      // Fetch data from your API using the provided register_number
+      fetch(Url + `/e_result?&register_number=${register_number}`)
+        .then((response) => response.json())
+        .then((data) => {
+          setData(data);
+        })
+        .catch((error) => {
+          console.error('Error fetching data:', error);
+        });
+    }
+  }, [register_number]);
 
   const toggleExpansion = () => {
     setIsExpanded(!isExpanded);
   };
 
-  // Extracting Mark Status from the description
-  const markStatus = description.match(/Mark Status: ([^\n]+)/)[1];
+  // Check if description is defined and split it
+  const descriptionLines = description ? description.split('\n') : [];
+
+  // Extracting Mark Status if it's available
+  const markStatusMatch = descriptionLines.length > 1 ? descriptionLines[1].match(/Mark Status: ([^\n]+)/) : null;
+  const markStatus = markStatusMatch ? markStatusMatch[1] : '';
 
   return (
     <View style={styles.cardContainer}>
@@ -25,17 +46,23 @@ const CardResult = ({ title, description }) => {
       {isExpanded && (
         <Card style={[styles.card, styles.expandedCard]}>
           <Card.Content style={styles.descriptionContainer}>
-            {description.split('\n').map((line, index) => (
+            {descriptionLines.map((line, index) => (
               <Paragraph
                 style={[
                   styles.description,
+                  { color: 'black' },
                   markStatus === 'Present' ? styles.greenText : markStatus === 'Absent' ? styles.redText : null,
                 ]}
-                key={index}
+                key={`${index}-${register_number}`} // Combine index with another identifier for uniqueness
               >
                 {line}
               </Paragraph>
             ))}
+
+
+            {/* {data && (
+              // Render additional data here
+            )} */}
           </Card.Content>
         </Card>
       )}
@@ -46,9 +73,11 @@ const CardResult = ({ title, description }) => {
 const styles = StyleSheet.create({
   cardContainer: {
     marginBottom: 10,
+    color: 'black',
   },
   card: {
     margin: 10,
+    color: 'black',
   },
   expandedCard: {
     marginTop: 10,

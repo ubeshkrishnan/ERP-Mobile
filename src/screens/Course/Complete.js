@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, ActivityIndicator } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import Colors from '../../Color'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -27,7 +27,7 @@ const Complete = () => {
   const [UserId, setUserId] = useState(null)
   const [degreeBranchId, setDegreeBranchId] = useState(null)
   const [studentId, setStudentId] = useState(null)
-
+  const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     // Fetch the stored values from AsyncStorage
     const fetchDataFromStorage = async () => {
@@ -52,12 +52,12 @@ const Complete = () => {
     fetchDataFromStorage();
   }, []);
 
-
   const fetchCourseData = (userId, studentId, degreeBranchId) => {
     fetch(Url + `/course_complete?user_id=${userId}&student_id=${studentId}&degree_branch_id=${degreeBranchId}`)
       .then((response) => response.json())
       .then((data) => {
         // console.log('Fetched data:', data); // Log the data here
+        setIsLoading(false);
         setData(data);
       })
       .catch((error) => {
@@ -81,47 +81,53 @@ const Complete = () => {
   // ]
 
   return (
-    <ScrollView>
-      <View style={styles.cardContainer}>
-        {data.map((course, index) => (
-          <CourseCard key={index} course={course} />
-        ))}
-      </View>
-    </ScrollView>
-  )
-}
+    <View>
+      {isLoading ? (
+        <ActivityIndicator size="large" color={Colors.LighBlueColor} />
+      ) : (
+        <ScrollView>
+          <View style={styles.cardContainer}>
+            {data.map((course, index) => (
+              <CourseCard key={index} course={course} />
+            ))}
+          </View>
+        </ScrollView>
+      )}
+    </View>
+  );
+            }
 
-const styles = StyleSheet.create({
-  header: {
-    textAlign: 'center',
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginTop: 20,
-  },
-  cardContainer: {
-    marginVertical: 10,
-    paddingHorizontal: 10,
-  },
-  card: {
-    backgroundColor: 'white',
-    padding: 15,
-    marginBottom: 10,
-    borderRadius: 5,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    elevation: 3,
-  },
-  cardText: {
-    fontSize: 16,
-    marginBottom: 5,
-    color: 'black',
-  },
-  courseName: {
-    fontSize: 16,
-    marginBottom: 5,
-    color: 'black',
-  },
-})
+  const styles = StyleSheet.create({
+    header: {
+      textAlign: 'center',
+      fontSize: 20,
+      fontWeight: 'bold',
+      marginTop: 20,
+    },
+    cardContainer: {
+      marginVertical: 10,
+      paddingHorizontal: 10,
+    },
+    card: {
+      backgroundColor: 'white',
+      padding: 15,
+      marginBottom: 10,
+      borderRadius: 5,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.2,
+      elevation: 3,
+    },
+    cardText: {
+      fontSize: 16,
+      marginBottom: 5,
+      color: 'black',
+    },
+    courseName: {
+      fontSize: 16,
+      marginBottom: 5,
+      color: 'black',
+    },
+  })
 
-export default Complete
+  export default Complete
