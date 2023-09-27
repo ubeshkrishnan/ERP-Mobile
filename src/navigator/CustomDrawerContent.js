@@ -16,6 +16,22 @@ const MyComponent = () => {
         active={active === 'second'}
         onPress={() => setActive('second')}
       />
+      <Drawer.Item
+        label="third Item"
+        active={active === 'third'}
+        onPress={() => setActive('third')}
+      />
+      <Drawer.Item
+        label="fourth Item"
+        active={active === 'fourth'}
+        onPress={() => setActive('fourth')}
+      />
+      <Drawer.Item
+        label="fifth Item"
+        active={active === 'fifth'}
+        onPress={() => setActive('fifth')}
+      />
+
     </Drawer.Section>
   );
 };

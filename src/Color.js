@@ -5,7 +5,7 @@ const Colors = {
     GreenColor: 'green',
     HeaderBlue: '#0c46c3',
     ColorYellow: '#F3B825',
-    RedTheme:'#CE1141'
+    RedTheme: '#CE1141'
 };
 // const loader = {
 //     flex: 1,
@@ -14,4 +14,4 @@ const Colors = {
 //     marginBottom: 30,
 //     color:'blue'
 // };
-export default  Colors ;
+export default Colors;

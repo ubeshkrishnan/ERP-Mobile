@@ -1,91 +1,165 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, ActivityIndicator, Dimensions, TextInput } from 'react-native'; // Import TextInput
 import { Url } from '../../Global_Variable/api_link';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const windowWidth = Dimensions.get('window').width;
 
 const FeeDetails = () => {
-  const [feeData, setFeeData] = useState([]); // State to hold fee data
-  const [isLoading, setIsLoading] = useState(true); // State to track loading status
+  const [feeData, setFeeData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [studentId, setStudentId] = useState(null);
+  const [searchQuery, setSearchQuery] = useState(''); // State for search query
 
   useEffect(() => {
-    // Fetch fee data from the specified URL
-    fetchFeeData()
-      .then((data) => {
-        setFeeData(data);
-        setIsLoading(false); // Set loading to false when data is available
-      })
-      .catch((error) => {
-        console.error('Error fetching fee data:', error);
-        setIsLoading(false); // Set loading to false in case of an error
-      });
+    const fetchDataFromStorage = async () => {
+      try {
+        const storedStudentId = await AsyncStorage.getItem('student_id');
+
+        if (storedStudentId) {
+          setStudentId(storedStudentId);
+        }
+      } catch (error) {
+        console.error('Error fetching data from AsyncStorage:', error);
+      }
+    };
+
+    fetchDataFromStorage();
   }, []);
 
-  // Function to fetch fee data from the specified URL
-  const fetchFeeData = async () => {
+  useEffect(() => {
+    if (studentId) {
+      fetchFeeData(studentId)
+        .then((data) => {
+          // Organize fee data by fee_name
+          const organizedData = organizeData(data);
+          setFeeData(organizedData);
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          console.error('Error fetching fee data:', error);
+          setIsLoading(false);
+        });
+    }
+  }, [studentId]);
+
+  const fetchFeeData = async (studentId) => {
     try {
-      const response = await fetch(Url + '/fee_details');
+      const response = await fetch(`${Url}/fee_details?student_id=${studentId}`);
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
       const data = await response.json();
+
       return data;
     } catch (error) {
       throw new Error(`Error fetching fee data: ${error.message}`);
     }
   };
 
+  const organizeData = (data) => {
+    // Create an object to group fee data by fee_name
+    const groupedData = {};
+
+    data.forEach((fee) => {
+      const feeName = fee.fee_name;
+
+      if (!groupedData[feeName]) {
+        groupedData[feeName] = [];
+      }
+
+      groupedData[feeName].push(fee);
+    });
+
+    return groupedData;
+  };
+
+  // Filter fee data based on the search query
+  const filteredFeeData = Object.keys(feeData)
+    .filter((feeName) => feeName.toLowerCase().includes(searchQuery.toLowerCase()))
+    .reduce((filtered, feeName) => {
+      filtered[feeName] = feeData[feeName];
+      return filtered;
+    }, {});
+
   return (
     <ScrollView style={styles.container}>
-      {isLoading ? ( // Render loading indicator while data is loading
+      <TextInput
+        style={styles.searchBar}
+        placeholder="Search..."
+        placeholderTextColor="black"
+        onChangeText={(text) => setSearchQuery(text)}
+        value={searchQuery}
+      />
+      {isLoading ? (
         <View style={styles.loadingContainer}>
-          <ActivityIndicator  size="large" color="blue" />
+          <ActivityIndicator size="large" color="blue" />
           <Text style={styles.loadingText}>Loading...</Text>
         </View>
       ) : (
-        // Render fee data when available
-        feeData.map((fee, index) => (
-          <FeeDetailsCard key={index} fee={fee} />
+        // Render fee data for each fee category
+        Object.keys(filteredFeeData).map((feeName, index) => (
+          <FeeCategory key={index} feeName={feeName} fees={filteredFeeData[feeName]} />
         ))
       )}
     </ScrollView>
   );
 };
 
-const FeeDetailsCard = ({ fee }) => {
-  let cardColor;
-  switch (fee.term_number) {
-    case "1":
-      cardColor = "#FAF1E5"; // Yellow for term 1
-      break;
-    case "2":
-      cardColor = "#4CAF50"; // Green for term 2
-      break;
-    default:
-      cardColor = "#9E9E9E"; // Gray for other terms
-      break;
-  }
-
+const FeeCategory = ({ feeName, fees }) => {
   return (
-    <View style={[styles.card, { backgroundColor: cardColor }]}>
-      <Text style={styles.cardText}>Semester: {fee.term_number}</Text>
-      <Text style={styles.cardText}>Total Fee: {fee.amt_to_be_paid}</Text>
-      <Text style={styles.cardPaid}>Paid: {fee.paid}</Text>
-      <Text style={styles.cardPending}>Pending: {fee.amt_to_be_paid - fee.paid}</Text>
-    </View>
+    <ScrollView style={styles.feeCategory}>
+      <Text style={styles.feeCategoryTitle}>Fee Type: {feeName}</Text>
+      {fees.map((fee, index) => (
+        <View key={index} style={styles.card}>
+          <Text style={styles.cardText}>Term: {fee.term_number}</Text>
+          <Text style={styles.cardText}>Total Fee: {fee.amt_to_be_paid}</Text>
+          <Text style={styles.cardText}>Paid: {fee.paid !== null ? fee.paid : 'Not available'}</Text>
+          <Text style={styles.cardTextPending}>
+            Pending: {fee.paid !== null ? fee.amt_to_be_paid - fee.paid : 'Not available'}
+          </Text>
+        </View>
+      ))}
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: '#E3E3E3',
     padding: 10,
     marginTop: 20,
+  },
+  searchBar: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginBottom: 10,
+    paddingLeft: 10,
+    borderRadius: 10,
+    color: 'black',
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   loadingText: {
     fontSize: 18,
     textAlign: 'center',
     marginTop: 60,
-    color:'black'
+    color: 'black',
+  },
+  feeCategory: {
+    marginBottom: 20,
+  },
+  feeCategoryTitle: {
+    fontSize: 17,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    color: 'black',
+    paddingLeft: 20,
   },
   card: {
     marginBottom: 10,
@@ -95,24 +169,21 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     elevation: 3,
     padding: 15,
+    width: windowWidth * 0.9,
+    backgroundColor: 'white',
   },
   cardText: {
     fontSize: 16,
     marginVertical: 5,
     color: 'black',
   },
-  cardPending: {
+  cardTextPending: {
     color: 'red',
-    fontWeight: '600',
-    fontSize: 17,
-    marginVertical: 5,
-  },
-  cardPaid: {
-    color: 'green',
-    fontWeight: '600',
-    fontSize: 17,
-    marginVertical: 5,
+    fontWeight: '800',
+    fontSize: 16,
   },
 });
 
 export default FeeDetails;
+
+

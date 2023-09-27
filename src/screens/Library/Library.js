@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { View, StyleSheet, ScrollView, TextInput } from 'react-native';
 import { Card, Paragraph } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Url } from '../../../Global_Variable/api_link';
@@ -7,6 +7,7 @@ import { Url } from '../../../Global_Variable/api_link';
 const Library = () => {
   const [bookData, setBookData] = useState([]);
   const [userId, setUserId] = useState(null);
+  const [searchQuery, setSearchQuery] = useState(''); // State for search query
 
   useEffect(() => {
     // Fetch the stored values from AsyncStorage
@@ -38,39 +39,55 @@ const Library = () => {
       });
   }
 
+  // Filter book data based on the search query
+  const filteredBookData = bookData.filter((book) =>
+    book.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
-    <ScrollView style={styles.container}>
-      {bookData.map((book, index) => (
-        <Card style={styles.card} key={index}>
-          <Card.Content>
-            <Paragraph style={styles.paragraph}>
-              Accession No: {book.accession_no}
-            </Paragraph>
-            <Paragraph style={styles.paragraph}>
-              Book: {book.title}
-            </Paragraph>
-            <Paragraph style={styles.paragraph}>
-              Author : {book.author_name}
-            </Paragraph>
-            <Paragraph style={styles.paragraph}>
-              Issued Date: {book.date_issued}
-            </Paragraph>
-            <Paragraph style={styles.paragraph}>
-              Due Date: {book.due_date}
-            </Paragraph>
-            <Paragraph style={styles.paragraph}>
-              Returned Date: {book.date_returned}
-            </Paragraph>
-            <Paragraph style={styles.paragraph}>
-              Fine: {book.fine}
-            </Paragraph>
-            <Paragraph style={styles.paragraph}>
-              Status: {book.status}
-            </Paragraph>
-          </Card.Content>
-        </Card>
-      ))}
-    </ScrollView>
+    <View style={styles.container}>
+      {/* Search bar */}
+      <TextInput
+        style={styles.searchBar}
+        placeholder="Search books..."
+        placeholderTextColor="black"
+        onChangeText={(text) => setSearchQuery(text)}
+        value={searchQuery}
+      />
+
+      <ScrollView>
+        {filteredBookData.map((book, index) => (
+          <Card style={styles.card} key={index}>
+            <Card.Content>
+              <Paragraph style={styles.paragraph}>
+                Accession No: {book.accession_no}
+              </Paragraph>
+              <Paragraph style={styles.paragraph}>
+                Book: {book.title}
+              </Paragraph>
+              <Paragraph style={styles.paragraph}>
+                Author : {book.author_name}
+              </Paragraph>
+              <Paragraph style={styles.paragraph}>
+                Issued Date: {book.date_issued}
+              </Paragraph>
+              <Paragraph style={styles.paragraph}>
+                Due Date: {book.due_date}
+              </Paragraph>
+              <Paragraph style={styles.paragraph}>
+                Returned Date: {book.date_returned}
+              </Paragraph>
+              <Paragraph style={styles.paragraph}>
+                Fine: {book.fine}
+              </Paragraph>
+              <Paragraph style={styles.paragraph}>
+                Status: {book.status}
+              </Paragraph>
+            </Card.Content>
+          </Card>
+        ))}
+      </ScrollView>
+    </View>
   );
 };
 
@@ -79,18 +96,33 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     backgroundColor: '#FAF1E5',
-
   },
+
   card: {
     width: '100%',
     padding: 10,
     elevation: 3,
-    marginBottom: 10, // Add margin between cards
-    shadowColor: 'black',
+    marginBottom: 10,
+    // shadowColor: 'black',
     paddingBottom: 10,
+    backgroundColor: "#A9A9A9",
+    color: 'black',
+    fontWeight: '700',
+    fontSize: 16
   },
+
   paragraph: {
     marginBottom: 9,
+  },
+
+  searchBar: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginBottom: 10,
+    paddingLeft: 10,
+    borderRadius: 10,
+    color: 'black',
   },
 });
 
