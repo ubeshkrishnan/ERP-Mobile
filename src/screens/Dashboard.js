@@ -40,7 +40,8 @@ const Dashboard = () => {
         const AsyncStorageKeys = [
           'first_name',
           'last_name',
-          'image'
+          'image',
+          'register_number'
         ];
         console.log('Image URLLL:', userData.image);
 
@@ -93,7 +94,7 @@ const Dashboard = () => {
             />
           </View>
           <Text style={styles.profileText}>{userData.first_name} {userData.last_name}</Text>
-          <Text style={styles.studentId}>STD - 210003</Text>
+          <Text style={styles.studentId}>{userData.register_number}</Text>
         </View>
         <View style={styles.cardContainer}>
           {menuItems.map(item => (

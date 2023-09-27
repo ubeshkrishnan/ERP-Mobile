@@ -4,20 +4,49 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Colors from '../Color';
 import { Url } from '../../Global_Variable/api_link';
 
-const SubjectCard = ({ subjectCode, subjectName, profName, totalClasses, attendedClasses, attendancePercentage }) => {
-  const formattedAttendancePercentage = `${(attendancePercentage * 1).toFixed(1)}%`;
+const TextStyles = StyleSheet.create({
+  subjectCode: {
+    fontSize: 18,
+    fontWeight: '800',
+    color: '#009FFF',
+  },
+  subjectName: {
+    fontSize: 16,
+    marginVertical: 4,
+    color: 'black',
+    fontWeight: '700',
+  },
+  subjectTotalClass: {
+    fontSize: 16,
+    marginVertical: 4,
+    color: 'black',
+  },
+  subjectAttendClass: {
+    fontSize: 16,
+    marginVertical: 4,
+    color: Colors.LighBlueColor,
+    fontWeight: '800',
+  },
+  subjectAttendancePercentage: {
+    color: Colors.LighBlueColor,
+    fontWeight: '800'
+  },
+  profName: {
+    color: 'black',
+    fontWeight: '500'
+  },
+});
 
+const SubjectCard = ({ subjectCode, subjectName, profName, attendancePercentage }) => {
+  const formattedAttendancePercentage = `${(attendancePercentage * 1).toFixed(1)}%`;
 
   return (
     <View style={styles.card}>
       <View style={styles.details}>
         <View style={styles.detailsLeft}>
-          <Text style={styles.subjectCode}>{subjectCode}</Text>
-          <Text style={styles.subjectName}>{subjectName}</Text>
-          <Text style={styles.profName}>Professor:{profName}</Text>
-          <Text style={styles.subjectTotalClass}>Total Classes: {totalClasses}</Text>
-          <Text style={styles.subjectAttendClass}>Attended Classes: {attendedClasses}</Text>
-
+          <Text style={TextStyles.subjectCode}>{subjectCode}</Text>
+          <Text style={TextStyles.subjectName}>{subjectName}</Text>
+          <Text style={TextStyles.profName}>Professor :{profName}</Text>
         </View>
         <View style={styles.circleContainer}>
           <View
@@ -44,6 +73,7 @@ const Attendance = () => {
   const [studentId, setStudentId] = useState(null);
   const [currentSemester, setCurrentSemester] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     // Fetch the stored values from AsyncStorage
     const fetchDataFromStorage = async () => {
@@ -92,7 +122,10 @@ const Attendance = () => {
   return (
     <ScrollView>
       {isLoading ? (
-        <ActivityIndicator size="large" color={Colors.LighBlueColor} />
+        <View style={{ alignItems: 'center', marginTop: 80 }}>
+          <ActivityIndicator size="large" color={Colors.LighBlueColor} />
+          <Text style={{ color: 'black' }}>Loading...</Text>
+        </View>
       ) : (
         <View style={styles.container}>
           {subjects.map((subject, index) => (
@@ -102,7 +135,6 @@ const Attendance = () => {
               subjectName={subject.course_name}
               profName={subject.prof_name}
               totalClasses={subject.totalClasses}
-              attendedClasses={subject.attendedClasses}
               attendancePercentage={subject.present_percentage}
             />
           ))}
@@ -110,12 +142,13 @@ const Attendance = () => {
       )}
     </ScrollView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
+    backgroundColor: '#E3E3E3'
   },
   card: {
     backgroundColor: 'white',
@@ -149,34 +182,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'black',
   },
-  subjectCode: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: 'black',
-  },
-  subjectName: {
-    fontSize: 16,
-    marginVertical: 4,
-    color: 'black',
-  },
-  subjectTotalClass: {
-    fontSize: 16,
-    marginVertical: 4,
-    color: 'black',
-  },
-  subjectAttendClass: {
-    fontSize: 16,
-    marginVertical: 4,
-    color: Colors.LighBlueColor,
-    fontWeight: '800'
-  },
-  subjectAttendancePercentage: {
-    color: Colors.LighBlueColor,
-    fontWeight: '800'
-  },
-  profName: {
-    color: 'black'
-  }
 });
 
 export default Attendance;

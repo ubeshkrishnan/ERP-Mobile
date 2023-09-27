@@ -1,31 +1,46 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import CardResult from './CardResults'; // Correct import statement
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Url } from '../../../Global_Variable/api_link';
 
 const Result = () => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [registerNo, setRegisterNo] = useState(null);
 
   useEffect(() => {
-    // Replace '211CS001' with the actual register_number you want to fetch
-    const registerNumber = '211CS001';
-    // Construct the URL with the register_number
-    const apiUrl = `${Url}/e_result?register_number=${registerNumber}`;
+    // Fetch the stored values from AsyncStorage
+    const fetchDataFromStorage = async () => {
+      try {
+        const storedRegisterNo = await AsyncStorage.getItem('register_number');
 
+        if (storedRegisterNo) {
+          setRegisterNo(storedRegisterNo);
+          // Now you can fetch the data from the API using the retrieved values
+          fetchResultData(storedRegisterNo);
+        }
+      } catch (error) {
+        console.error('Error fetching data from AsyncStorage:', error);
+      }
+    };
+
+    fetchDataFromStorage();
+  }, []);
+
+  const fetchResultData = (registerNo) => {
     // Fetch data from the API dynamically
-    fetch(apiUrl)
+    fetch(`${Url}/e_result?register_number=${registerNo}`)
       .then((response) => response.json())
       .then((data) => {
         setData(data); // Set the fetched data
         setIsLoading(false); // Set loading to false
-        // console.log(data)
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
         setIsLoading(false); // Set loading to false in case of an error
       });
-  }, []);
+  };
 
   return (
     <ScrollView>
@@ -41,10 +56,8 @@ const Result = () => {
           />
         ))
       )}
-
     </ScrollView>
   );
-
 };
 
 export default Result;

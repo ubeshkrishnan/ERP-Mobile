@@ -3,13 +3,14 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions } from 
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage'; // Import AsyncStorage
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Url } from '../../../Global_Variable/api_link';
 
 const Login = () => {
-  const [username, setUsername] = useState('211CS001');
+  const [username, setUsername] = useState('211CS010');
   const [password, setPassword] = useState('demo@123');
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState(null);
   const navigation = useNavigation();
 
   const handleLogin = async () => {
@@ -55,7 +56,7 @@ const Login = () => {
           if (userData[key] !== null && userData[key] !== undefined) {
             try {
               await AsyncStorage.setItem(key, userData[key].toString());
-              // console.log(`Stored ${key}: ${userData[key]}`);
+              console.log(`Stored ${key}: ${userData[key]}`);
             } catch (error) {
               console.error(`Error storing ${key}:`, error);
             }
@@ -63,16 +64,20 @@ const Login = () => {
         });
 
         navigation.navigate('Dashboard');
-        console.log('Login successful');
+        setError(null);
       } else {
-        console.log('Login failed');
-        // Handle login failure, show an error message, etc.
+        setError('Incorrect username or password'); // Set error message for incorrect login
       }
     } catch (error) {
-      console.error('Login error:', error);
+      if (error.response) {
+        // The request was made, but the server responded with an error
+        setError('Check Usernma and password ' + error.response.status); // Set error message for network error
+      } else {
+        // Something else happened while setting up the request
+        setError('An error occurred: ' + error.message);
+      }
     }
   };
-
 
   const toggleShowPassword = () => {
     setShowPassword((prevState) => !prevState);
@@ -115,6 +120,10 @@ const Login = () => {
             />
           </TouchableOpacity>
         </View>
+        <Text>
+          {error && <Text style={styles.errorText}>{error}</Text>} {/* Display error message */}
+        </Text>
+
         <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
           <View style={styles.loginButtonCard}>
             <Text style={styles.loginButtonText}>Login</Text>
@@ -197,6 +206,12 @@ const styles = StyleSheet.create({
   iconAboveLogin: {
     marginBottom: 20,
   },
+  errorText: {
+    color: 'white', // Set the color for error text
+    marginBottom: 10, // Add some margin to separate it from the login button
+    fontWeight: '800',
+  },
 });
 
 export default Login;
+

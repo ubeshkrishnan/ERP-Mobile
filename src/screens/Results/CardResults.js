@@ -2,26 +2,50 @@ import React, { useState, useEffect } from 'react';
 import { View, TouchableOpacity, StyleSheet, Text, ScrollView } from 'react-native';
 import { Card, Title, Paragraph } from 'react-native-paper';
 import Colors from '../../Color';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Url } from '../../../Global_Variable/api_link';
 
 const CardResult = ({ title, description, register_number }) => {
 
   const [isExpanded, setIsExpanded] = useState(false);
   const [data, setData] = useState(null);
+  const [registerNo, setRegisterNo] = useState(null);
 
   useEffect(() => {
-    if (register_number) {
-      // Fetch data from your API using the provided register_number
-      fetch(Url + `/e_result?&register_number=${register_number}`)
-        .then((response) => response.json())
-        .then((data) => {
-          setData(data);
-        })
-        .catch((error) => {
-          console.error('Error fetching data:', error);
-        });
+    // Fetch the stored values from AsyncStorage
+    const fetchDataFromStorage = async () => {
+      try {
+        const storedRegisterNo = await AsyncStorage.getItem('register_number');
+
+        if (storedRegisterNo) {
+          setRegisterNo(storedRegisterNo);
+          // Now you can fetch the data from the API using the retrieved values
+        }
+      } catch (error) {
+        console.error('Error fetching data from AsyncStorage:', error);
+      }
+    };
+
+    fetchDataFromStorage();
+  }, []);
+
+  useEffect(() => {
+    if (registerNo) {
+      fetchResultData(registerNo);
     }
-  }, [register_number]);
+  }, [registerNo]);
+
+  const fetchResultData = (registerNo) => {
+    // Fetch data from your API using the provided register_number
+    fetch(Url + `/e_result?&register_number=${registerNo}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setData(data);
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+  }
 
   const toggleExpansion = () => {
     setIsExpanded(!isExpanded);
@@ -59,10 +83,9 @@ const CardResult = ({ title, description, register_number }) => {
               </Paragraph>
             ))}
 
-
             {/* {data && (
-              // Render additional data here
-            )} */}
+                // Render additional data here
+              )} */}
           </Card.Content>
         </Card>
       )}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
-import Colors from '../Color';
+import { Colors, loader } from '../Color';
 import { Url } from '../../Global_Variable/api_link';
 
 const Calendar = () => {
@@ -10,10 +10,9 @@ const Calendar = () => {
 
   useEffect(() => {
     // Define the URL you want to fetch data from
-    const apiUrl = Url + '/calendar'; // Replace with your actual API URL
 
     // Use the fetch API to make the GET request
-    fetch(apiUrl)
+    fetch(Url + '/calendar')
       .then((response) => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -53,7 +52,10 @@ const Calendar = () => {
         value={searchText}
       />
       {loading ? ( // Show ActivityIndicator when loading
-        <ActivityIndicator size="large" color="blue" style={styles.loader} />
+        <View style={{ alignItems: 'center', marginTop: 80 }}>
+          <ActivityIndicator size="large" style={styles.loader} />
+          <Text style={{ color: 'black' }}>Loading...</Text>
+        </View>
       ) : (
         <ScrollView style={styles.cardContainer}>{renderDays()}</ScrollView>
       )}
@@ -111,6 +113,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    marginBottom: 30,
+    color: 'blue'
   },
 });
 
