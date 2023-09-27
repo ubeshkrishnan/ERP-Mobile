@@ -116,6 +116,7 @@ const TimeTable = () => {
           console.log("loca", storedBatchId);
           console.log("loca", storedSection);
           console.log("loca", storedDegreeBranchId);
+
           //   console.log("loca", storedStartDate);
           // console.log("loca", storedEndDate);
         }
@@ -127,6 +128,7 @@ const TimeTable = () => {
     fetchDataFromStorage();
   }, []);
 
+  console.log("ssss", schedules)
   // Function to fetch schedules based on the retrieved data
   const fetchDataForSchedules = () => {
     fetch(
@@ -143,7 +145,7 @@ const TimeTable = () => {
       .then((data) => {
         // Process the data from the backend and set it in the state
         setSchedules(data); // Set schedules directly without spreading
-        // console.log("Datasss", data)
+        console.log("Datassss", data)
         setLoading(false); // Set loading to false when data is available
       })
       .catch((error) => {

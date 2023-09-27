@@ -11,7 +11,6 @@ const TextStyles = StyleSheet.create({
     color: '#009FFF',
   },
   subjectName: {
-    fontSize: 16,
     marginVertical: 4,
     color: 'black',
     fontWeight: '700',
@@ -33,6 +32,7 @@ const TextStyles = StyleSheet.create({
   },
   profName: {
     color: 'black',
+    fontSize: 15,
     fontWeight: '500'
   },
 });
@@ -46,7 +46,7 @@ const SubjectCard = ({ subjectCode, subjectName, profName, attendancePercentage 
         <View style={styles.detailsLeft}>
           <Text style={TextStyles.subjectCode}>{subjectCode}</Text>
           <Text style={TextStyles.subjectName}>{subjectName}</Text>
-          <Text style={TextStyles.profName}>Professor :{profName}</Text>
+          <Text style={TextStyles.profName}>Professor: {profName !== null ? profName : "Not available"}</Text>
         </View>
         <View style={styles.circleContainer}>
           <View
@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
     height: Dimensions.get('window').width * 0.20,
     width: Dimensions.get('window').width * 0.20,
     borderRadius: (Dimensions.get('window').width * 0.30) / 2,
-    borderWidth: 2, // Border width
+    borderWidth: 4, // Border width
     justifyContent: 'center',
     alignItems: 'center',
   },

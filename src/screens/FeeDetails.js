@@ -128,8 +128,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#E3E3E3',
-    padding: 10,
-    marginTop: 20,
+    padding: 16,
   },
   searchBar: {
     height: 40,

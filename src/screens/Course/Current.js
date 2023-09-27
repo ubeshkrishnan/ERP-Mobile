@@ -6,10 +6,11 @@ import { Url } from '../../../Global_Variable/api_link';
 const CurrentCourseCard = ({ course }) => {
   return (
     <View style={styles.card}>
+      <Text style={styles.cardCode}>Course Code: {course.code}</Text>
       <Text style={styles.courseName}>Course Name: {course.course_name}</Text>
       <Text style={styles.cardText}>Faculty: {course.prof_name}</Text>
       <Text style={styles.cardText}>Semester: {course.section}</Text>
-      <Text style={styles.cardText}>Course Code: {course.code}</Text>
+
     </View>
   );
 };
@@ -55,6 +56,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginTop: 20,
   },
+  cardCode: {
+    color: Colors.LighBlueColor,
+    fontWeight: '900'
+  },
   cardContainer: {
     marginVertical: 10,
     paddingHorizontal: 10,
@@ -72,7 +77,9 @@ const styles = StyleSheet.create({
   courseName: {
     fontSize: 16,
     marginBottom: 5,
-    color: Colors.LighBlueColor,
+    color: 'black',
+    fontWeight: '700'
+
   },
   cardText: {
     fontSize: 16,

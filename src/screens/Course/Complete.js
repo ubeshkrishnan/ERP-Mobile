@@ -16,8 +16,6 @@ const CourseCard = ({ course }) => {
       <Text style={styles.cardText}>Result : {course.result}</Text>
       <Text style={styles.cardText}>Pass Month : {course.pass_month}</Text>
 
-
-
     </View>
   )
 }
@@ -81,7 +79,7 @@ const Complete = () => {
   // ]
 
   return (
-    <View>
+    <View style={styles.container}>
       {isLoading ? (
         <ActivityIndicator size="large" color={Colors.LighBlueColor} />
       ) : (
@@ -98,6 +96,11 @@ const Complete = () => {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 4,
+    backgroundColor: '#E3E3E3'
+  },
   header: {
     textAlign: 'center',
     fontSize: 20,
@@ -137,7 +140,7 @@ const styles = StyleSheet.create({
   cardsem: {
     color: 'black',
     color: Colors.LighBlueColor,
-    fontSize: 15,
+    fontWeight: 'bold',
   },
 })
 
