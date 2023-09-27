@@ -26,11 +26,14 @@ import HeaderRightComponent from './HeaderRightComponent';
 import Courses from '../screens/Course/Courses';
 import Cafeteria from '../screens/Cafeteria';
 import CustomDrawerContent from './CustomDrawerContent';
+// import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const BottomTab = createBottomTabNavigator();
 const TopTab = createMaterialTopTabNavigator();
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
+
+
 
 function TopBarNavigator() {
   return (
@@ -89,23 +92,13 @@ function BottomTabNavigator() {
       })}
     >
       <BottomTab.Screen
-        name="Home"
+        name="Main Menu"
         component={Dashboard}
         options={{
           tabBarIcon: ({ color, size }) => (
             <AntDesign name="home" size={size} color={color} />
           ),
           tabBarLabel: 'Home',
-        }}
-      />
-      <BottomTab.Screen
-        name="Profile"
-        component={Profile}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <Icon name="user" size={size} color={color} />
-          ),
-          tabBarLabel: 'Profile',
         }}
       />
 
@@ -170,7 +163,7 @@ function MainContainer() {
         <Stack.Screen
           name="Attendance"
           component={Attendance}
-          options={{ title: 'Attendance' }}
+          options={{ title: 'Attendance',headerTitleAlign: 'center' }}
         />
         <Stack.Screen name="Dashboard" component={BottomTabNavigator} options={{ headerShown: false }} />
         <Stack.Screen
@@ -178,17 +171,18 @@ function MainContainer() {
           component={Calendar}
           options={{
             title: 'Calendar',
+            headerTitleAlign: 'center'
           }}
         />
         <Stack.Screen name="Home" component={BottomTabNavigator} options={{ headerShown: false }} />
         <Stack.Screen name="LessonPlan" component={LessonPlan} options={{ title: 'Lesson-P' }} />
-        <Stack.Screen name="Courses" component={TopBarNavigator} options={{ title: 'Course' }} />
-        <Stack.Screen name="Eschedule" component={Eschedule} />
-        <Stack.Screen name="FeeDetails" component={FeeDetails} options={{ title: 'Fee Details' }} />
-        <Stack.Screen name="Library" component={Library} />
-        <Stack.Screen name="Results" component={Results} />
-        <Stack.Screen name="Profile" component={Profile} />
-        <Stack.Screen name="TimeTable" component={TimeTable} options={{ title: 'Time Table' }} />
+        <Stack.Screen name="Courses" component={TopBarNavigator} options={{ title: 'Course',headerTitleAlign: 'center' }} />
+        <Stack.Screen name="Eschedule" component={Eschedule} options={{ headerTitleAlign: 'center' }} />
+        <Stack.Screen name="FeeDetails" component={FeeDetails} options={{ title: 'Fee Details', headerTitleAlign: 'center' }} />
+        <Stack.Screen name="Library" component={Library} options={{ headerTitleAlign: 'center' }} />
+        <Stack.Screen name="Results" component={Results} options={{ headerTitleAlign: 'center' }} />
+        <Stack.Screen name="Profile" component={Profile} options={{ headerTitleAlign: 'center' }} />
+        <Stack.Screen name="TimeTable" component={TimeTable} options={{ title: 'Time Table', headerTitleAlign: 'center', }} />
         <Stack.Screen name="Cafeteria" component={Cafeteria} />
       </Stack.Navigator>
     </NavigationContainer>

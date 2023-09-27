@@ -56,7 +56,7 @@ const Login = () => {
           if (userData[key] !== null && userData[key] !== undefined) {
             try {
               await AsyncStorage.setItem(key, userData[key].toString());
-              console.log(`Stored ${key}: ${userData[key]}`);
+              // console.log(`Stored ${key}: ${userData[key]}`);
             } catch (error) {
               console.error(`Error storing ${key}:`, error);
             }
