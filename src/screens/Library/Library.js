@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, ScrollView, TextInput } from 'react-native';
+import { View, StyleSheet, ScrollView, TextInput, Text } from 'react-native';
 import { Card, Paragraph } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Url } from '../../../Global_Variable/api_link';
@@ -56,39 +56,44 @@ const Library = () => {
       />
 
       <ScrollView>
-        {filteredBookData.map((book, index) => (
-          <Card style={styles.card} key={index}>
-            <Card.Content>
-              <Paragraph style={styles.paragraph}>
-                Accession No: {book.accession_no}
-              </Paragraph>
-              <Paragraph style={styles.paragraph}>
-                Book: {book.title}
-              </Paragraph>
-              <Paragraph style={styles.paragraph}>
-                Author : {book.author_name}
-              </Paragraph>
-              <Paragraph style={styles.paragraph}>
-                Issued Date: {book.date_issued}
-              </Paragraph>
-              <Paragraph style={styles.paragraph}>
-                Due Date: {book.due_date}
-              </Paragraph>
-              <Paragraph style={styles.paragraph}>
-                Returned Date: {book.date_returned}
-              </Paragraph>
-              <Paragraph style={styles.paragraph}>
-                Fine: {book.fine}
-              </Paragraph>
-              <Paragraph style={styles.paragraph}>
-                Status: {book.status}
-              </Paragraph>
-            </Card.Content>
-          </Card>
-        ))}
+        {filteredBookData.length === 0 ? ( // Check if there are no records
+          <Text style={styles.noRecordsText}>No Records Found</Text>
+        ) : (
+          filteredBookData.map((book, index) => (
+            <Card style={styles.card} key={index}>
+              <Card.Content>
+                <Paragraph style={styles.paragraph}>
+                  Accession No: {book.accession_no}
+                </Paragraph>
+                <Paragraph style={styles.paragraph}>
+                  Book: {book.title}
+                </Paragraph>
+                <Paragraph style={styles.paragraph}>
+                  Author : {book.author_name}
+                </Paragraph>
+                <Paragraph style={styles.paragraph}>
+                  Issued Date: {book.date_issued}
+                </Paragraph>
+                <Paragraph style={styles.paragraph}>
+                  Due Date: {book.due_date}
+                </Paragraph>
+                <Paragraph style={styles.paragraph}>
+                  Returned Date: {book.date_returned}
+                </Paragraph>
+                <Paragraph style={styles.paragraph}>
+                  Fine: {book.fine}
+                </Paragraph>
+                <Paragraph style={styles.paragraph}>
+                  Status: {book.status}
+                </Paragraph>
+              </Card.Content>
+            </Card>
+          ))
+        )}
       </ScrollView>
     </View>
   );
+
 };
 
 const styles = StyleSheet.create({
@@ -122,6 +127,12 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     paddingLeft: 10,
     borderRadius: 10,
+    color: 'black',
+  },
+  noRecordsText: {
+    textAlign: 'center',
+    fontSize: 18,
+    fontWeight: 'bold',
     color: 'black',
   },
 });

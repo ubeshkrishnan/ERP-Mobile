@@ -14,10 +14,14 @@ const Stack = createStackNavigator();
 const TopTabs = createMaterialTopTabNavigator();
 
 const DayScreen = ({ route }) => {
-  const { day } = route.params; // Removed schedules from destructuring
+  const { day, schedules } = route.params; // Removed schedules from destructuring
   const [loading, setLoading] = useState(true);
   const [daySchedule, setDaySchedule] = useState([]); // State for day's schedule
   console.log('daySchedule:', daySchedule);
+  // console.log('Schedulssse:', schedules);
+  console.log('Sch:', schedules);
+
+
   // Inside the DayScreen component
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -153,6 +157,15 @@ const TimeTable = () => {
       });
   };
 
+  // const schedules = {
+  //   schedule: [
+  //     { time: '10:30 AM - 12:00 AM', subject: 'Designing', staff: 'Selva K' },
+  //     { time: '11:00 AM -  12:00 AM', subject: 'Science', staff: 'Siva S' },
+  //     { time: '1:00 PM -  2:00 PM', subject: 'Social', staff: 'Kiruba P' },
+  //     { time: '3:00 PM -  4:00 PM', subject: 'Math', staff: 'Mohan S' },
+  //   ],
+  // }
+
   return (
     <TopTabs.Navigator
       screenOptions={{
@@ -167,13 +180,13 @@ const TimeTable = () => {
         },
       }}
     >
-      {daysOfWeek.map((day, index) => (
+      {daysOfWeek.map((hour_number, index) => (
         <TopTabs.Screen
           key={index}
-          name={day}
+          name={hour_number}
           component={DayScreen}
-          initialParams={{ day, schedules: ["...schedules"] }} // Pass the schedules as a parameter
-          options={{ tabBarLabel: day }}
+          initialParams={{ schedules: schedules }}// Pass the schedules as a parameter
+          options={{ tabBarLabel: hour_number }}
         />
       ))}
     </TopTabs.Navigator>

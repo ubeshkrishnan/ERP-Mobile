@@ -1,4 +1,5 @@
 import React from 'react';
+import { View, } from 'react-native'
 import { TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -26,6 +27,7 @@ import HeaderRightComponent from './HeaderRightComponent';
 import Courses from '../screens/Course/Courses';
 import Cafeteria from '../screens/Cafeteria';
 import CustomDrawerContent from './CustomDrawerContent';
+import { Text } from 'react-native-paper';
 // import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const BottomTab = createBottomTabNavigator();
@@ -69,10 +71,18 @@ function TopBarNavigator() {
   );
 }
 
-function BottomTabNavigator() {
+function BottomTabNavigator({ navigation }) {
+  const handleLogout = () => {
+    // Implement your logout logic here
+    // For example, you can clear user authentication state and navigate to the login screen
+    // You should replace the following lines with your actual logout code
+    console.log('Logout button pressed');
+    navigation.navigate('Login'); // Navigate to the login screen
+  };
+
   return (
     <BottomTab.Navigator
-      screenOptions={({ navigation, route }) => ({
+      screenOptions={({ route }) => ({
         tabBarActiveTintColor: 'white',
         tabBarInactiveTintColor: 'grey',
         tabBarShowLabel: true,
@@ -87,12 +97,20 @@ function BottomTabNavigator() {
           backgroundColor: '#0c46c3',
           borderBottomWidth: 0,
         },
-
         headerTintColor: 'white',
+        headerBackTitleVisible: false,
+        headerRight: () => (
+          <View style={{ marginRight: 40 }}>
+            <TouchableOpacity onPress={handleLogout}>
+              {/* <Text style={{fontSize:16}}>LogOut</Text> */}
+              <AntDesign name="logout" size={24} color="white" />
+            </TouchableOpacity>
+          </View>
+        ),
       })}
     >
       <BottomTab.Screen
-        name="Main Menu"
+        name="Welcome !"
         component={Dashboard}
         options={{
           tabBarIcon: ({ color, size }) => (
@@ -163,7 +181,7 @@ function MainContainer() {
         <Stack.Screen
           name="Attendance"
           component={Attendance}
-          options={{ title: 'Attendance',headerTitleAlign: 'center' }}
+          options={{ title: 'Attendance', headerTitleAlign: 'center' }}
         />
         <Stack.Screen name="Dashboard" component={BottomTabNavigator} options={{ headerShown: false }} />
         <Stack.Screen
@@ -176,7 +194,7 @@ function MainContainer() {
         />
         <Stack.Screen name="Home" component={BottomTabNavigator} options={{ headerShown: false }} />
         <Stack.Screen name="LessonPlan" component={LessonPlan} options={{ title: 'Lesson-P' }} />
-        <Stack.Screen name="Courses" component={TopBarNavigator} options={{ title: 'Course',headerTitleAlign: 'center' }} />
+        <Stack.Screen name="Courses" component={TopBarNavigator} options={{ title: 'Course', headerTitleAlign: 'center' }} />
         <Stack.Screen name="Eschedule" component={Eschedule} options={{ headerTitleAlign: 'center' }} />
         <Stack.Screen name="FeeDetails" component={FeeDetails} options={{ title: 'Fee Details', headerTitleAlign: 'center' }} />
         <Stack.Screen name="Library" component={Library} options={{ headerTitleAlign: 'center' }} />
