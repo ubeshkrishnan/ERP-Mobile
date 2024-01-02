@@ -32,7 +32,7 @@ import PersonalInfo from '../screens/Miscellaneous/PersonalInfo';
 import EducationDetail from '../screens/Miscellaneous/EducationDetail';
 import Grevience from '../screens/Grevience';
 import Survey from '../screens/Survey/Survey';
-import DashboardGraph from '../screens/DashboardGraph/DashboardGraph';
+import Dashboard from '../screens/DashboardGraph/Dashboard';
 // import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const BottomTab = createBottomTabNavigator();
@@ -208,7 +208,7 @@ function MainContainer() {
         headerShown: false,
       }}
     /> */}
-        <Stack.Screen name="DashboardGraph" component={DashboardGraph} />
+        <Stack.Screen name="Dashboard" component={Dashboard} />
 
         <Stack.Screen
           name="Attendance"

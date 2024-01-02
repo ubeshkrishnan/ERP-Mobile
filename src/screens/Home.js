@@ -78,7 +78,7 @@ const Home = () => {
 
   const menuItems = [
     {
-      name: 'DashboardGraph',
+      name: 'Dashboard',
       icon: 'stats-chart',
       backgroundColor: '#4527A0',
       iconColor: 'white',
