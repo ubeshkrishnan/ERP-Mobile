@@ -43,7 +43,7 @@ const Dashboard = () => {
           'image',
           'register_number'
         ];
-        console.log('Image URLLL:', userData.image);
+        // console.log('Image URLLL:', userData.image);
 
         // Use Promise.all to retrieve multiple values from AsyncStorage
         const retrievedData = await Promise.all(

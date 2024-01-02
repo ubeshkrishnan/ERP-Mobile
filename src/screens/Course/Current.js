@@ -1,16 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  ActivityIndicator,
+} from 'react-native';
 import Colors from '../../Color';
-import { Url } from '../../../Global_Variable/api_link';
+import {Url} from '../../../Global_Variable/api_link';
 
-const CurrentCourseCard = ({ course }) => {
+const CurrentCourseCard = ({course}) => {
   return (
     <View style={styles.card}>
       <Text style={styles.cardCode}>Course Code: {course.code}</Text>
       <Text style={styles.courseName}>Course Name: {course.course_name}</Text>
       <Text style={styles.cardText}>Faculty: {course.prof_name}</Text>
       <Text style={styles.cardText}>Semester: {course.section}</Text>
-
     </View>
   );
 };
@@ -21,14 +26,16 @@ const Current = () => {
 
   useEffect(() => {
     // Fetch data from your API or other source here
-    fetch(Url + `/current_course?user_id=16257&semester_no=3&degree_branch_id=37`)
-      .then((response) => response.json())
-      .then((data) => {
+    fetch(
+      Url + `/current_course?user_id=16257&semester_no=3&degree_branch_id=37`,
+    )
+      .then(response => response.json())
+      .then(data => {
         // Assuming 'data' is an array of course objects
         setData(data); // Set the array of course objects
         setIsLoading(false);
       })
-      .catch((error) => {
+      .catch(error => {
         console.error('Error fetching data:', error);
         setIsLoading(false);
       });
@@ -47,7 +54,7 @@ const Current = () => {
       )}
     </ScrollView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   header: {
@@ -58,7 +65,7 @@ const styles = StyleSheet.create({
   },
   cardCode: {
     color: Colors.LighBlueColor,
-    fontWeight: '900'
+    fontWeight: '900',
   },
   cardContainer: {
     marginVertical: 10,
@@ -70,7 +77,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     borderRadius: 5,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.2,
     elevation: 3,
   },
@@ -78,8 +85,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 5,
     color: 'black',
-    fontWeight: '700'
-
+    fontWeight: '700',
   },
   cardText: {
     fontSize: 16,

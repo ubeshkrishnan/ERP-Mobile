@@ -1,14 +1,21 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import React, {useState} from 'react';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Dimensions,
+} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Url } from '../../../Global_Variable/api_link';
+import {Url} from '../../../Global_Variable/api_link';
 
 const Login = () => {
-  const [username, setUsername] = useState('211CS010');
-  const [password, setPassword] = useState('demo@123');
+  const [username, setUsername] = useState('211CS001');
+  const [password, setPassword] = useState('Dollar$$9');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState(null);
   const navigation = useNavigation();
@@ -17,12 +24,12 @@ const Login = () => {
     try {
       const response = await axios.post(
         Url + '/index',
-        { username, password },
+        {username, password},
         {
           headers: {
             'Content-Type': 'application/json',
           },
-        }
+        },
       );
 
       if (response.status === 200) {
@@ -31,8 +38,8 @@ const Login = () => {
 
         // Store user data in AsyncStorage
         const AsyncStorageKeys = [
-          "section",
-          "current_semester",
+          'section',
+          'current_semester',
           'image',
           'student_id',
           'batch_id',
@@ -52,7 +59,7 @@ const Login = () => {
           'blood_group',
         ];
 
-        AsyncStorageKeys.forEach(async (key) => {
+        AsyncStorageKeys.forEach(async key => {
           if (userData[key] !== null && userData[key] !== undefined) {
             try {
               await AsyncStorage.setItem(key, userData[key].toString());
@@ -71,7 +78,7 @@ const Login = () => {
     } catch (error) {
       if (error.response) {
         // The request was made, but the server responded with an error
-        setError('Check Usernma and password ' + error.response.status); // Set error message for network error
+        setError('Check Username and password ' + error.response.status); // Set error message for network error
       } else {
         // Something else happened while setting up the request
         setError('An error occurred: ' + error.message);
@@ -80,7 +87,7 @@ const Login = () => {
   };
 
   const toggleShowPassword = () => {
-    setShowPassword((prevState) => !prevState);
+    setShowPassword(prevState => !prevState);
   };
 
   return (
@@ -88,7 +95,12 @@ const Login = () => {
       <View style={styles.background}></View>
       <View style={styles.loginContainer}>
         {/* Icon above the Login text */}
-        <Icon name="user-graduate" size={40} color="white" style={styles.iconAboveLogin} />
+        <Icon
+          name="user-graduate"
+          size={40}
+          color="white"
+          style={styles.iconAboveLogin}
+        />
         <Text style={styles.heading}> Login</Text>
         <Text style={styles.please}>Please enter your Login and Password</Text>
         <View style={styles.inputContainer}>
@@ -96,7 +108,7 @@ const Login = () => {
           <TextInput
             style={styles.input}
             placeholder="Username"
-            onChangeText={(text) => setUsername(text)}
+            onChangeText={text => setUsername(text)}
             value={username}
             placeholderTextColor="white"
           />
@@ -107,7 +119,7 @@ const Login = () => {
             style={styles.input}
             placeholder="Password"
             secureTextEntry={!showPassword}
-            onChangeText={(text) => setPassword(text)}
+            onChangeText={text => setPassword(text)}
             value={password}
             placeholderTextColor="white"
           />
@@ -121,7 +133,8 @@ const Login = () => {
           </TouchableOpacity>
         </View>
         <Text>
-          {error && <Text style={styles.errorText}>{error}</Text>} {/* Display error message */}
+          {error && <Text style={styles.errorText}>{error}</Text>}{' '}
+          {/* Display error message */}
         </Text>
 
         <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
@@ -214,4 +227,3 @@ const styles = StyleSheet.create({
 });
 
 export default Login;
-

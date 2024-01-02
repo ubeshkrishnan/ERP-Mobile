@@ -1,87 +1,89 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import Colors from '../../Color';
 
-const LessonPlan = ({ route }) => {
-    // const { event } = route.params;
-    const data = [{
-        sub: 'Bussiness Economics',
-        SubCode: '23UAF1A1',
-        semester: 'I',
-        staff: 'SWATHII K M'
-    }];
+const LessonPlan = ({route}) => {
+  // const { event } = route.params;
+  const data = [
+    {
+      sub: 'Bussiness Economics',
+      SubCode: '23UAF1A1',
+      semester: 'I',
+      staff: 'SWATHII K M',
+    },
+  ];
 
-    return (
-        <View style={styles.container}>
-            {data.map((event, index) => (
-                <View key={index} style={styles.card}>
-                    <Text style={styles.title}>Course : {event.sub}</Text>
-                    <Text style={styles.sem}>SEM: {event.semester}</Text>
-                    <Text style={styles.subCode}>Code: {event.SubCode}</Text>
-                    <Text style={styles.staff}>Staff: {event.staff}</Text>
-                    <TouchableOpacity style={styles.button}>
-                        <Text style={styles.buttonText}>Download Lesson Plan</Text>
-                    </TouchableOpacity>
-                </View>
-            ))}
+  return (
+    <View style={styles.container}>
+      {data.map((event, index) => (
+        <View key={index} style={styles.card}>
+          <Text style={styles.title}>Course : {event.sub}</Text>
+          <Text style={styles.sem}>SEM: {event.semester}</Text>
+          <Text style={styles.subCode}>Code: {event.SubCode}</Text>
+          <Text style={styles.staff}>Staff: {event.staff}</Text>
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText}>Download Lesson Plan</Text>
+          </TouchableOpacity>
         </View>
-    );
+      ))}
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        marginTop: 25,
-    },
-    Course: {
-        color: 'black'
-    },
-    sem: {
-        color: 'black'
-    },
-    staff: {
-        color: 'black'
-    },
-    card: {
-        backgroundColor: '#ffffff',
-        padding: 20,
-        borderRadius: 10,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.2,
-        shadowRadius: 4,
-        elevation: 3,
-        width: '90%',
-        marginBottom: 15,
-    },
-    title: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        marginBottom: 10,
-        color: Colors.LighBlueColor,
-        // textDecorationLine: "underline",
-        textDecorationStyle: "solid",
-        textDecorationColor: "#000",
-    },
-    info: {
-        fontSize: 16,
-        marginBottom: 5,
-    },
-    button: {
-        backgroundColor: '#3498db',
-        padding: 10,
-        borderRadius: 5,
-        marginTop: 10,
-        alignItems: 'center',
-    },
-    buttonText: {
-        color: '#ffffff',
-        fontWeight: 'bold',
-    },
-    subCode: {
-        color: 'black'
-    }
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    marginTop: 25,
+  },
+  Course: {
+    color: 'black',
+  },
+  sem: {
+    color: 'black',
+  },
+  staff: {
+    color: 'black',
+  },
+  card: {
+    backgroundColor: '#ffffff',
+    padding: 20,
+    borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 3,
+    width: '90%',
+    marginBottom: 15,
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    color: Colors.LighBlueColor,
+    // textDecorationLine: "underline",
+    textDecorationStyle: 'solid',
+    textDecorationColor: '#000',
+  },
+  info: {
+    fontSize: 16,
+    marginBottom: 5,
+  },
+  button: {
+    backgroundColor: '#3498db',
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 10,
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#ffffff',
+    fontWeight: 'bold',
+  },
+  subCode: {
+    color: 'black',
+  },
 });
 
 export default LessonPlan;
