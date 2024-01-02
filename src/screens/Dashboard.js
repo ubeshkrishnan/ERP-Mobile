@@ -1,25 +1,30 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Image } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+  Image,
+} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { image_Url } from "../../Global_Variable/api_link"
+import {image_Url} from '../../Global_Variable/api_link';
 
-const MenuCard = ({ name, icon, backgroundColor, iconColor }) => {
+const MenuCard = ({name, icon, backgroundColor, iconColor}) => {
   const navigation = useNavigation();
 
   return (
     <TouchableOpacity
       style={styles.card}
-      onPress={() => navigation.navigate(name)}
-    >
+      onPress={() => navigation.navigate(name)}>
       <View
         style={[
           styles.iconContainer,
-          { backgroundColor }, // Set the background color here
-        ]}
-      >
+          {backgroundColor}, // Set the background color here
+        ]}>
         <Icon name={icon} size={32} color={iconColor} />
       </View>
       <Text style={styles.cardText}>{name}</Text>
@@ -41,16 +46,16 @@ const Dashboard = () => {
           'first_name',
           'last_name',
           'image',
-          'register_number'
+          'register_number',
         ];
         // console.log('Image URLLL:', userData.image);
 
         // Use Promise.all to retrieve multiple values from AsyncStorage
         const retrievedData = await Promise.all(
-          AsyncStorageKeys.map(async (key) => {
+          AsyncStorageKeys.map(async key => {
             const value = await AsyncStorage.getItem(key);
             return [key, value];
-          })
+          }),
         );
 
         // Construct the user data object from retrieved values
@@ -72,15 +77,79 @@ const Dashboard = () => {
   }, []);
 
   const menuItems = [
-    { name: 'TimeTable', icon: 'clipboard', backgroundColor: '#E65100', iconColor: 'white' },
-    { name: 'Attendance', icon: 'hand-left', backgroundColor: '#3949AB', iconColor: 'white' },
-    { name: 'Calendar', icon: 'calendar', backgroundColor: 'green', iconColor: 'white' },
-    { name: 'Courses', icon: 'layers', backgroundColor: '#3949AB', iconColor: 'white' },
-    { name: 'Eschedule', icon: 'pencil', backgroundColor: 'orange', iconColor: 'white' },
-    { name: 'FeeDetails', icon: 'wallet', backgroundColor: 'purple', iconColor: 'white' },
-    { name: 'Library', icon: 'file-tray', backgroundColor: 'brown', iconColor: 'white' },
-    { name: 'Results', icon: 'trophy', backgroundColor: 'green', iconColor: 'white' },
-    { name: 'Profile', backgroundColor: '#4527A0', iconColor: 'white' },
+    {
+      name: 'STD - Dashboard',
+      icon: 'stats-chart',
+      backgroundColor: '#4527A0',
+      iconColor: 'white',
+    },
+    {
+      name: 'TimeTable',
+      icon: 'clipboard',
+      backgroundColor: '#E65100',
+      iconColor: 'white',
+    },
+    {
+      name: 'Attendance',
+      icon: 'hand-left',
+      backgroundColor: '#3949AB',
+      iconColor: 'white',
+    },
+    {
+      name: 'Calendar',
+      icon: 'calendar',
+      backgroundColor: 'green',
+      iconColor: 'white',
+    },
+    {
+      name: 'Courses',
+      icon: 'layers',
+      backgroundColor: '#3949AB',
+      iconColor: 'white',
+    },
+    {
+      name: 'Eschedule',
+      icon: 'pencil',
+      backgroundColor: 'orange',
+      iconColor: 'white',
+    },
+    {
+      name: 'FeeDetails',
+      icon: 'wallet',
+      backgroundColor: 'purple',
+      iconColor: 'white',
+    },
+    {
+      name: 'Library',
+      icon: 'library-outline',
+      backgroundColor: 'brown',
+      iconColor: 'white',
+    },
+    {
+      name: 'Results',
+      icon: 'trophy',
+      backgroundColor: 'green',
+      iconColor: 'white',
+    },
+
+    {
+      name: 'Survey',
+      icon: 'trophy',
+      backgroundColor: 'white',
+      iconColor: 'blue',
+    },
+    {
+      name: 'Grevience',
+      icon: 'file-tray',
+      backgroundColor: 'white',
+      iconColor: 'blue',
+    },
+    {
+      name: 'Miscellaneous',
+      icon: 'newspaper-outline',
+      backgroundColor: 'white',
+      iconColor: 'black',
+    },
   ];
 
   return (
@@ -89,11 +158,13 @@ const Dashboard = () => {
         <View style={styles.profileCard}>
           <View style={styles.circularProfile}>
             <Image
-              source={{ uri: `${image_Url}${userData.image}` }} // Use string interpolation to concatenate the URIs
+              source={{uri: `${image_Url}${userData.image}`}} // Use string interpolation to concatenate the URIs
               style={styles.profilePicture}
             />
           </View>
-          <Text style={styles.profileText}>{userData.first_name} {userData.last_name}</Text>
+          <Text style={styles.profileText}>
+            {userData.first_name} {userData.last_name}
+          </Text>
           <Text style={styles.studentId}>{userData.register_number}</Text>
         </View>
         <View style={styles.cardContainer}>
@@ -110,7 +181,7 @@ const Dashboard = () => {
       </View>
     </View>
   );
-}
+};
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -138,7 +209,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     backgroundColor: '#FAFAFA',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.2,
     shadowRadius: 2,
   },
@@ -151,7 +222,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     width: '30%',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.2,
     shadowRadius: 2,
     elevation: 3,
@@ -169,7 +240,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     textAlign: 'center',
     color: '#111',
-    fontWeight: '800'
+    fontWeight: '800',
   },
   profileCard: {
     alignItems: 'center',
@@ -179,7 +250,7 @@ const styles = StyleSheet.create({
     marginBottom: 40,
     marginTop: 20,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.2,
     shadowRadius: 2,
     elevation: 3,
@@ -195,7 +266,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 10,
-    color: 'red'
+    color: 'red',
   },
   profileText: {
     fontSize: 18,
@@ -209,11 +280,11 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   profilePicture: {
-    width: 80,
-    height: 80,
-    borderRadius: 50,
+    width: 90,
+    height: 90,
+    borderRadius: 60,
     marginBottom: 10,
-
+    marginTop: 15,
   },
 });
 

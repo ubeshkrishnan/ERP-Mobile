@@ -27,6 +27,10 @@ import Courses from '../screens/Course/Courses';
 import Cafeteria from '../screens/Cafeteria';
 import CustomDrawerContent from './CustomDrawerContent';
 import {Text} from 'react-native-paper';
+import Miscellaneous from '../screens/Miscellaneous/Miscellaneous';
+import PersonalInfo from '../screens/Miscellaneous/PersonalInfo';
+import EducationDetail from '../screens/Miscellaneous/EducationDetail';
+
 // import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const BottomTab = createBottomTabNavigator();
@@ -63,6 +67,38 @@ function TopBarNavigator() {
         }}
       />
       {/* <TopTab.Screen name="TimeTable" component={Courses} /> */}
+    </TopTab.Navigator>
+  );
+}
+
+function MiscellaneousTopBarNavigator() {
+  return (
+    <TopTab.Navigator
+      screenOptions={{
+        activeTintColor: '#e91e63',
+        labelStyle: {fontSize: 10},
+      }}>
+      <TopTab.Screen
+        name="Miscellaneous"
+        component={Miscellaneous}
+        options={{
+          tabBarLabel: 'Miscellaneous',
+        }}
+      />
+      <TopTab.Screen
+        name="PersonalInfo"
+        component={PersonalInfo}
+        options={{
+          tabBarLabel: 'Personal Info',
+        }}
+      />
+      <TopTab.Screen
+        name="EducationDetails"
+        component={EducationDetail}
+        options={{
+          tabBarLabel: 'Education Details',
+        }}
+      />
     </TopTab.Navigator>
   );
 }
@@ -204,6 +240,15 @@ function MainContainer() {
           component={TopBarNavigator}
           options={{title: 'Course', headerTitleAlign: 'center'}}
         />
+        <Stack.Screen
+          name="Miscellaneous"
+          component={MiscellaneousTopBarNavigator}
+          options={{
+            title: 'Miscellaneous',
+            headerTitleAlign: 'center',
+          }}
+        />
+
         <Stack.Screen
           name="Eschedule"
           component={Eschedule}
