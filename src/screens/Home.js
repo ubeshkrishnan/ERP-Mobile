@@ -32,7 +32,7 @@ const MenuCard = ({name, icon, backgroundColor, iconColor}) => {
   );
 };
 
-const Dashboard = () => {
+const Home = () => {
   const [userData, setUserData] = useState({
     email: '',
     last_name: '',
@@ -78,7 +78,7 @@ const Dashboard = () => {
 
   const menuItems = [
     {
-      name: 'STD - Dashboard',
+      name: 'DashboardGraph',
       icon: 'stats-chart',
       backgroundColor: '#4527A0',
       iconColor: 'white',
@@ -288,4 +288,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Dashboard;
+export default Home;

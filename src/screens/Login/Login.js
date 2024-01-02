@@ -70,7 +70,7 @@ const Login = () => {
           }
         });
 
-        navigation.navigate('Dashboard');
+        navigation.navigate('Home');
         setError(null);
       } else {
         setError('Incorrect username or password'); // Set error message for incorrect login

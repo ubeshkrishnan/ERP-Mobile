@@ -6,7 +6,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {createStackNavigator} from '@react-navigation/stack';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import Dashboard from '../screens/Dashboard';
+import Home from '../screens/Home';
 import Login from '../screens/Login/Login';
 import TimeTable from '../screens/TimeTable/TimeTable';
 import Attendance from '../screens/Attendance';
@@ -30,7 +30,9 @@ import {Text} from 'react-native-paper';
 import Miscellaneous from '../screens/Miscellaneous/Miscellaneous';
 import PersonalInfo from '../screens/Miscellaneous/PersonalInfo';
 import EducationDetail from '../screens/Miscellaneous/EducationDetail';
-
+import Grevience from '../screens/Grevience';
+import Survey from '../screens/Survey/Survey';
+import DashboardGraph from '../screens/DashboardGraph/DashboardGraph';
 // import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const BottomTab = createBottomTabNavigator();
@@ -79,7 +81,7 @@ function MiscellaneousTopBarNavigator() {
         labelStyle: {fontSize: 10},
       }}>
       <TopTab.Screen
-        name="Miscellaneous"
+        name="MiscellaneousMain"
         component={Miscellaneous}
         options={{
           tabBarLabel: 'Miscellaneous',
@@ -134,15 +136,14 @@ function BottomTabNavigator({navigation}) {
         headerRight: () => (
           <View style={{marginRight: 40}}>
             <TouchableOpacity onPress={handleLogout}>
-              {/* <Text style={{fontSize:16}}>LogOut</Text> */}
               <AntDesign name="logout" size={24} color="white" />
             </TouchableOpacity>
           </View>
         ),
       })}>
       <BottomTab.Screen
-        name="Welcome !"
-        component={Dashboard}
+        name="Welcome!"
+        component={Home}
         options={{
           tabBarIcon: ({color, size}) => (
             <AntDesign name="home" size={size} color={color} />
@@ -207,13 +208,15 @@ function MainContainer() {
         headerShown: false,
       }}
     /> */}
+        <Stack.Screen name="DashboardGraph" component={DashboardGraph} />
+
         <Stack.Screen
           name="Attendance"
           component={Attendance}
           options={{title: 'Attendance', headerTitleAlign: 'center'}}
         />
         <Stack.Screen
-          name="Dashboard"
+          name="Home"
           component={BottomTabNavigator}
           options={{headerShown: false}}
         />
@@ -226,7 +229,7 @@ function MainContainer() {
           }}
         />
         <Stack.Screen
-          name="Home"
+          name="BottomHome"
           component={BottomTabNavigator}
           options={{headerShown: false}}
         />
@@ -280,6 +283,8 @@ function MainContainer() {
           options={{title: 'Time Table', headerTitleAlign: 'center'}}
         />
         <Stack.Screen name="Cafeteria" component={Cafeteria} />
+        <Stack.Screen name="Grevience" component={Grevience} />
+        <Stack.Screen name="Survey" component={Survey} />
       </Stack.Navigator>
     </NavigationContainer>
   );
