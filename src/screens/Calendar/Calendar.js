@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
-import { Url } from '../../Global_Variable/api_link';
+import { Url } from '../../../Global_Variable/api_link';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Calendar = () => {

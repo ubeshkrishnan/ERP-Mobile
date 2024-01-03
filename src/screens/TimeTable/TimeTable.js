@@ -1,11 +1,14 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import Colors from '../../Color';
+import {useNavigation} from '@react-navigation/native';
 
 const TopTab = createMaterialTopTabNavigator();
 
 const TimeTable = () => {
+  const navigation = useNavigation();
+
   const daysOfWeek = ['MON', 'TUE', 'WED', 'THU', 'FRI'];
 
   const schedules = [
@@ -13,7 +16,10 @@ const TimeTable = () => {
       day: 'MON',
       schedule: [
         {time: '9:00 AM - 10:00 AM', subject: 'English', staff: 'Gokul P'},
-        {time: '11:00 AM -  12:00 AM', subject: 'Science', staff: 'Siva S'},
+        {time: '11:00 AM -  12:00 PM', subject: 'Maths', staff: 'Siva S'},
+        {time: '12:30 PM -  1:00 PM', subject: 'Science', staff: 'Gokul S'},
+        {time: '1:00 AM -  2:00 AM', subject: 'Social', staff: 'Kiruba P'},
+        {time: '2:00 AM -  3:00 AM', subject: 'Economics', staff: 'Ganesh S'},
       ],
     },
     {
@@ -53,24 +59,28 @@ const TimeTable = () => {
         tabBarIndicatorStyle: {backgroundColor: Colors.LighBlueColor},
       })}>
       {daysOfWeek.map((day, index) => (
-        <TopTab.Screen
-          key={index}
-          name={day}
-          // Use children prop instead of component
-        >
+        <TopTab.Screen key={index} name={day}>
           {() => (
             <View style={styles.dayContainer}>
               <Text style={styles.schedule}>{day} Schedule</Text>
               {schedules
                 .find(schedule => schedule.day === day)
                 ?.schedule.map((event, index) => (
-                  <View key={index} style={styles.eventCard}>
+                  <TouchableOpacity
+                    key={index}
+                    onPress={() => {
+                      // Use navigation to navigate to LessonPlan with the necessary params
+                      navigation.navigate('LessonPlan', {
+                        /* You can pass params here */
+                      });
+                    }}
+                    style={styles.eventCard}>
                     <Text style={styles.eventTime}>Time : {event.time}</Text>
                     <Text style={styles.eventSubject}>
                       Sub : {event.subject}
                     </Text>
                     <Text style={styles.eventStaff}>Staff : {event.staff}</Text>
-                  </View>
+                  </TouchableOpacity>
                 ))}
             </View>
           )}
@@ -87,7 +97,7 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   eventCard: {
-    backgroundColor: '#f5f5f5',
+    backgroundColor: 'white',
     padding: 10,
     borderRadius: 10,
     marginBottom: 10,

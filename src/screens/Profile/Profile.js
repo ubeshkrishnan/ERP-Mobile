@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {View, Text, StyleSheet, Image} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const UserProfile = () => {
@@ -12,7 +12,7 @@ const UserProfile = () => {
     address1: '',
     state: '',
     blood_group: '',
-    image:'',
+    image: '',
   });
 
   useEffect(() => {
@@ -33,10 +33,10 @@ const UserProfile = () => {
 
         // Use Promise.all to retrieve multiple values from AsyncStorage
         const retrievedData = await Promise.all(
-          AsyncStorageKeys.map(async (key) => {
+          AsyncStorageKeys.map(async key => {
             const value = await AsyncStorage.getItem(key);
             return [key, value];
-          })
+          }),
         );
 
         // Construct the user data object from retrieved values
@@ -61,7 +61,7 @@ const UserProfile = () => {
     <View style={styles.container}>
       <View style={styles.header}>
         <Image
-          source={require('../assets/profile.png')}
+          source={require('../../assets/profile.png')}
           style={styles.profilePicture}
         />
         <Text style={styles.name}>
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     borderRadius: 5,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,

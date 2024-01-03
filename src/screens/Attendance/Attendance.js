@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Dimensions, ScrollView, ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Colors from '../Color';
-import { Url } from '../../Global_Variable/api_link';
+import Colors from '../../Color';
+import { Url } from '../../../Global_Variable/api_link';
 
 const TextStyles = StyleSheet.create({
   subjectCode: {
