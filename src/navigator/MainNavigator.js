@@ -24,6 +24,7 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import Cafeteria from '../screens/Cafeteria/Cafeteria';
 import CustomDrawerContent from './CustomDrawerContent';
+import Search from '../screens/Search/Search';
 import {Text} from 'react-native-paper';
 import Miscellaneous from '../screens/Miscellaneous/Miscellaneous';
 import PersonalInfo from '../screens/Miscellaneous/PersonalInfo';
@@ -149,7 +150,16 @@ function BottomTabNavigator({navigation}) {
           tabBarLabel: 'Home',
         }}
       />
-
+      <BottomTab.Screen
+        name="Search!"
+        component={Search}
+        options={{
+          tabBarIcon: ({color, size}) => (
+            <AntDesign name="search1" size={size} color={color} /> // Corrected icon name
+          ),
+          tabBarLabel: 'Search',
+        }}
+      />
       <BottomTab.Screen
         name="Drawer"
         component={CustomDrawerContent}
@@ -164,7 +174,6 @@ function BottomTabNavigator({navigation}) {
     </BottomTab.Navigator>
   );
 }
-
 // Define your MainContainer using Stack Navigator
 function MainContainer() {
   return (

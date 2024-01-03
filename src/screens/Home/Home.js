@@ -148,7 +148,7 @@ const Home = () => {
       name: 'Miscellaneous',
       icon: 'newspaper-outline',
       backgroundColor: 'white',
-      iconColor: 'black',
+      iconColor: 'blue',
     },
   ];
 
