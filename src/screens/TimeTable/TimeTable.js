@@ -1,51 +1,9 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import {createStackNavigator} from '@react-navigation/stack';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+import {View, Text, StyleSheet} from 'react-native';
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import Colors from '../../Color';
 
-const Stack = createStackNavigator();
-
-const DayScreen = ({route, navigation}) => {
-  const {day, schedules} = route.params;
-
-  const daySchedule =
-    schedules.find(schedule => schedule.day === day)?.schedule || [];
-
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      headerLeft: () => (
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <View style={{paddingLeft: 10}}>
-            <AntDesign name="arrowleft" size={32} color="#111" />
-          </View>
-        </TouchableOpacity>
-      ),
-    });
-  }, [navigation]);
-
-  return (
-    <View style={styles.dayContainer}>
-      <Text style={styles.schedule}>{day} Schedule</Text>
-      {daySchedule.map((event, index) => (
-        <View key={index} style={styles.eventCard}>
-          <Text style={styles.eventTime}>Time : {event.time}</Text>
-          <Text style={styles.eventSubject}>Sub : {event.subject}</Text>
-          <Text style={styles.eventStaff}>Staff : {event.staff}</Text>
-        </View>
-      ))}
-    </View>
-  );
-};
-
-const DayButton = ({day, onPress}) => (
-  <TouchableOpacity
-    style={styles.dayButton}
-    onPress={onPress}
-    activeOpacity={0.3}>
-    <Text style={styles.dayButtonText}>{day}</Text>
-  </TouchableOpacity>
-);
+const TopTab = createMaterialTopTabNavigator();
 
 const TimeTable = () => {
   const daysOfWeek = ['MON', 'TUE', 'WED', 'THU', 'FRI'];
@@ -87,61 +45,45 @@ const TimeTable = () => {
   ];
 
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="TimeTableScreen" options={{headerShown: false}}>
-        {({navigation}) => (
-          <View style={styles.container}>
-            <View style={styles.daysOfWeekContainer}>
-              {daysOfWeek.map((day, index) => (
-                <DayButton
-                  key={index}
-                  day={day}
-                  onPress={() => navigation.navigate('Day', {day, schedules})}
-                />
-              ))}
+    <TopTab.Navigator
+      screenOptions={({route}) => ({
+        tabBarActiveTintColor: Colors.LighBlueColor,
+        tabBarInactiveTintColor: 'gray',
+        tabBarLabelStyle: {fontSize: 14, fontWeight: 'bold'},
+        tabBarIndicatorStyle: {backgroundColor: Colors.LighBlueColor},
+      })}>
+      {daysOfWeek.map((day, index) => (
+        <TopTab.Screen
+          key={index}
+          name={day}
+          // Use children prop instead of component
+        >
+          {() => (
+            <View style={styles.dayContainer}>
+              <Text style={styles.schedule}>{day} Schedule</Text>
+              {schedules
+                .find(schedule => schedule.day === day)
+                ?.schedule.map((event, index) => (
+                  <View key={index} style={styles.eventCard}>
+                    <Text style={styles.eventTime}>Time : {event.time}</Text>
+                    <Text style={styles.eventSubject}>
+                      Sub : {event.subject}
+                    </Text>
+                    <Text style={styles.eventStaff}>Staff : {event.staff}</Text>
+                  </View>
+                ))}
             </View>
-          </View>
-        )}
-      </Stack.Screen>
-      <Stack.Screen name="Day" component={DayScreen} />
-    </Stack.Navigator>
+          )}
+        </TopTab.Screen>
+      ))}
+    </TopTab.Navigator>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    marginTop: 30,
-    justifyContent: 'center',
-  },
-  daysOfWeekContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    marginBottom: 10,
-  },
-  dayButton: {
-    padding: 10,
-    borderRadius: 10,
-    backgroundColor: '#e0e0e0',
-    elevation: 3,
-    shadowColor: 'black',
-    shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-  },
-  dayButtonText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: 'black',
-  },
   dayContainer: {
     flex: 1,
     alignItems: 'center',
-    color: 'black',
-  },
-  backButton: {
-    marginLeft: 10,
-    fontSize: 15,
     color: 'black',
   },
   eventCard: {
@@ -173,7 +115,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: 'gray',
   },
-  //
   schedule: {
     color: Colors.LighBlueColor,
     fontWeight: 'bold',
