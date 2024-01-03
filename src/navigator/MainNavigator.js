@@ -32,6 +32,7 @@ import EducationDetail from '../screens/Miscellaneous/EducationDetail';
 import Grevience from '../screens/Grevience/Grevience';
 import Survey from '../screens/Survey/Survey';
 import Dashboard from '../screens/DashboardGraph/Dashboard';
+import SurveyData from '../screens/Survey/SurveyData';
 // import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const BottomTab = createBottomTabNavigator();
@@ -292,6 +293,7 @@ function MainContainer() {
         <Stack.Screen name="Cafeteria" component={Cafeteria} />
         <Stack.Screen name="Grevience" component={Grevience} />
         <Stack.Screen name="Survey" component={Survey} />
+        <Stack.Screen name="SurveyData" component={SurveyData} />
       </Stack.Navigator>
     </NavigationContainer>
   );

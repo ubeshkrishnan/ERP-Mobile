@@ -237,10 +237,11 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   cardText: {
-    fontSize: 14,
+    fontSize: 15,
     textAlign: 'center',
     color: '#111',
-    fontWeight: '800',
+    fontWeight: '700',
+    color: 'black',
   },
   profileCard: {
     alignItems: 'center',
