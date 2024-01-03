@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
-import { Card, Title, Paragraph } from 'react-native-paper';
+import React, {useState} from 'react';
+import {View, TouchableOpacity, StyleSheet} from 'react-native';
+import {Card, Title, Paragraph} from 'react-native-paper';
 import Colors from '../../Color';
 
-const CardEschedule = ({ title, description }) => {
+const CardEschedule = ({title, description}) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const toggleExpansion = () => {
@@ -13,7 +13,6 @@ const CardEschedule = ({ title, description }) => {
   // Extracting Mark Status from the description
   const markStatusMatch = description.match(/Mark Status: ([^\n]+)/);
   const markStatus = markStatusMatch ? markStatusMatch[1] : 'Unknown'; // Provide a default value if not found
-
 
   return (
     <View style={styles.cardContainer}>
@@ -31,10 +30,13 @@ const CardEschedule = ({ title, description }) => {
               <Paragraph
                 style={[
                   styles.description,
-                  markStatus === 'Present' ? styles.greenText : markStatus === 'Absent' ? styles.redText : null,
+                  markStatus === 'Present'
+                    ? styles.greenText
+                    : markStatus === 'Absent'
+                    ? styles.redText
+                    : null,
                 ]}
-                key={index}
-              >
+                key={index}>
                 {line}
               </Paragraph>
             ))}
@@ -48,21 +50,24 @@ const CardEschedule = ({ title, description }) => {
 const styles = StyleSheet.create({
   cardContainer: {
     marginBottom: 10,
+    backgroundColor: '#E3E3E3',
   },
   card: {
     margin: 10,
-    color:'red'
+    color: 'red',
+    backgroundColor: 'grey',
   },
   expandedCard: {
     marginTop: 10,
   },
   descriptionContainer: {
     flexDirection: 'column',
-    color:'red'
+    color: 'black',
+    backgroundColor: 'white',
   },
   description: {
     marginBottom: 5,
-    color: 'gray',
+    color: 'black',
   },
   redText: {
     color: 'red', // Change the color to red for absent mark status

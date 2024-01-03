@@ -1,33 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, TouchableHighlight, TouchableWithoutFeedback } from 'react-native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import React from 'react';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {createStackNavigator} from '@react-navigation/stack';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Colors from '../../Color';
-import { useNavigation } from '@react-navigation/native';
-import { ScrollView } from 'react-native-gesture-handler';
-import LessonPlan from './LesssonPlan';
-import { Url } from '../../../Global_Variable/api_link';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Stack = createStackNavigator();
-const TopTabs = createMaterialTopTabNavigator();
 
-const DayScreen = ({ route }) => {
-  const { day, schedules } = route.params; // Removed schedules from destructuring
-  const [loading, setLoading] = useState(true);
-  const [daySchedule, setDaySchedule] = useState([]); // State for day's schedule
-  console.log('daySchedule:', daySchedule);
-  // console.log('Schedulssse:', schedules);
-  console.log('Sch:', schedules);
+const DayScreen = ({route, navigation}) => {
+  const {day, schedules} = route.params;
 
+  const daySchedule =
+    schedules.find(schedule => schedule.day === day)?.schedule || [];
 
-  // Inside the DayScreen component
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <View style={{ paddingLeft: 10 }}>
+          <View style={{paddingLeft: 10}}>
             <AntDesign name="arrowleft" size={32} color="#111" />
           </View>
         </TouchableOpacity>
@@ -35,169 +24,94 @@ const DayScreen = ({ route }) => {
     });
   }, [navigation]);
 
-  const navigation = useNavigation();
-
-  useEffect(() => {
-    // Check if schedules are available before rendering
-    if (!route.params.schedules || route.params.schedules.length === 0) {
-      setLoading(true); // Set loading to true if schedules are empty
-    } else {
-      // Find the schedule for the current day
-      const currentDaySchedule = route.params.schedules.find(schedule => schedule.day === day);
-      if (currentDaySchedule) {
-        setDaySchedule(currentDaySchedule.schedule || []); // Set day's schedule
-        setLoading(false); // Set loading to false when data is available
-      } else {
-        setLoading(true); // Set loading to true if schedule not found for the day
-      }
-    }
-  }, [route.params.schedules, day]);
-
-  if (loading) {
-    return (
-      <View style={styles.dayContainer}>
-        <Text style={styles.schedule}>Loading...</Text>
-
-      </View>
-    );
-  }
-
   return (
     <View style={styles.dayContainer}>
-      <Text style={styles.schedule}>{day} - Schedule</Text>
+      <Text style={styles.schedule}>{day} Schedule</Text>
       {daySchedule.map((event, index) => (
-        <TouchableHighlight
-          key={index}
-          onPress={() => navigation.navigate('LessonPlan', { event })}
-          underlayColor="#DDDDDD"
-        >
-          <View key={index} style={styles.eventCard}>
-            <Text style={styles.eventTime}>Time: {event.hour_number}</Text>
-            <Text style={styles.eventSubject}>Sub: {event.course_name}</Text>
-            <Text style={styles.eventStaff}>Staff: {event.professorName}</Text>
-          </View>
-        </TouchableHighlight>
+        <View key={index} style={styles.eventCard}>
+          <Text style={styles.eventTime}>Time : {event.time}</Text>
+          <Text style={styles.eventSubject}>Sub : {event.subject}</Text>
+          <Text style={styles.eventStaff}>Staff : {event.staff}</Text>
+        </View>
       ))}
     </View>
   );
 };
 
+const DayButton = ({day, onPress}) => (
+  <TouchableOpacity
+    style={styles.dayButton}
+    onPress={onPress}
+    activeOpacity={0.3}>
+    <Text style={styles.dayButtonText}>{day}</Text>
+  </TouchableOpacity>
+);
+
 const TimeTable = () => {
   const daysOfWeek = ['MON', 'TUE', 'WED', 'THU', 'FRI'];
-  const [batchId, setBatchId] = useState(null);
-  const [degreeBranchId, setDegreeBranchId] = useState(null);
-  const [section, setSection] = useState(null);
-  const [currentSemester, setCurrentSemester] = useState(null);
-  const startDate = '2022-12-26';
-  const endDate = '2022-12-31';
-  const [schedules, setSchedules] = useState([]); // Initialize schedules as an empty array
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    // Fetch the stored values from AsyncStorage
-    const fetchDataFromStorage = async () => {
-      try {
-        const storedBatchId = await AsyncStorage.getItem('batch_id');
-        const storedDegreeBranchId = await AsyncStorage.getItem('degree_branch_id');
-        const storedSection = await AsyncStorage.getItem('section');
-        const storedCurrentSemester = await AsyncStorage.getItem('current_semester');
-
-        if (
-          storedBatchId &&
-          storedDegreeBranchId &&
-          storedSection &&
-          storedCurrentSemester
-        ) {
-          setBatchId(storedBatchId);
-          setDegreeBranchId(storedDegreeBranchId);
-          setSection(storedSection);
-          setCurrentSemester(storedCurrentSemester);
-          // setStartDate(storedStartDate);
-          // setEndDate(storedEndDate);
-
-          // Now you can fetch the schedules based on the retrieved data
-          fetchDataForSchedules();
-          console.log("loca", storedBatchId);
-          console.log("loca", storedSection);
-          console.log("loca", storedDegreeBranchId);
-
-          //   console.log("loca", storedStartDate);
-          // console.log("loca", storedEndDate);
-        }
-      } catch (error) {
-        console.error('Error fetching data from AsyncStorage:', error);
-      }
-    };
-
-    fetchDataFromStorage();
-  }, []);
-
-  console.log("ssss", schedules)
-  // Function to fetch schedules based on the retrieved data
-  const fetchDataForSchedules = () => {
-    fetch(
-      Url +
-      `/timetable?batch_id=${batchId}&degree_branch_id=${degreeBranchId}&section=${section}&current_semester=${currentSemester}&start_date=2022-12-26&end_date=2022-12-31`
-    )
-      .then((response) => {
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then((data) => {
-        // Process the data from the backend and set it in the state
-        setSchedules(data); // Set schedules directly without spreading
-        console.log("Datassss", data)
-        setLoading(false); // Set loading to false when data is available
-      })
-      .catch((error) => {
-        console.error('Error fetching data from backend:', error);
-      });
-  };
-
-  // const schedules = {
-  //   schedule: [
-  //     { time: '10:30 AM - 12:00 AM', subject: 'Designing', staff: 'Selva K' },
-  //     { time: '11:00 AM -  12:00 AM', subject: 'Science', staff: 'Siva S' },
-  //     { time: '1:00 PM -  2:00 PM', subject: 'Social', staff: 'Kiruba P' },
-  //     { time: '3:00 PM -  4:00 PM', subject: 'Math', staff: 'Mohan S' },
-  //   ],
-  // }
+  const schedules = [
+    {
+      day: 'MON',
+      schedule: [
+        {time: '9:00 AM - 10:00 AM', subject: 'English', staff: 'Gokul P'},
+        {time: '11:00 AM -  12:00 AM', subject: 'Science', staff: 'Siva S'},
+      ],
+    },
+    {
+      day: 'TUE',
+      schedule: [
+        {
+          time: '10:30 AM - 11:30 AM',
+          subject: 'Mathematics',
+          staff: 'Krishnan D',
+        },
+      ],
+    },
+    {
+      day: 'WED',
+      schedule: [
+        {time: '10:30 AM -11:30 AM', subject: 'Science - I', staff: 'Gopal M'},
+      ],
+    },
+    {
+      day: 'THU',
+      schedule: [
+        {time: '10:30 AM -  11:30 AM', subject: 'OP ', staff: 'Mohan L'},
+      ],
+    },
+    {
+      day: 'FRI',
+      schedule: [{time: '10:30 AM', subject: 'Designing', staff: 'Selva K'}],
+    },
+  ];
 
   return (
-    <TopTabs.Navigator
-      screenOptions={{
-        tabBarActiveTintColor: 'white',
-        tabBarInactiveTintColor: 'gray',
-        tabBarLabelStyle: {
-          fontSize: 16,
-          fontWeight: '900',
-        },
-        tabBarStyle: {
-          backgroundColor: '#0c46c3',
-        },
-      }}
-    >
-      {daysOfWeek.map((hour_number, index) => (
-        <TopTabs.Screen
-          key={index}
-          name={hour_number}
-          component={DayScreen}
-          initialParams={{ schedules: schedules }}// Pass the schedules as a parameter
-          options={{ tabBarLabel: hour_number }}
-        />
-      ))}
-    </TopTabs.Navigator>
+    <Stack.Navigator>
+      <Stack.Screen name="TimeTableScreen" options={{headerShown: false}}>
+        {({navigation}) => (
+          <View style={styles.container}>
+            <View style={styles.daysOfWeekContainer}>
+              {daysOfWeek.map((day, index) => (
+                <DayButton
+                  key={index}
+                  day={day}
+                  onPress={() => navigation.navigate('Day', {day, schedules})}
+                />
+              ))}
+            </View>
+          </View>
+        )}
+      </Stack.Screen>
+      <Stack.Screen name="Day" component={DayScreen} />
+    </Stack.Navigator>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: 'center',
-    marginTop: 25,
+    marginTop: 30,
+    justifyContent: 'center',
   },
   daysOfWeekContainer: {
     flexDirection: 'row',
@@ -211,7 +125,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#e0e0e0',
     elevation: 3,
     shadowColor: 'black',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.3,
     shadowRadius: 4,
   },
@@ -231,37 +145,40 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   eventCard: {
-    backgroundColor: '#ffffff',
-    padding: 20,
+    backgroundColor: '#f5f5f5',
+    padding: 10,
     borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    marginBottom: 10,
+    shadowColor: 'black',
+    shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.2,
     shadowRadius: 4,
     elevation: 3,
-    width: 330,
-    marginBottom: 15,
+    width: '80%',
+    height: 'auto',
+    marginTop: 30,
   },
   eventTime: {
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 5,
-    color: Colors.LighBlueColor
+    color: Colors.LighBlueColor,
   },
   eventSubject: {
     fontSize: 16,
     marginBottom: 3,
-    color: 'black'
+    color: 'grey',
   },
   eventStaff: {
     fontSize: 14,
-    color: 'black',
+    color: 'gray',
   },
+  //
   schedule: {
     color: Colors.LighBlueColor,
     fontWeight: 'bold',
-    margin: 20
-  }
-})
+    marginTop: 20,
+  },
+});
 
 export default TimeTable;

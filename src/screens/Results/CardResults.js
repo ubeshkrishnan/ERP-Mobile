@@ -1,12 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { View, TouchableOpacity, StyleSheet, Text, ScrollView } from 'react-native';
-import { Card, Title, Paragraph } from 'react-native-paper';
+import React, {useState, useEffect} from 'react';
+import {
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  Text,
+  ScrollView,
+} from 'react-native';
+import {Card, Title, Paragraph} from 'react-native-paper';
 import Colors from '../../Color';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Url } from '../../../Global_Variable/api_link';
+import {Url} from '../../../Global_Variable/api_link';
 
-const CardResult = ({ title, description, register_number }) => {
-
+const CardResult = ({title, description, register_number}) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [data, setData] = useState(null);
   const [registerNo, setRegisterNo] = useState(null);
@@ -35,17 +40,17 @@ const CardResult = ({ title, description, register_number }) => {
     }
   }, [registerNo]);
 
-  const fetchResultData = (registerNo) => {
+  const fetchResultData = registerNo => {
     // Fetch data from your API using the provided register_number
     fetch(Url + `/e_result?&register_number=${registerNo}`)
-      .then((response) => response.json())
-      .then((data) => {
+      .then(response => response.json())
+      .then(data => {
         setData(data);
       })
-      .catch((error) => {
+      .catch(error => {
         console.error('Error fetching data:', error);
       });
-  }
+  };
 
   const toggleExpansion = () => {
     setIsExpanded(!isExpanded);
@@ -55,7 +60,10 @@ const CardResult = ({ title, description, register_number }) => {
   const descriptionLines = description ? description.split('\n') : [];
 
   // Extracting Mark Status if it's available
-  const markStatusMatch = descriptionLines.length > 1 ? descriptionLines[1].match(/Mark Status: ([^\n]+)/) : null;
+  const markStatusMatch =
+    descriptionLines.length > 1
+      ? descriptionLines[1].match(/Mark Status: ([^\n]+)/)
+      : null;
   const markStatus = markStatusMatch ? markStatusMatch[1] : '';
 
   return (
@@ -74,8 +82,12 @@ const CardResult = ({ title, description, register_number }) => {
               <Paragraph
                 style={[
                   styles.description,
-                  { color: 'black' },
-                  markStatus === 'Present' ? styles.greenText : markStatus === 'Absent' ? styles.redText : null,
+                  {color: 'black', backgroundColor: 'white'},
+                  markStatus === 'Present'
+                    ? styles.greenText
+                    : markStatus === 'Absent'
+                    ? styles.redText
+                    : null,
                 ]}
                 key={`${index}-${register_number}`} // Combine index with another identifier for uniqueness
               >
@@ -97,16 +109,20 @@ const styles = StyleSheet.create({
   cardContainer: {
     marginBottom: 10,
     color: 'black',
+    backgroundColor: '#E3E3E3',
   },
   card: {
     margin: 10,
     color: 'black',
+    backgroundColor: 'grey',
   },
   expandedCard: {
     marginTop: 10,
+    backgroundColor: 'white',
   },
   descriptionContainer: {
     flexDirection: 'column',
+    backgroundColor: 'white',
   },
   description: {
     marginBottom: 5,
