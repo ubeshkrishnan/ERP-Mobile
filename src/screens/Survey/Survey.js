@@ -5,7 +5,7 @@ import {useNavigation} from '@react-navigation/native';
 import SurveyData from './SurveyData';
 
 const Survey = ({
-  branch='B.E. Computer Science',
+  branch = 'B.E. Computer Science',
   surveyName = '2023_academic_survey',
   startDate = '2022-01-01',
   endDate = '04-01-2024 00:00:00',
@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
     padding: 5,
     margin: 8,
     marginTop: 16,
+    fontSize: 17,
   },
   fieldContainer: {
     flexDirection: 'row',
@@ -61,10 +62,12 @@ const styles = StyleSheet.create({
   fieldLabel: {
     fontWeight: 'bold',
     color: 'black',
+    fontSize: 17,
   },
   fieldValue: {
     color: 'black',
-    textAlign: 'start',
+    // textAlign: 'start',
+    fontSize: 16,
   },
   saveButton: {
     backgroundColor: 'green',

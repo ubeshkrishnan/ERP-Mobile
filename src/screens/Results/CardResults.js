@@ -71,7 +71,7 @@ const CardResult = ({title, description, register_number}) => {
       <TouchableOpacity onPress={toggleExpansion}>
         <Card style={styles.card}>
           <Card.Content>
-            <Title>{title}</Title>
+            <Title style={{color: 'black'}}>{title}</Title>
           </Card.Content>
         </Card>
       </TouchableOpacity>
@@ -109,12 +109,12 @@ const styles = StyleSheet.create({
   cardContainer: {
     marginBottom: 10,
     color: 'black',
-    backgroundColor: '#E3E3E3',
+    // backgroundColor: '#E3E3E3',
   },
   card: {
     margin: 10,
     color: 'black',
-    backgroundColor: 'grey',
+    backgroundColor: 'white',
   },
   expandedCard: {
     marginTop: 10,
@@ -123,10 +123,13 @@ const styles = StyleSheet.create({
   descriptionContainer: {
     flexDirection: 'column',
     backgroundColor: 'white',
+    fontSize: 17,
   },
   description: {
     marginBottom: 5,
     color: 'gray',
+    fontWeight: '400',
+    fontSize: 17,
   },
   redText: {
     color: 'red', // Change the color to red for absent mark status

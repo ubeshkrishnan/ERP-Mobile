@@ -1,12 +1,14 @@
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, ScrollView} from 'react-native';
 import React from 'react';
 import Colors from '../../Color';
 
 const PersonalInfo = () => {
   return (
-    <View style={styles.cardContainer}>
+    <ScrollView contentContainerStyle={styles.cardContainer}>
       <View style={styles.row}>
-        <Text style={styles.label}>Father / Guardian Name *</Text>
+        <Text style={styles.label}>
+          Father / Guardian Name <Text style={styles.required}>*</Text>
+        </Text>
         <Text style={styles.value}>M. Mahalingam</Text>
       </View>
 
@@ -46,32 +48,44 @@ const PersonalInfo = () => {
       </View>
 
       <View style={styles.row}>
-        <Text style={styles.label}>Door No & Street Name *</Text>
+        <Text style={styles.label}>
+          Door No & Street Name <Text style={styles.required}>*</Text>
+        </Text>
         <Text style={styles.value}>4/14, Nilavarapatti, Salem - 636201</Text>
       </View>
 
       <View style={styles.row}>
-        <Text style={styles.label}>Name of Area/Village/Town *</Text>
+        <Text style={styles.label}>
+          Name of Area/Village/Town <Text style={styles.required}>*</Text>
+        </Text>
         <Text style={styles.value}></Text>
       </View>
 
       <View style={styles.row}>
-        <Text style={styles.label}>Pincode *</Text>
+        <Text style={styles.label}>
+          Pincode <Text style={styles.required}>*</Text>
+        </Text>
         <Text style={styles.value}>636201</Text>
       </View>
 
       <View style={styles.row}>
-        <Text style={styles.label}>City *</Text>
+        <Text style={styles.label}>
+          City <Text style={styles.required}>*</Text>
+        </Text>
         <Text style={styles.value}>SALEM</Text>
       </View>
 
       <View style={styles.row}>
-        <Text style={styles.label}>State *</Text>
+        <Text style={styles.label}>
+          State <Text style={styles.required}>*</Text>
+        </Text>
         <Text style={styles.value}>TAMIL NADU</Text>
       </View>
 
       <View style={styles.row}>
-        <Text style={styles.label}>Country *</Text>
+        <Text style={styles.label}>
+          Country <Text style={styles.required}>*</Text>
+        </Text>
         <Text style={styles.value}>INDIA</Text>
       </View>
 
@@ -88,25 +102,33 @@ const PersonalInfo = () => {
       </View>
 
       <View style={styles.row}>
-        <Text style={styles.label}>Communication Pincode *</Text>
+        <Text style={styles.label}>
+          Communication Pincode <Text style={styles.required}>*</Text>
+        </Text>
         <Text style={styles.value}>636201</Text>
       </View>
 
       <View style={styles.row}>
-        <Text style={styles.label}>Communication City *</Text>
+        <Text style={styles.label}>
+          Communication City <Text style={styles.required}>*</Text>
+        </Text>
         <Text style={styles.value}>SALEM</Text>
       </View>
 
       <View style={styles.row}>
-        <Text style={styles.label}>Communication State *</Text>
+        <Text style={styles.label}>
+          Communication State <Text style={styles.required}>*</Text>
+        </Text>
         <Text style={styles.value}>TAMIL NADU</Text>
       </View>
 
       <View style={styles.row}>
-        <Text style={styles.label}>Communication Country *</Text>
+        <Text style={styles.label}>
+          Communication Country <Text style={styles.required}>*</Text>
+        </Text>
         <Text style={styles.value}>INDIA</Text>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -128,12 +150,15 @@ const styles = StyleSheet.create({
     color: 'black',
     flex: 1,
     marginRight: 8,
-    fontSize: Colors.Lable_FontSize,
+    fontSize: 17,
   },
   value: {
     flex: 1,
     color: 'black',
     fontSize: Colors.Data_FontSize,
+  },
+  required: {
+    color: 'red',
   },
 });
 

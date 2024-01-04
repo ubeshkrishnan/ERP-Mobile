@@ -9,8 +9,8 @@ const Colors = {
   RedTheme: '#CE1141',
 
   // FONTS size
-  label_FontSize: 16,
-  value_FontSize: 14,
+  label_FontSize: 17,
+  value_FontSize: 17,
 
   // FONT COLOR
   labelFontBlueColor: '#009FFF', // Use the actual color value instead of Colors.LighBlueColor
