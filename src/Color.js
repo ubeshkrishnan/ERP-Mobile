@@ -1,17 +1,21 @@
 const Colors = {
-    backgroundColor: '#E3E3E3',
-    LighBlueColor: '#009FFF',
-    RedColor: 'red',
-    GreenColor: 'green',
-    HeaderBlue: '#0c46c3',
-    ColorYellow: '#F3B825',
-    RedTheme: '#CE1141'
+  // COLORS
+  backgroundColor: '#E3E3E3',
+  LighBlueColor: '#009FFF',
+  RedColor: 'red',
+  GreenColor: 'green',
+  HeaderBlue: '#0c46c3',
+  ColorYellow: '#F3B825',
+  RedTheme: '#CE1141',
+
+  // FONTS size
+  label_FontSize: 16,
+  value_FontSize: 14,
+
+  // FONT COLOR
+  labelFontBlueColor: '#009FFF', // Use the actual color value instead of Colors.LighBlueColor
+  labelFontValueColor: 'black',
+  labelFontBlackColor:'black'
 };
-// const loader = {
-//     flex: 1,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     marginBottom: 30,
-//     color:'blue'
-// };
+
 export default Colors;

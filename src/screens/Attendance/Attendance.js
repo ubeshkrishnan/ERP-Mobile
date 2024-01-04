@@ -1,8 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Dimensions, ScrollView, ActivityIndicator } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Dimensions,
+  ScrollView,
+  ActivityIndicator,
+} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Colors from '../../Color';
-import { Url } from '../../../Global_Variable/api_link';
+import {Url} from '../../../Global_Variable/api_link';
 
 const TextStyles = StyleSheet.create({
   subjectCode: {
@@ -28,17 +35,24 @@ const TextStyles = StyleSheet.create({
   },
   subjectAttendancePercentage: {
     color: Colors.LighBlueColor,
-    fontWeight: '800'
+    fontWeight: '800',
   },
   profName: {
     color: 'black',
     fontSize: 15,
-    fontWeight: '500'
+    fontWeight: '500',
   },
 });
 
-const SubjectCard = ({ subjectCode, subjectName, profName, attendancePercentage }) => {
-  const formattedAttendancePercentage = `${(attendancePercentage * 1).toFixed(1)}%`;
+const SubjectCard = ({
+  subjectCode,
+  subjectName,
+  profName,
+  attendancePercentage,
+}) => {
+  const formattedAttendancePercentage = `${(attendancePercentage * 1).toFixed(
+    1,
+  )}%`;
 
   return (
     <View style={styles.card}>
@@ -46,7 +60,12 @@ const SubjectCard = ({ subjectCode, subjectName, profName, attendancePercentage 
         <View style={styles.detailsLeft}>
           <Text style={TextStyles.subjectCode}>{subjectCode}</Text>
           <Text style={TextStyles.subjectName}>{subjectName}</Text>
-          <Text style={TextStyles.profName}>Professor: {profName !== null ? profName : "Not available"}</Text>
+          <Text style={TextStyles.profName}>
+            Professor: {profName !== null ? profName : 'Not available'}
+          </Text>
+          <Text style={styles.totalClasses}>
+            TotalClasses - 28 | Attedend Classes -20
+          </Text>
         </View>
         <View style={styles.circleContainer}>
           <View
@@ -54,11 +73,12 @@ const SubjectCard = ({ subjectCode, subjectName, profName, attendancePercentage 
               styles.circle,
               {
                 borderColor: '#00FF00', // Green border color
-                width: Dimensions.get('window').width * 0.20, // Set the width of the circle
+                width: Dimensions.get('window').width * 0.2, // Set the width of the circle
               },
-            ]}
-          >
-            <Text style={styles.circleText}>{formattedAttendancePercentage}</Text>
+            ]}>
+            <Text style={styles.circleText}>
+              {formattedAttendancePercentage}
+            </Text>
           </View>
         </View>
       </View>
@@ -79,9 +99,13 @@ const Attendance = () => {
     const fetchDataFromStorage = async () => {
       try {
         const storedUserId = await AsyncStorage.getItem('user_id');
-        const storedDegreeBranchId = await AsyncStorage.getItem('degree_branch_id');
+        const storedDegreeBranchId = await AsyncStorage.getItem(
+          'degree_branch_id',
+        );
         const storedStudentId = await AsyncStorage.getItem('student_id');
-        const storedCurrentSemester = await AsyncStorage.getItem('current_semester');
+        const storedCurrentSemester = await AsyncStorage.getItem(
+          'current_semester',
+        );
 
         if (
           storedUserId &&
@@ -95,7 +119,12 @@ const Attendance = () => {
           setCurrentSemester(storedCurrentSemester);
 
           // Now you can fetch the data from the API using the retrieved values
-          fetchAttendanceData(storedUserId, storedStudentId, storedCurrentSemester, storedDegreeBranchId);
+          fetchAttendanceData(
+            storedUserId,
+            storedStudentId,
+            storedCurrentSemester,
+            storedDegreeBranchId,
+          );
         }
       } catch (error) {
         console.error('Error fetching data from AsyncStorage:', error);
@@ -107,48 +136,67 @@ const Attendance = () => {
 
   const fetchAttendanceData = (userId, studentId, semester, degreeBranchId) => {
     // Fetch data from your API endpoint using the retrieved values
-    fetch(Url + `/attendance?user_id=${userId}&student_id=${studentId}&semester=${semester}&degree_branch_id=${degreeBranchId}`)
-      .then((response) => response.json())
-      .then((data) => {
+    fetch(
+      Url +
+        `/attendance?user_id=${userId}&student_id=${studentId}&semester=${semester}&degree_branch_id=${degreeBranchId}`,
+    )
+      .then(response => response.json())
+      .then(data => {
         setIsLoading(true);
 
         // console.log('Fetched data:', data); // Log the data here
         setSubjects(data);
         setIsLoading(false);
       })
-      .catch((error) => console.error('Error fetching data:', error));
+      .catch(error => console.error('Error fetching data:', error));
   };
 
   return (
     <ScrollView>
       {isLoading ? (
-        <View style={{ alignItems: 'center', marginTop: 80 }}>
+        <View style={{alignItems: 'center', marginTop: 80}}>
           <ActivityIndicator size="large" color={Colors.LighBlueColor} />
-          <Text style={{ color: 'black' }}>Loading...</Text>
+          <Text style={{color: 'black'}}>Loading...</Text>
         </View>
       ) : (
-        <View style={styles.container}>
-          {subjects.map((subject, index) => (
-            <SubjectCard
-              key={index}
-              subjectCode={subject.code}
-              subjectName={subject.course_name}
-              profName={subject.prof_name}
-              totalClasses={subject.totalClasses}
-              attendancePercentage={subject.present_percentage}
-            />
-          ))}
-        </View>
+        <>
+          <View>
+            <Text
+              style={{
+                color: 'black',
+                backgroundColor: '#E3E3E3',
+                fontSize: 20,
+                textAlign: 'center', // Center horizontally
+                textAlignVertical: 'center', // Center vertically
+                paddingTop: 13, // Adjust the margin top as needed
+                fontWeight: 'bold',
+              }}>
+              Average Attendance - 92 %
+            </Text>
+
+            <View style={styles.container}>
+              {subjects.map((subject, index) => (
+                <SubjectCard
+                  key={index}
+                  subjectCode={subject.code}
+                  subjectName={subject.course_name}
+                  profName={subject.prof_name}
+                  totalClasses={subject.totalClasses}
+                  attendancePercentage={subject.present_percentage}
+                />
+              ))}
+            </View>
+          </View>
+        </>
       )}
     </ScrollView>
   );
-}
-
+};
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: '#E3E3E3'
+    backgroundColor: '#E3E3E3',
   },
   card: {
     backgroundColor: 'white',
@@ -170,9 +218,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   circle: {
-    height: Dimensions.get('window').width * 0.20,
-    width: Dimensions.get('window').width * 0.20,
-    borderRadius: (Dimensions.get('window').width * 0.30) / 2,
+    height: Dimensions.get('window').width * 0.2,
+    width: Dimensions.get('window').width * 0.2,
+    borderRadius: (Dimensions.get('window').width * 0.3) / 2,
     borderWidth: 4, // Border width
     justifyContent: 'center',
     alignItems: 'center',
@@ -181,6 +229,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     color: 'black',
+  },
+  totalClasses: {
+    color: Colors.LighBlueColor,
+    fontSize: 16,
+    fontWeight: '600',
+    marginTop: 5,
   },
 });
 

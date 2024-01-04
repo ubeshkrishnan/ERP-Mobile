@@ -12,10 +12,12 @@ import {Url} from '../../../Global_Variable/api_link';
 const CurrentCourseCard = ({course}) => {
   return (
     <View style={styles.card}>
-      <Text style={styles.cardCode}>Course Code: {course.code}</Text>
+      <View style={styles.cardHeader}>
+        <Text style={styles.courseCode}>Course Code: {course.code}</Text>
+        <Text style={styles.cardSem}>Sem: {course.section}</Text>
+      </View>
       <Text style={styles.courseName}>Course Name: {course.course_name}</Text>
-      <Text style={styles.cardText}>Faculty: {course.prof_name}</Text>
-      <Text style={styles.cardText}>Semester: {course.section}</Text>
+      <Text style={styles.cardText}>Faculty: {course.prof_name} </Text>
     </View>
   );
 };
@@ -59,17 +61,32 @@ const Current = () => {
 const styles = StyleSheet.create({
   header: {
     textAlign: 'center',
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: 15,
+    // fontWeight: 'bold',
     marginTop: 20,
+  },
+  cardSem: {
+    color: Colors.LighBlueColor,
+    fontWeight: '700',
+    fontSize: 17,
   },
   cardCode: {
     color: Colors.LighBlueColor,
-    fontWeight: '900',
+    fontWeight: '500',
   },
   cardContainer: {
     marginVertical: 10,
     paddingHorizontal: 10,
+  },
+  cardHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    // marginBottom: 10,
+  },
+  courseCode: {
+    color: Colors.LighBlueColor,
+    fontSize: 17,
+    fontWeight: '800',
   },
   card: {
     backgroundColor: 'white',
@@ -82,13 +99,13 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   courseName: {
-    fontSize: 16,
+    fontSize: 17,
     marginBottom: 5,
     color: 'black',
-    fontWeight: '700',
+    fontWeight: '500',
   },
   cardText: {
-    fontSize: 16,
+    fontSize: 17,
     marginBottom: 5,
     color: 'black',
   },

@@ -1,5 +1,6 @@
 import {View, Text, StyleSheet} from 'react-native';
 import React from 'react';
+import Colors from '../../Color';
 
 const PersonalInfo = () => {
   return (
@@ -127,10 +128,12 @@ const styles = StyleSheet.create({
     color: 'black',
     flex: 1,
     marginRight: 8,
+    fontSize: Colors.Lable_FontSize,
   },
   value: {
     flex: 1,
     color: 'black',
+    fontSize: Colors.Data_FontSize,
   },
 });
 

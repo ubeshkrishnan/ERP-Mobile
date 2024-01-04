@@ -1,6 +1,7 @@
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import Colors from '../../Color';
+import Icon from 'react-native-vector-icons/dist/FontAwesome';
 
 const LessonPlan = ({route}) => {
   // const { event } = route.params;
@@ -22,7 +23,20 @@ const LessonPlan = ({route}) => {
           <Text style={styles.subCode}>Code: {event.SubCode}</Text>
           <Text style={styles.staff}>Staff: {event.staff}</Text>
           <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Download Lesson Plan</Text>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                fontSize: 16,
+              }}>
+              <Text style={styles.buttonText}>Download Lesson Plan</Text>
+              <Icon
+                name="download"
+                color="white"
+                style={{marginLeft: 10, fontSize: 18}}
+              />
+              {/* Adjust the value of marginLeft based on the desired space */}
+            </View>
           </TouchableOpacity>
         </View>
       ))}
@@ -80,6 +94,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#ffffff',
     fontWeight: 'bold',
+    fontSize: 16,
   },
   subCode: {
     color: 'black',

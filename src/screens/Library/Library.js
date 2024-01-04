@@ -3,6 +3,8 @@ import {View, StyleSheet, ScrollView, TextInput, Text} from 'react-native';
 import {Card, Paragraph} from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Url} from '../../../Global_Variable/api_link';
+import Colors from '../../Color';
+import {color} from 'react-native-reanimated';
 
 const Library = () => {
   const [bookData, setBookData] = useState([]);
@@ -62,7 +64,7 @@ const Library = () => {
           filteredBookData.map((book, index) => (
             <Card style={styles.card} key={index}>
               <Card.Content>
-                <Paragraph style={styles.paragraph}>
+                <Paragraph style={styles.accessionNo}>
                   Accession No: {book.accession_no}
                 </Paragraph>
                 <Paragraph style={styles.paragraph}>
@@ -101,7 +103,11 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: '#E3E3E3',
   },
-
+  accessionNo: {
+    fontSize: 20,
+    color: Colors.LighBlueColor,
+    fontWeight: '700',
+  },
   card: {
     width: '100%',
     padding: 10,
@@ -111,13 +117,13 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     backgroundColor: 'white',
     color: 'black',
-    fontWeight: '700',
     fontSize: 16,
   },
 
   paragraph: {
     marginBottom: 9,
     color: 'black',
+    fontSize: 17,
   },
 
   searchBar: {

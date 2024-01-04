@@ -1,6 +1,6 @@
-import { View, Text, StyleSheet } from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import React from 'react';
-
+import Colors from '../../Color';
 const EducationDetail = () => {
   return (
     <View style={styles.cardContainer}>
@@ -26,7 +26,9 @@ const EducationDetail = () => {
 
       <View style={styles.row}>
         <Text style={styles.label}>UG Institution Name *</Text>
-        <Text style={styles.value}>PSGR Krishnammal College Of Arts And Science</Text>
+        <Text style={styles.value}>
+          PSGR Krishnammal College Of Arts And Science
+        </Text>
       </View>
 
       <View style={styles.row}>
@@ -50,7 +52,6 @@ const EducationDetail = () => {
       </View>
 
       {/* Add more rows for the remaining fields */}
-
     </View>
   );
 };
@@ -73,10 +74,12 @@ const styles = StyleSheet.create({
     color: 'black',
     flex: 1,
     marginRight: 8,
+    fontSize: Colors.Lable_FontSize,
   },
   value: {
     flex: 1,
     color: 'black',
+    fontSize: Colors.Data_FontSize,
   },
 });
 

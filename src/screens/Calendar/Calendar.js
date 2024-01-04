@@ -1,6 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
-import { Url } from '../../../Global_Variable/api_link';
+import React, {useState, useEffect} from 'react';
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  ScrollView,
+  ActivityIndicator,
+} from 'react-native';
+import {Url} from '../../../Global_Variable/api_link';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Calendar = () => {
@@ -28,22 +35,22 @@ const Calendar = () => {
     fetchDataFromStorage();
   }, []);
 
-  const fetchCalendarData = (userId) => {
+  const fetchCalendarData = userId => {
     // Use the fetch API to make the GET request
     fetch(Url + `/calendar?user_id=${userId}`)
-      .then((response) => {
+      .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
         return response.json(); // Assuming the response is in JSON format
       })
-      .then((data) => {
+      .then(data => {
         // Update the 'days' state with the fetched data
         setDays(data);
         // Set loading to false once the data is fetched
         setLoading(false);
       })
-      .catch((error) => {
+      .catch(error => {
         console.error('Fetch error:', error);
         // Set loading to false in case of an error
         setLoading(false);
@@ -55,26 +62,28 @@ const Calendar = () => {
       <View
         style={[
           styles.card,
-          day.labels.includes('HOLIDAY') ? styles.cardHoliday : styles.cardWorking,
+          day.labels.includes('HOLIDAY')
+            ? styles.cardHoliday
+            : styles.cardWorking,
         ]}
-        key={index}
-      >
+        key={index}>
         <Text
           style={
-            day.labels.includes('HOLIDAY') ? styles.cardTitleHoliday : styles.cardTitleWorking
-          }
-        >
+            day.labels.includes('HOLIDAY')
+              ? styles.cardTitleHoliday
+              : styles.cardTitleWorking
+          }>
           {day.labels}
         </Text>
-        <Text style={{ color: 'grey', fontWeight: 'bold' }}>{day.date}</Text>
+        <Text style={{color: 'grey', fontWeight: 'bold'}}>{day.date}</Text>
         {/* Add more dynamic rendering here */}
       </View>
     ));
   };
 
   // Filter function based on dd/mm/yyyy format
-  const filterByDate = (date) => {
-    return days.filter((day) => day.date.includes(date));
+  const filterByDate = date => {
+    return days.filter(day => day.date.includes(date));
   };
 
   useEffect(() => {
@@ -88,17 +97,17 @@ const Calendar = () => {
   return (
     <View style={styles.container}>
       <TextInput
-        style={[styles.searchBar, { color: 'black' }]}
+        style={[styles.searchBar, {color: 'black'}]}
         placeholder="Search holidays (dd/mm/yyyy)..."
         placeholderTextColor="gray"
-        onChangeText={(text) => setSearchText(text)}
+        onChangeText={text => setSearchText(text)}
         value={searchText}
       />
 
       {loading ? (
-        <View style={{ alignItems: 'center', marginTop: 80 }}>
+        <View style={{alignItems: 'center', marginTop: 80}}>
           <ActivityIndicator size="large" style={styles.loader} />
-          <Text style={{ color: 'black' }}>Loading...</Text>
+          <Text style={{color: 'black'}}>Loading...</Text>
         </View>
       ) : (
         <ScrollView style={styles.cardContainer}>{renderDays()}</ScrollView>
@@ -142,10 +151,10 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: '900',
     marginBottom: 5,
-    color: 'red',
+    color: 'green',
   },
   cardTitleHoliday: {
-    color: 'green',
+    color: 'red',
     fontWeight: '900',
     marginBottom: 5,
     fontSize: 15,

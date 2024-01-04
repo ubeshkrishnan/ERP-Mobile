@@ -16,6 +16,8 @@ import Current from '../screens/Course/Current';
 import Future from '../screens/Course/Future';
 import Eschedule from '../screens/ExamSchedule.js/E-schedule';
 import FeeDetails from '../screens/Fees/FeeDetails';
+import Paid from '../screens/Fees/Paid';
+import Pending from '../screens/Fees/Pending';
 import Library from '../screens/Library/Library';
 import Results from '../screens/Results/Results';
 import Profile from '../screens/Profile/Profile';
@@ -101,6 +103,15 @@ function MiscellaneousTopBarNavigator() {
           tabBarLabel: 'Education Details',
         }}
       />
+    </TopTab.Navigator>
+  );
+}
+
+function FeeDetailsTopBarNavigator() {
+  return (
+    <TopTab.Navigator>
+      <TopTab.Screen name="Paid" component={Paid} />
+      <TopTab.Screen name="Pending" component={Pending} />
     </TopTab.Navigator>
   );
 }
@@ -261,13 +272,22 @@ function MainContainer() {
         />
 
         <Stack.Screen
+          name="feeDetails"
+          component={FeeDetailsTopBarNavigator}
+          options={{
+            title: 'Fee Details',
+            headerTitleAlign: 'center',
+          }}
+        />
+
+        <Stack.Screen
           name="Eschedule"
           component={Eschedule}
-          options={{headerTitleAlign: 'center'}}
+          options={{title: 'Exam Schedule', headerTitleAlign: 'center'}}
         />
         <Stack.Screen
           name="FeeDetails"
-          component={FeeDetails}
+          component={FeeDetailsTopBarNavigator}
           options={{title: 'Fee Details', headerTitleAlign: 'center'}}
         />
         <Stack.Screen

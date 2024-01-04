@@ -1,13 +1,16 @@
-import { View, Text, StyleSheet } from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import React from 'react';
 import Colors from '../../Color';
 
-const FutureCourseCard = ({ sub }) => {
+const FutureCourseCard = ({sub}) => {
   return (
     <View style={styles.card}>
-      <Text style={styles.courseName}>Course Name: {sub.courseName}</Text>
+      <View style={styles.HeaderCard}>
+        <Text style={styles.courseName}>Course Name: {sub.courseName}</Text>
+        <Text style={styles.cardSem}>Sem: {sub.semester}</Text>
+      </View>
       <Text style={styles.cardText}>Faculty: {sub.facultyName}</Text>
-      <Text style={styles.cardText}>Semester: {sub.semester}</Text>
+
       <Text style={styles.cardText}>Course Code: {sub.courseCode}</Text>
     </View>
   );
@@ -46,25 +49,35 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     paddingHorizontal: 10,
   },
+  HeaderCard: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   card: {
     backgroundColor: 'white',
     padding: 15,
     marginBottom: 10,
     borderRadius: 5,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.2,
     elevation: 3,
   },
   cardText: {
-    fontSize: 16,
+    fontSize: 17,
     marginBottom: 5,
-    color: 'black'
+    color: 'black',
   },
   courseName: {
-    fontSize: 16,
+    fontSize: 17,
     marginBottom: 5,
     color: Colors.LighBlueColor,
+    fontWeight: '600',
+  },
+  cardSem: {
+    color: Colors.LighBlueColor,
+    fontWeight: '600',
+    fontSize: 17,
   },
 });
 
